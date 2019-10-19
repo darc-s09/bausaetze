@@ -1,0 +1,2054 @@
+
+Thermometer.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .data         00000054  00800100  000009e4  00000a78  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  1 .text         000009e4  00000000  00000000  00000094  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .bss          00000144  00800154  00800154  00000acc  2**0
+                  ALLOC
+  3 .comment      00000030  00000000  00000000  00000acc  2**0
+                  CONTENTS, READONLY
+  4 .debug_aranges 000000b0  00000000  00000000  00000afc  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   0000099f  00000000  00000000  00000bac  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 00000230  00000000  00000000  0000154b  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   0000048b  00000000  00000000  0000177b  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  000001f4  00000000  00000000  00001c08  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    0000034a  00000000  00000000  00001dfc  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    000006c5  00000000  00000000  00002146  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 000000a0  00000000  00000000  0000280b  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 4e 00 	jmp	0x9c	; 0x9c <__ctors_end>
+   4:	0c 94 6b 00 	jmp	0xd6	; 0xd6 <__bad_interrupt>
+   8:	0c 94 6b 00 	jmp	0xd6	; 0xd6 <__bad_interrupt>
+   c:	0c 94 6b 00 	jmp	0xd6	; 0xd6 <__bad_interrupt>
+  10:	0c 94 6b 00 	jmp	0xd6	; 0xd6 <__bad_interrupt>
+  14:	0c 94 6b 00 	jmp	0xd6	; 0xd6 <__bad_interrupt>
+  18:	0c 94 6b 00 	jmp	0xd6	; 0xd6 <__bad_interrupt>
+  1c:	0c 94 6b 00 	jmp	0xd6	; 0xd6 <__bad_interrupt>
+  20:	0c 94 6b 00 	jmp	0xd6	; 0xd6 <__bad_interrupt>
+  24:	0c 94 75 04 	jmp	0x8ea	; 0x8ea <__vector_9>
+  28:	0c 94 6b 00 	jmp	0xd6	; 0xd6 <__bad_interrupt>
+  2c:	0c 94 6b 00 	jmp	0xd6	; 0xd6 <__bad_interrupt>
+  30:	0c 94 6b 00 	jmp	0xd6	; 0xd6 <__bad_interrupt>
+  34:	0c 94 6b 00 	jmp	0xd6	; 0xd6 <__bad_interrupt>
+  38:	0c 94 6b 04 	jmp	0x8d6	; 0x8d6 <__vector_14>
+  3c:	0c 94 6b 00 	jmp	0xd6	; 0xd6 <__bad_interrupt>
+  40:	0c 94 18 04 	jmp	0x830	; 0x830 <__vector_16>
+  44:	0c 94 6b 00 	jmp	0xd6	; 0xd6 <__bad_interrupt>
+  48:	0c 94 9f 04 	jmp	0x93e	; 0x93e <__vector_18>
+  4c:	0c 94 6b 00 	jmp	0xd6	; 0xd6 <__bad_interrupt>
+  50:	0c 94 6b 00 	jmp	0xd6	; 0xd6 <__bad_interrupt>
+  54:	0c 94 6b 00 	jmp	0xd6	; 0xd6 <__bad_interrupt>
+  58:	0c 94 6b 00 	jmp	0xd6	; 0xd6 <__bad_interrupt>
+  5c:	0c 94 6b 00 	jmp	0xd6	; 0xd6 <__bad_interrupt>
+  60:	0c 94 6b 00 	jmp	0xd6	; 0xd6 <__bad_interrupt>
+  64:	0c 94 6b 00 	jmp	0xd6	; 0xd6 <__bad_interrupt>
+  68:	81 00       	.word	0x0081	; ????
+  6a:	85 00       	.word	0x0085	; ????
+  6c:	8b 00       	.word	0x008b	; ????
+  6e:	93 00       	.word	0x0093	; ????
+  70:	9d 00       	.word	0x009d	; ????
+  72:	a9 00       	.word	0x00a9	; ????
+  74:	b7 00       	.word	0x00b7	; ????
+  76:	4e 01       	movw	r8, r28
+  78:	58 01       	movw	r10, r16
+  7a:	62 01       	movw	r12, r4
+  7c:	6c 01       	movw	r12, r24
+  7e:	76 01       	movw	r14, r12
+  80:	80 01       	movw	r16, r0
+  82:	8a 01       	movw	r16, r20
+  84:	94 01       	movw	r18, r8
+  86:	9e 01       	movw	r18, r28
+  88:	a8 01       	movw	r20, r16
+  8a:	b2 01       	movw	r22, r4
+  8c:	bc 01       	movw	r22, r24
+  8e:	c6 01       	movw	r24, r12
+  90:	d0 01       	movw	r26, r0
+  92:	da 01       	movw	r26, r20
+  94:	e4 01       	movw	r28, r8
+  96:	ee 01       	movw	r28, r28
+  98:	f8 01       	movw	r30, r16
+  9a:	02 02       	muls	r16, r18
+
+0000009c <__ctors_end>:
+  9c:	11 24       	eor	r1, r1
+  9e:	1f be       	out	0x3f, r1	; 63
+  a0:	cf ef       	ldi	r28, 0xFF	; 255
+  a2:	d4 e0       	ldi	r29, 0x04	; 4
+  a4:	de bf       	out	0x3e, r29	; 62
+  a6:	cd bf       	out	0x3d, r28	; 61
+
+000000a8 <__do_copy_data>:
+  a8:	11 e0       	ldi	r17, 0x01	; 1
+  aa:	a0 e0       	ldi	r26, 0x00	; 0
+  ac:	b1 e0       	ldi	r27, 0x01	; 1
+  ae:	e4 ee       	ldi	r30, 0xE4	; 228
+  b0:	f9 e0       	ldi	r31, 0x09	; 9
+  b2:	02 c0       	rjmp	.+4      	; 0xb8 <__do_copy_data+0x10>
+  b4:	05 90       	lpm	r0, Z+
+  b6:	0d 92       	st	X+, r0
+  b8:	a4 35       	cpi	r26, 0x54	; 84
+  ba:	b1 07       	cpc	r27, r17
+  bc:	d9 f7       	brne	.-10     	; 0xb4 <__do_copy_data+0xc>
+
+000000be <__do_clear_bss>:
+  be:	22 e0       	ldi	r18, 0x02	; 2
+  c0:	a4 e5       	ldi	r26, 0x54	; 84
+  c2:	b1 e0       	ldi	r27, 0x01	; 1
+  c4:	01 c0       	rjmp	.+2      	; 0xc8 <.do_clear_bss_start>
+
+000000c6 <.do_clear_bss_loop>:
+  c6:	1d 92       	st	X+, r1
+
+000000c8 <.do_clear_bss_start>:
+  c8:	a8 39       	cpi	r26, 0x98	; 152
+  ca:	b2 07       	cpc	r27, r18
+  cc:	e1 f7       	brne	.-8      	; 0xc6 <.do_clear_bss_loop>
+  ce:	0e 94 02 03 	call	0x604	; 0x604 <main>
+  d2:	0c 94 f0 04 	jmp	0x9e0	; 0x9e0 <_exit>
+
+000000d6 <__bad_interrupt>:
+  d6:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+000000da <wuerfel>:
+
+/***************************************************************************************
+Ansteuerung Wuerfel (7 LED`s) Zahlen von 1 bis 7 sind möglich 
+***************************************************************************************/
+void wuerfel(uint8_t wzahl)
+{
+  da:	ed e7       	ldi	r30, 0x7D	; 125
+  dc:	f1 e0       	ldi	r31, 0x01	; 1
+  de:	2b e8       	ldi	r18, 0x8B	; 139
+  e0:	31 e0       	ldi	r19, 0x01	; 1
+for (uint8_t step = 11; step <= 17 ; step++) 	// Abschalten aller 7 LED`s
+	{
+	LED_TASK[step][0]=0;						// Abschalten aller LED`s auf dem Würfelfeld
+  e2:	10 82       	st	Z, r1
+  e4:	32 96       	adiw	r30, 0x02	; 2
+/***************************************************************************************
+Ansteuerung Wuerfel (7 LED`s) Zahlen von 1 bis 7 sind möglich 
+***************************************************************************************/
+void wuerfel(uint8_t wzahl)
+{
+for (uint8_t step = 11; step <= 17 ; step++) 	// Abschalten aller 7 LED`s
+  e6:	e2 17       	cp	r30, r18
+  e8:	f3 07       	cpc	r31, r19
+  ea:	d9 f7       	brne	.-10     	; 0xe2 <wuerfel+0x8>
+	{
+	LED_TASK[step][0]=0;						// Abschalten aller LED`s auf dem Würfelfeld
+	}	
+switch (wzahl)
+  ec:	90 e0       	ldi	r25, 0x00	; 0
+  ee:	fc 01       	movw	r30, r24
+  f0:	31 97       	sbiw	r30, 0x01	; 1
+  f2:	e7 30       	cpi	r30, 0x07	; 7
+  f4:	f1 05       	cpc	r31, r1
+  f6:	08 f0       	brcs	.+2      	; 0xfa <wuerfel+0x20>
+  f8:	49 c0       	rjmp	.+146    	; 0x18c <wuerfel+0xb2>
+  fa:	ec 5c       	subi	r30, 0xCC	; 204
+  fc:	ff 4f       	sbci	r31, 0xFF	; 255
+  fe:	0c 94 d6 04 	jmp	0x9ac	; 0x9ac <__tablejump2__>
+	{
+	case 1:					// Würfel Zahl 1
+	LED_TASK[11][0]=1;		// Würfel Zahl 1 >  LED 11	
+ 102:	81 e0       	ldi	r24, 0x01	; 1
+ 104:	80 93 7d 01 	sts	0x017D, r24
+	break;					// Ende case
+ 108:	08 95       	ret
+	
+	case 2:					// Würfel Zahl 2
+	LED_TASK[14][0]=1;		// Würfel Zahl 2 >  LED 14
+ 10a:	81 e0       	ldi	r24, 0x01	; 1
+ 10c:	80 93 83 01 	sts	0x0183, r24
+	LED_TASK[16][0]=1;		// Würfel Zahl 2 >  LED 16
+ 110:	80 93 87 01 	sts	0x0187, r24
+	break;					// Ende case
+ 114:	08 95       	ret
+	
+	case 3:					// Würfel Zahl 3
+	LED_TASK[11][0]=1;		// Würfel Zahl 3 >  LED 11
+ 116:	81 e0       	ldi	r24, 0x01	; 1
+ 118:	80 93 7d 01 	sts	0x017D, r24
+	LED_TASK[14][0]=1;		// Würfel Zahl 3 >  LED 14
+ 11c:	80 93 83 01 	sts	0x0183, r24
+	LED_TASK[16][0]=1;		// Würfel Zahl 3 >  LED 16
+ 120:	80 93 87 01 	sts	0x0187, r24
+	break;					// Ende case
+ 124:	08 95       	ret
+	
+	case 4:					// Würfel Zahl 4
+	LED_TASK[14][0]=1;		// Würfel Zahl 4 >  LED 14
+ 126:	81 e0       	ldi	r24, 0x01	; 1
+ 128:	80 93 83 01 	sts	0x0183, r24
+	LED_TASK[15][0]=1;		// Würfel Zahl 4 >  LED 15
+ 12c:	80 93 85 01 	sts	0x0185, r24
+	LED_TASK[16][0]=1;		// Würfel Zahl 4 >  LED 16
+ 130:	80 93 87 01 	sts	0x0187, r24
+	LED_TASK[17][0]=1;		// Würfel Zahl 4 >  LED 17
+ 134:	80 93 89 01 	sts	0x0189, r24
+	break;					// Ende case
+ 138:	08 95       	ret
+	
+	case 5:					// Würfel Zahl 5
+	LED_TASK[11][0]=1;		// Würfel Zahl 5 >  LED 11
+ 13a:	81 e0       	ldi	r24, 0x01	; 1
+ 13c:	80 93 7d 01 	sts	0x017D, r24
+	LED_TASK[14][0]=1;		// Würfel Zahl 5 >  LED 14
+ 140:	80 93 83 01 	sts	0x0183, r24
+	LED_TASK[15][0]=1;		// Würfel Zahl 5 >  LED 15
+ 144:	80 93 85 01 	sts	0x0185, r24
+	LED_TASK[16][0]=1;		// Würfel Zahl 5 >  LED 16
+ 148:	80 93 87 01 	sts	0x0187, r24
+	LED_TASK[17][0]=1;		// Würfel Zahl 5 >  LED 17
+ 14c:	80 93 89 01 	sts	0x0189, r24
+	break;					// Ende case
+ 150:	08 95       	ret
+	
+	case 6:					// Würfel Zahl 6
+	LED_TASK[12][0]=1;		// Würfel Zahl 6 >  LED 12
+ 152:	81 e0       	ldi	r24, 0x01	; 1
+ 154:	80 93 7f 01 	sts	0x017F, r24
+	LED_TASK[13][0]=1;		// Würfel Zahl 6 >  LED 13
+ 158:	80 93 81 01 	sts	0x0181, r24
+	LED_TASK[14][0]=1;		// Würfel Zahl 6 >  LED 14
+ 15c:	80 93 83 01 	sts	0x0183, r24
+	LED_TASK[15][0]=1;		// Würfel Zahl 6 >  LED 15
+ 160:	80 93 85 01 	sts	0x0185, r24
+	LED_TASK[16][0]=1;		// Würfel Zahl 6 >  LED 16
+ 164:	80 93 87 01 	sts	0x0187, r24
+	LED_TASK[17][0]=1;		// Würfel Zahl 6 >  LED 17
+ 168:	80 93 89 01 	sts	0x0189, r24
+	break;					// Ende case
+ 16c:	08 95       	ret
+	
+	case 7:					// Würfel Zahl 7
+	LED_TASK[11][0]=1;		// Würfel Zahl 7 >  LED 11
+ 16e:	81 e0       	ldi	r24, 0x01	; 1
+ 170:	80 93 7d 01 	sts	0x017D, r24
+	LED_TASK[12][0]=1;		// Würfel Zahl 7 >  LED 12
+ 174:	80 93 7f 01 	sts	0x017F, r24
+	LED_TASK[13][0]=1;		// Würfel Zahl 7 >  LED 13
+ 178:	80 93 81 01 	sts	0x0181, r24
+	LED_TASK[14][0]=1;		// Würfel Zahl 7 >  LED 14
+ 17c:	80 93 83 01 	sts	0x0183, r24
+	LED_TASK[15][0]=1;		// Würfel Zahl 7 >  LED 15
+ 180:	80 93 85 01 	sts	0x0185, r24
+	LED_TASK[16][0]=1;		// Würfel Zahl 7 >  LED 16
+ 184:	80 93 87 01 	sts	0x0187, r24
+	LED_TASK[17][0]=1;		// Würfel Zahl 7 >  LED 17
+ 188:	80 93 89 01 	sts	0x0189, r24
+ 18c:	08 95       	ret
+
+0000018e <drehenr>:
+/***************************************************************************************
+Ansteuerung Wuerfelfeld (7 LED`s) um einen zeiger darzustellen
+ 
+***************************************************************************************/
+void drehenr(uint8_t wstep)
+{
+ 18e:	ed e7       	ldi	r30, 0x7D	; 125
+ 190:	f1 e0       	ldi	r31, 0x01	; 1
+ 192:	2b e8       	ldi	r18, 0x8B	; 139
+ 194:	31 e0       	ldi	r19, 0x01	; 1
+for (uint8_t step = 11; step <= 17 ; step++) 	// Abschalten aller 7 LED`s
+	{
+	LED_TASK[step][0]=0;						// Abschalten aller LED`s auf dem Würfelfeld
+ 196:	10 82       	st	Z, r1
+ 198:	32 96       	adiw	r30, 0x02	; 2
+Ansteuerung Wuerfelfeld (7 LED`s) um einen zeiger darzustellen
+ 
+***************************************************************************************/
+void drehenr(uint8_t wstep)
+{
+for (uint8_t step = 11; step <= 17 ; step++) 	// Abschalten aller 7 LED`s
+ 19a:	e2 17       	cp	r30, r18
+ 19c:	f3 07       	cpc	r31, r19
+ 19e:	d9 f7       	brne	.-10     	; 0x196 <drehenr+0x8>
+	{
+	LED_TASK[step][0]=0;						// Abschalten aller LED`s auf dem Würfelfeld
+	}
+switch (wstep)
+ 1a0:	83 30       	cpi	r24, 0x03	; 3
+ 1a2:	e1 f0       	breq	.+56     	; 0x1dc <drehenr+0x4e>
+ 1a4:	28 f4       	brcc	.+10     	; 0x1b0 <drehenr+0x22>
+ 1a6:	81 30       	cpi	r24, 0x01	; 1
+ 1a8:	49 f0       	breq	.+18     	; 0x1bc <drehenr+0x2e>
+ 1aa:	82 30       	cpi	r24, 0x02	; 2
+ 1ac:	79 f0       	breq	.+30     	; 0x1cc <drehenr+0x3e>
+ 1ae:	08 95       	ret
+ 1b0:	85 30       	cpi	r24, 0x05	; 5
+ 1b2:	21 f1       	breq	.+72     	; 0x1fc <drehenr+0x6e>
+ 1b4:	d8 f0       	brcs	.+54     	; 0x1ec <drehenr+0x5e>
+ 1b6:	86 30       	cpi	r24, 0x06	; 6
+ 1b8:	49 f1       	breq	.+82     	; 0x20c <drehenr+0x7e>
+ 1ba:	08 95       	ret
+	{
+	case 1:					// Step 1 -
+	LED_TASK[11][0]=1;		// LED 11
+ 1bc:	81 e0       	ldi	r24, 0x01	; 1
+ 1be:	80 93 7d 01 	sts	0x017D, r24
+	LED_TASK[12][0]=1;		// LED 12
+ 1c2:	80 93 7f 01 	sts	0x017F, r24
+	LED_TASK[13][0]=1;		// LED 13
+ 1c6:	80 93 81 01 	sts	0x0181, r24
+	break;					// Ende case
+ 1ca:	08 95       	ret
+	
+	case 2:					// Step 2 nr 
+	LED_TASK[11][0]=1;		// LED 11
+ 1cc:	81 e0       	ldi	r24, 0x01	; 1
+ 1ce:	80 93 7d 01 	sts	0x017D, r24
+	LED_TASK[15][0]=1;		// LED 15
+ 1d2:	80 93 85 01 	sts	0x0185, r24
+	LED_TASK[17][0]=1;		// LED 17
+ 1d6:	80 93 89 01 	sts	0x0189, r24
+	break;					// Ende case
+ 1da:	08 95       	ret
+	
+	case 3:					// Step 3 /
+	LED_TASK[11][0]=1;		// LED 11
+ 1dc:	81 e0       	ldi	r24, 0x01	; 1
+ 1de:	80 93 7d 01 	sts	0x017D, r24
+	LED_TASK[14][0]=1;		// LED 14
+ 1e2:	80 93 83 01 	sts	0x0183, r24
+	LED_TASK[16][0]=1;		// LED 16
+ 1e6:	80 93 87 01 	sts	0x0187, r24
+	break;					// Ende case
+ 1ea:	08 95       	ret
+	
+	case 4:					// Step 4 -
+	LED_TASK[11][0]=1;		// LED 11
+ 1ec:	81 e0       	ldi	r24, 0x01	; 1
+ 1ee:	80 93 7d 01 	sts	0x017D, r24
+	LED_TASK[12][0]=1;		// LED 12
+ 1f2:	80 93 7f 01 	sts	0x017F, r24
+	LED_TASK[13][0]=1;		// LED 13
+ 1f6:	80 93 81 01 	sts	0x0181, r24
+	break;					// Ende case
+ 1fa:	08 95       	ret
+	
+	case 5:					// Step 5 nr
+	LED_TASK[11][0]=1;		// LED 11
+ 1fc:	81 e0       	ldi	r24, 0x01	; 1
+ 1fe:	80 93 7d 01 	sts	0x017D, r24
+	LED_TASK[15][0]=1;		// LED 15
+ 202:	80 93 85 01 	sts	0x0185, r24
+	LED_TASK[17][0]=1;		// LED 17
+ 206:	80 93 89 01 	sts	0x0189, r24
+	break;					// Ende case
+ 20a:	08 95       	ret
+	
+	case 6:					// Step 6 /
+	LED_TASK[11][0]=1;		// LED 11
+ 20c:	81 e0       	ldi	r24, 0x01	; 1
+ 20e:	80 93 7d 01 	sts	0x017D, r24
+	LED_TASK[14][0]=1;		// LED 14
+ 212:	80 93 83 01 	sts	0x0183, r24
+	LED_TASK[16][0]=1;		// LED 16
+ 216:	80 93 87 01 	sts	0x0187, r24
+ 21a:	08 95       	ret
+
+0000021c <ledband>:
+/***************************************************************************************
+Ansteuerung LED Band auf Basis AD Wandler
+***************************************************************************************/
+
+void ledband(uint16_t tempwert, uint16_t tempset)
+{
+ 21c:	cf 93       	push	r28
+if ( tempwert < tempset)
+ 21e:	86 17       	cp	r24, r22
+ 220:	97 07       	cpc	r25, r23
+ 222:	f0 f4       	brcc	.+60     	; 0x260 <ledband+0x44>
+ 224:	e9 e6       	ldi	r30, 0x69	; 105
+ 226:	f1 e0       	ldi	r31, 0x01	; 1
+ 228:	2d e7       	ldi	r18, 0x7D	; 125
+ 22a:	31 e0       	ldi	r19, 0x01	; 1
+	{
+	for (uint8_t step = 0; step <= 9 ; step++) 	// Für Testzwecke werden die Daten als Binäre Zahl auf die LED`s 1 bis 10 geschrieben.
+		{
+		LED_TASK[step+1][0]=0;					// Abschalten aller LED`s der Temperaturanzeige
+ 22c:	10 82       	st	Z, r1
+ 22e:	32 96       	adiw	r30, 0x02	; 2
+
+void ledband(uint16_t tempwert, uint16_t tempset)
+{
+if ( tempwert < tempset)
+	{
+	for (uint8_t step = 0; step <= 9 ; step++) 	// Für Testzwecke werden die Daten als Binäre Zahl auf die LED`s 1 bis 10 geschrieben.
+ 230:	e2 17       	cp	r30, r18
+ 232:	f3 07       	cpc	r31, r19
+ 234:	d9 f7       	brne	.-10     	; 0x22c <ledband+0x10>
+ 236:	14 c0       	rjmp	.+40     	; 0x260 <ledband+0x44>
+ 238:	9a 01       	movw	r18, r20
+ 23a:	2e 0f       	add	r18, r30
+ 23c:	3f 1f       	adc	r19, r31
+
+
+for (uint8_t step = 0; step <= 9 ; step++) 		// Zur Ansteuerung des LED Temperaturbandes 
+	{
+	tempset++; // 	
+	if ( (tempwert >= tempset) && (tempwert <= (tempset + 2)) ) // Hier wird festgelegt in welchen Bereich die LED's zugeschaltet werden.
+ 23e:	82 17       	cp	r24, r18
+ 240:	93 07       	cpc	r25, r19
+ 242:	40 f0       	brcs	.+16     	; 0x254 <ledband+0x38>
+ 244:	9b 01       	movw	r18, r22
+ 246:	2e 0f       	add	r18, r30
+ 248:	3f 1f       	adc	r19, r31
+ 24a:	28 17       	cp	r18, r24
+ 24c:	39 07       	cpc	r19, r25
+ 24e:	10 f0       	brcs	.+4      	; 0x254 <ledband+0x38>
+		{
+		LED_TASK[step+1][0]=1;					// Zuschalten LED auf den Band		
+ 250:	c0 83       	st	Z, r28
+ 252:	01 c0       	rjmp	.+2      	; 0x256 <ledband+0x3a>
+		}	
+	else
+		{
+		LED_TASK[step+1][0]=0;					// Abschalten der nichtaktiven LED auf den Band	
+ 254:	10 82       	st	Z, r1
+ 256:	32 96       	adiw	r30, 0x02	; 2
+		}	
+	}
+
+
+
+for (uint8_t step = 0; step <= 9 ; step++) 		// Zur Ansteuerung des LED Temperaturbandes 
+ 258:	ea 17       	cp	r30, r26
+ 25a:	fb 07       	cpc	r31, r27
+ 25c:	69 f7       	brne	.-38     	; 0x238 <ledband+0x1c>
+ 25e:	11 c0       	rjmp	.+34     	; 0x282 <ledband+0x66>
+ 260:	e9 e6       	ldi	r30, 0x69	; 105
+ 262:	f1 e0       	ldi	r31, 0x01	; 1
+ 264:	27 e6       	ldi	r18, 0x67	; 103
+ 266:	31 e0       	ldi	r19, 0x01	; 1
+ 268:	ad e7       	ldi	r26, 0x7D	; 125
+ 26a:	b1 e0       	ldi	r27, 0x01	; 1
+ 26c:	a9 01       	movw	r20, r18
+ 26e:	40 95       	com	r20
+ 270:	50 95       	com	r21
+ 272:	46 0f       	add	r20, r22
+ 274:	57 1f       	adc	r21, r23
+ 276:	62 1b       	sub	r22, r18
+ 278:	73 0b       	sbc	r23, r19
+ 27a:	6f 5f       	subi	r22, 0xFF	; 255
+ 27c:	7f 4f       	sbci	r23, 0xFF	; 255
+	{
+	tempset++; // 	
+	if ( (tempwert >= tempset) && (tempwert <= (tempset + 2)) ) // Hier wird festgelegt in welchen Bereich die LED's zugeschaltet werden.
+		{
+		LED_TASK[step+1][0]=1;					// Zuschalten LED auf den Band		
+ 27e:	c1 e0       	ldi	r28, 0x01	; 1
+ 280:	db cf       	rjmp	.-74     	; 0x238 <ledband+0x1c>
+	tempset++;
+	}
+
+
+
+}
+ 282:	cf 91       	pop	r28
+ 284:	08 95       	ret
+
+00000286 <zeilenwahl>:
+Auswahl Zeilennummer 
+***************************************************************************************/
+void zeilenwahl(uint8_t zeile)
+{
+	
+ switch (zeile)
+ 286:	90 e0       	ldi	r25, 0x00	; 0
+ 288:	fc 01       	movw	r30, r24
+ 28a:	31 97       	sbiw	r30, 0x01	; 1
+ 28c:	e3 31       	cpi	r30, 0x13	; 19
+ 28e:	f1 05       	cpc	r31, r1
+ 290:	08 f0       	brcs	.+2      	; 0x294 <zeilenwahl+0xe>
+ 292:	c2 c0       	rjmp	.+388    	; 0x418 <zeilenwahl+0x192>
+ 294:	e5 5c       	subi	r30, 0xC5	; 197
+ 296:	ff 4f       	sbci	r31, 0xFF	; 255
+ 298:	0c 94 d6 04 	jmp	0x9ac	; 0x9ac <__tablejump2__>
+	{
+	 case 1:
+	 ZEILE1_ON;		// LED1 AN 
+ 29c:	22 9a       	sbi	0x04, 2	; 4
+	 ZEILE2_OFF;
+ 29e:	21 98       	cbi	0x04, 1	; 4
+	 ZEILE3_OFF;
+ 2a0:	20 98       	cbi	0x04, 0	; 4
+	 ZEILE4_OFF;
+ 2a2:	57 98       	cbi	0x0a, 7	; 10
+	 SPALTE1_ON;
+ 2a4:	5e 9a       	sbi	0x0b, 6	; 11
+	 SPALTE2_OFF;
+ 2a6:	5d 98       	cbi	0x0b, 5	; 11
+	 SPALTE3_OFF;
+ 2a8:	5c 98       	cbi	0x0b, 4	; 11
+	 SPALTE4_OFF;
+ 2aa:	5b 98       	cbi	0x0b, 3	; 11
+	 SPALTE5_OFF;
+ 2ac:	5a 98       	cbi	0x0b, 2	; 11
+	 break;
+ 2ae:	08 95       	ret
+	 case 2:
+	 ZEILE1_ON;		// LED2 AN
+ 2b0:	22 9a       	sbi	0x04, 2	; 4
+	 ZEILE2_OFF;
+ 2b2:	21 98       	cbi	0x04, 1	; 4
+	 ZEILE3_OFF;
+ 2b4:	20 98       	cbi	0x04, 0	; 4
+	 ZEILE4_OFF;
+ 2b6:	57 98       	cbi	0x0a, 7	; 10
+	 SPALTE1_OFF;
+ 2b8:	5e 98       	cbi	0x0b, 6	; 11
+	 SPALTE2_ON;
+ 2ba:	5d 9a       	sbi	0x0b, 5	; 11
+	 SPALTE3_OFF;
+ 2bc:	5c 98       	cbi	0x0b, 4	; 11
+	 SPALTE4_OFF;
+ 2be:	5b 98       	cbi	0x0b, 3	; 11
+	 SPALTE5_OFF;
+ 2c0:	5a 98       	cbi	0x0b, 2	; 11
+	 break;
+ 2c2:	08 95       	ret
+	 case 3:
+	  ZEILE1_ON;		// LED3 AN
+ 2c4:	22 9a       	sbi	0x04, 2	; 4
+	  ZEILE2_OFF;
+ 2c6:	21 98       	cbi	0x04, 1	; 4
+	  ZEILE3_OFF;
+ 2c8:	20 98       	cbi	0x04, 0	; 4
+	  ZEILE4_OFF;
+ 2ca:	57 98       	cbi	0x0a, 7	; 10
+	  SPALTE1_OFF;
+ 2cc:	5e 98       	cbi	0x0b, 6	; 11
+	  SPALTE2_OFF;
+ 2ce:	5d 98       	cbi	0x0b, 5	; 11
+	  SPALTE3_ON;
+ 2d0:	5c 9a       	sbi	0x0b, 4	; 11
+	  SPALTE4_OFF;
+ 2d2:	5b 98       	cbi	0x0b, 3	; 11
+	  SPALTE5_OFF;
+ 2d4:	5a 98       	cbi	0x0b, 2	; 11
+	 break;
+ 2d6:	08 95       	ret
+	 case 4:
+	  ZEILE1_ON;		// LED4 AN
+ 2d8:	22 9a       	sbi	0x04, 2	; 4
+	  ZEILE2_OFF;
+ 2da:	21 98       	cbi	0x04, 1	; 4
+	  ZEILE3_OFF;
+ 2dc:	20 98       	cbi	0x04, 0	; 4
+	  ZEILE4_OFF;
+ 2de:	57 98       	cbi	0x0a, 7	; 10
+	  SPALTE1_OFF;
+ 2e0:	5e 98       	cbi	0x0b, 6	; 11
+	  SPALTE2_OFF;
+ 2e2:	5d 98       	cbi	0x0b, 5	; 11
+	  SPALTE3_OFF;
+ 2e4:	5c 98       	cbi	0x0b, 4	; 11
+	  SPALTE4_ON;
+ 2e6:	5b 9a       	sbi	0x0b, 3	; 11
+	  SPALTE5_OFF;
+ 2e8:	5a 98       	cbi	0x0b, 2	; 11
+	 break;
+ 2ea:	08 95       	ret
+	 case 5:
+	 ZEILE1_ON;		// LED5 AN
+ 2ec:	22 9a       	sbi	0x04, 2	; 4
+	 ZEILE2_OFF;
+ 2ee:	21 98       	cbi	0x04, 1	; 4
+	 ZEILE3_OFF;
+ 2f0:	20 98       	cbi	0x04, 0	; 4
+	 ZEILE4_OFF;
+ 2f2:	57 98       	cbi	0x0a, 7	; 10
+	 SPALTE1_OFF;
+ 2f4:	5e 98       	cbi	0x0b, 6	; 11
+	 SPALTE2_OFF;
+ 2f6:	5d 98       	cbi	0x0b, 5	; 11
+	 SPALTE3_OFF;
+ 2f8:	5c 98       	cbi	0x0b, 4	; 11
+	 SPALTE4_OFF;
+ 2fa:	5b 98       	cbi	0x0b, 3	; 11
+	 SPALTE5_ON;
+ 2fc:	5a 9a       	sbi	0x0b, 2	; 11
+	 break;
+ 2fe:	08 95       	ret
+	 case 6:
+	 ZEILE1_OFF;		// LED6 AN
+ 300:	22 98       	cbi	0x04, 2	; 4
+	 ZEILE2_ON;
+ 302:	21 9a       	sbi	0x04, 1	; 4
+	 ZEILE3_OFF;
+ 304:	20 98       	cbi	0x04, 0	; 4
+	 ZEILE4_OFF;
+ 306:	57 98       	cbi	0x0a, 7	; 10
+	 SPALTE1_ON;
+ 308:	5e 9a       	sbi	0x0b, 6	; 11
+	 SPALTE2_OFF;
+ 30a:	5d 98       	cbi	0x0b, 5	; 11
+	 SPALTE3_OFF;
+ 30c:	5c 98       	cbi	0x0b, 4	; 11
+	 SPALTE4_OFF;
+ 30e:	5b 98       	cbi	0x0b, 3	; 11
+	 SPALTE5_OFF;
+ 310:	5a 98       	cbi	0x0b, 2	; 11
+	 break;
+ 312:	08 95       	ret
+	 case 7:
+	 ZEILE1_OFF;		// LED7 AN
+ 314:	22 98       	cbi	0x04, 2	; 4
+	 ZEILE2_ON;
+ 316:	21 9a       	sbi	0x04, 1	; 4
+	 ZEILE3_OFF;
+ 318:	20 98       	cbi	0x04, 0	; 4
+	 ZEILE4_OFF;
+ 31a:	57 98       	cbi	0x0a, 7	; 10
+	 SPALTE1_OFF;
+ 31c:	5e 98       	cbi	0x0b, 6	; 11
+	 SPALTE2_ON;
+ 31e:	5d 9a       	sbi	0x0b, 5	; 11
+	 SPALTE3_OFF;
+ 320:	5c 98       	cbi	0x0b, 4	; 11
+	 SPALTE4_OFF;
+ 322:	5b 98       	cbi	0x0b, 3	; 11
+	 SPALTE5_OFF;
+ 324:	5a 98       	cbi	0x0b, 2	; 11
+	 break;
+ 326:	08 95       	ret
+	 case 8:
+	 ZEILE1_OFF;		// LED8 AN
+ 328:	22 98       	cbi	0x04, 2	; 4
+	 ZEILE2_ON;
+ 32a:	21 9a       	sbi	0x04, 1	; 4
+	 ZEILE3_OFF;
+ 32c:	20 98       	cbi	0x04, 0	; 4
+	 ZEILE4_OFF;
+ 32e:	57 98       	cbi	0x0a, 7	; 10
+	 SPALTE1_OFF;
+ 330:	5e 98       	cbi	0x0b, 6	; 11
+	 SPALTE2_OFF;
+ 332:	5d 98       	cbi	0x0b, 5	; 11
+	 SPALTE3_ON;
+ 334:	5c 9a       	sbi	0x0b, 4	; 11
+	 SPALTE4_OFF;
+ 336:	5b 98       	cbi	0x0b, 3	; 11
+	 SPALTE5_OFF;
+ 338:	5a 98       	cbi	0x0b, 2	; 11
+	 break;
+ 33a:	08 95       	ret
+	 case 9:
+	 ZEILE1_OFF;		// LED9 AN
+ 33c:	22 98       	cbi	0x04, 2	; 4
+	 ZEILE2_ON;
+ 33e:	21 9a       	sbi	0x04, 1	; 4
+	 ZEILE3_OFF;
+ 340:	20 98       	cbi	0x04, 0	; 4
+	 ZEILE4_OFF;
+ 342:	57 98       	cbi	0x0a, 7	; 10
+	 SPALTE1_OFF;
+ 344:	5e 98       	cbi	0x0b, 6	; 11
+	 SPALTE2_OFF;
+ 346:	5d 98       	cbi	0x0b, 5	; 11
+	 SPALTE3_OFF;
+ 348:	5c 98       	cbi	0x0b, 4	; 11
+	 SPALTE4_ON;
+ 34a:	5b 9a       	sbi	0x0b, 3	; 11
+	 SPALTE5_OFF;
+ 34c:	5a 98       	cbi	0x0b, 2	; 11
+	 break;
+ 34e:	08 95       	ret
+	 case 10:
+	 ZEILE1_OFF;		// LED10 AN
+ 350:	22 98       	cbi	0x04, 2	; 4
+	 ZEILE2_ON;
+ 352:	21 9a       	sbi	0x04, 1	; 4
+	 ZEILE3_OFF;
+ 354:	20 98       	cbi	0x04, 0	; 4
+	 ZEILE4_OFF;
+ 356:	57 98       	cbi	0x0a, 7	; 10
+	 SPALTE1_OFF;
+ 358:	5e 98       	cbi	0x0b, 6	; 11
+	 SPALTE2_OFF;
+ 35a:	5d 98       	cbi	0x0b, 5	; 11
+	 SPALTE3_OFF;
+ 35c:	5c 98       	cbi	0x0b, 4	; 11
+	 SPALTE4_OFF;
+ 35e:	5b 98       	cbi	0x0b, 3	; 11
+	 SPALTE5_ON;
+ 360:	5a 9a       	sbi	0x0b, 2	; 11
+	 break;
+ 362:	08 95       	ret
+	 case 11:
+	 ZEILE1_OFF;		// LED11 AN
+ 364:	22 98       	cbi	0x04, 2	; 4
+	 ZEILE2_OFF;
+ 366:	21 98       	cbi	0x04, 1	; 4
+	 ZEILE3_ON;
+ 368:	20 9a       	sbi	0x04, 0	; 4
+	 ZEILE4_OFF;
+ 36a:	57 98       	cbi	0x0a, 7	; 10
+	 SPALTE1_ON;
+ 36c:	5e 9a       	sbi	0x0b, 6	; 11
+	 SPALTE2_OFF;
+ 36e:	5d 98       	cbi	0x0b, 5	; 11
+	 SPALTE3_OFF;
+ 370:	5c 98       	cbi	0x0b, 4	; 11
+	 SPALTE4_OFF;
+ 372:	5b 98       	cbi	0x0b, 3	; 11
+	 SPALTE5_OFF;
+ 374:	5a 98       	cbi	0x0b, 2	; 11
+	 break;
+ 376:	08 95       	ret
+	 case 12:
+	 ZEILE1_OFF;		// LED12 AN
+ 378:	22 98       	cbi	0x04, 2	; 4
+	 ZEILE2_OFF;
+ 37a:	21 98       	cbi	0x04, 1	; 4
+	 ZEILE3_ON;
+ 37c:	20 9a       	sbi	0x04, 0	; 4
+	 ZEILE4_OFF;
+ 37e:	57 98       	cbi	0x0a, 7	; 10
+	 SPALTE1_OFF;
+ 380:	5e 98       	cbi	0x0b, 6	; 11
+	 SPALTE2_ON;
+ 382:	5d 9a       	sbi	0x0b, 5	; 11
+	 SPALTE3_OFF;
+ 384:	5c 98       	cbi	0x0b, 4	; 11
+	 SPALTE4_OFF;
+ 386:	5b 98       	cbi	0x0b, 3	; 11
+	 SPALTE5_OFF;
+ 388:	5a 98       	cbi	0x0b, 2	; 11
+	 break;
+ 38a:	08 95       	ret
+	 case 13:
+	 ZEILE1_OFF;		// LED13 AN
+ 38c:	22 98       	cbi	0x04, 2	; 4
+	 ZEILE2_OFF;
+ 38e:	21 98       	cbi	0x04, 1	; 4
+	 ZEILE3_ON;
+ 390:	20 9a       	sbi	0x04, 0	; 4
+	 ZEILE4_OFF;
+ 392:	57 98       	cbi	0x0a, 7	; 10
+	 SPALTE1_OFF;
+ 394:	5e 98       	cbi	0x0b, 6	; 11
+	 SPALTE2_OFF;
+ 396:	5d 98       	cbi	0x0b, 5	; 11
+	 SPALTE3_ON;
+ 398:	5c 9a       	sbi	0x0b, 4	; 11
+	 SPALTE4_OFF;
+ 39a:	5b 98       	cbi	0x0b, 3	; 11
+	 SPALTE5_OFF;
+ 39c:	5a 98       	cbi	0x0b, 2	; 11
+	 break;	 
+ 39e:	08 95       	ret
+	 case 14:
+	 ZEILE1_OFF;		// LED14 AN
+ 3a0:	22 98       	cbi	0x04, 2	; 4
+	 ZEILE2_OFF;
+ 3a2:	21 98       	cbi	0x04, 1	; 4
+	 ZEILE3_ON;
+ 3a4:	20 9a       	sbi	0x04, 0	; 4
+	 ZEILE4_OFF;
+ 3a6:	57 98       	cbi	0x0a, 7	; 10
+	 SPALTE1_OFF;
+ 3a8:	5e 98       	cbi	0x0b, 6	; 11
+	 SPALTE2_OFF;
+ 3aa:	5d 98       	cbi	0x0b, 5	; 11
+	 SPALTE3_OFF;
+ 3ac:	5c 98       	cbi	0x0b, 4	; 11
+	 SPALTE4_ON;
+ 3ae:	5b 9a       	sbi	0x0b, 3	; 11
+	 SPALTE5_OFF;
+ 3b0:	5a 98       	cbi	0x0b, 2	; 11
+	 break;
+ 3b2:	08 95       	ret
+	 case 15:
+	 ZEILE1_OFF;		// LED15 AN
+ 3b4:	22 98       	cbi	0x04, 2	; 4
+	 ZEILE2_OFF;
+ 3b6:	21 98       	cbi	0x04, 1	; 4
+	 ZEILE3_ON;
+ 3b8:	20 9a       	sbi	0x04, 0	; 4
+	 ZEILE4_OFF;
+ 3ba:	57 98       	cbi	0x0a, 7	; 10
+	 SPALTE1_OFF;
+ 3bc:	5e 98       	cbi	0x0b, 6	; 11
+	 SPALTE2_OFF;
+ 3be:	5d 98       	cbi	0x0b, 5	; 11
+	 SPALTE3_OFF;
+ 3c0:	5c 98       	cbi	0x0b, 4	; 11
+	 SPALTE4_OFF;
+ 3c2:	5b 98       	cbi	0x0b, 3	; 11
+	 SPALTE5_ON;
+ 3c4:	5a 9a       	sbi	0x0b, 2	; 11
+	 break;
+ 3c6:	08 95       	ret
+	 case 16:
+	 ZEILE1_OFF;		// LED16 AN
+ 3c8:	22 98       	cbi	0x04, 2	; 4
+	 ZEILE2_OFF;
+ 3ca:	21 98       	cbi	0x04, 1	; 4
+	 ZEILE3_OFF;
+ 3cc:	20 98       	cbi	0x04, 0	; 4
+	 ZEILE4_ON;
+ 3ce:	57 9a       	sbi	0x0a, 7	; 10
+	 SPALTE1_ON;
+ 3d0:	5e 9a       	sbi	0x0b, 6	; 11
+	 SPALTE2_OFF;
+ 3d2:	5d 98       	cbi	0x0b, 5	; 11
+	 SPALTE3_OFF;
+ 3d4:	5c 98       	cbi	0x0b, 4	; 11
+	 SPALTE4_OFF;
+ 3d6:	5b 98       	cbi	0x0b, 3	; 11
+	 SPALTE5_OFF;
+ 3d8:	5a 98       	cbi	0x0b, 2	; 11
+	 break;
+ 3da:	08 95       	ret
+	 case 17:
+	 ZEILE1_OFF;		// LED17 AN
+ 3dc:	22 98       	cbi	0x04, 2	; 4
+	 ZEILE2_OFF;
+ 3de:	21 98       	cbi	0x04, 1	; 4
+	 ZEILE3_OFF;
+ 3e0:	20 98       	cbi	0x04, 0	; 4
+	 ZEILE4_ON;
+ 3e2:	57 9a       	sbi	0x0a, 7	; 10
+	 SPALTE1_OFF;
+ 3e4:	5e 98       	cbi	0x0b, 6	; 11
+	 SPALTE2_ON;
+ 3e6:	5d 9a       	sbi	0x0b, 5	; 11
+	 SPALTE3_OFF;
+ 3e8:	5c 98       	cbi	0x0b, 4	; 11
+	 SPALTE4_OFF;
+ 3ea:	5b 98       	cbi	0x0b, 3	; 11
+	 SPALTE5_OFF;
+ 3ec:	5a 98       	cbi	0x0b, 2	; 11
+	 break;
+ 3ee:	08 95       	ret
+	 case 18:
+	 ZEILE1_OFF;		// LED18 AN
+ 3f0:	22 98       	cbi	0x04, 2	; 4
+	 ZEILE2_OFF;
+ 3f2:	21 98       	cbi	0x04, 1	; 4
+	 ZEILE3_OFF;
+ 3f4:	20 98       	cbi	0x04, 0	; 4
+	 ZEILE4_ON;
+ 3f6:	57 9a       	sbi	0x0a, 7	; 10
+	 SPALTE1_OFF;
+ 3f8:	5e 98       	cbi	0x0b, 6	; 11
+	 SPALTE2_OFF;
+ 3fa:	5d 98       	cbi	0x0b, 5	; 11
+	 SPALTE3_ON;
+ 3fc:	5c 9a       	sbi	0x0b, 4	; 11
+	 SPALTE4_OFF;
+ 3fe:	5b 98       	cbi	0x0b, 3	; 11
+	 SPALTE5_OFF;
+ 400:	5a 98       	cbi	0x0b, 2	; 11
+	 break;
+ 402:	08 95       	ret
+	 case 19:
+	 ZEILE1_OFF;		// LED19 AN
+ 404:	22 98       	cbi	0x04, 2	; 4
+	 ZEILE2_OFF;
+ 406:	21 98       	cbi	0x04, 1	; 4
+	 ZEILE3_OFF;
+ 408:	20 98       	cbi	0x04, 0	; 4
+	 ZEILE4_ON;
+ 40a:	57 9a       	sbi	0x0a, 7	; 10
+	 SPALTE1_OFF;
+ 40c:	5e 98       	cbi	0x0b, 6	; 11
+	 SPALTE2_OFF;
+ 40e:	5d 98       	cbi	0x0b, 5	; 11
+	 SPALTE3_OFF;
+ 410:	5c 98       	cbi	0x0b, 4	; 11
+	 SPALTE4_ON;
+ 412:	5b 9a       	sbi	0x0b, 3	; 11
+	 SPALTE5_OFF;
+ 414:	5a 98       	cbi	0x0b, 2	; 11
+	 break;	 
+ 416:	08 95       	ret
+	 default:
+	 ZEILE1_OFF;		// LEDs AUS
+ 418:	22 98       	cbi	0x04, 2	; 4
+	 ZEILE2_OFF;
+ 41a:	21 98       	cbi	0x04, 1	; 4
+	 ZEILE3_OFF;
+ 41c:	20 98       	cbi	0x04, 0	; 4
+	 ZEILE4_OFF;
+ 41e:	57 98       	cbi	0x0a, 7	; 10
+	 SPALTE1_OFF;
+ 420:	5e 98       	cbi	0x0b, 6	; 11
+	 SPALTE2_OFF;
+ 422:	5d 98       	cbi	0x0b, 5	; 11
+	 SPALTE3_OFF;
+ 424:	5c 98       	cbi	0x0b, 4	; 11
+	 SPALTE4_OFF;
+ 426:	5b 98       	cbi	0x0b, 3	; 11
+	 SPALTE5_OFF;
+ 428:	5a 98       	cbi	0x0b, 2	; 11
+ 42a:	08 95       	ret
+
+0000042c <PORTs_init>:
+	// PORT2 = Zeile 1 (LED 1 bis 5)
+	
+	
+	 
+
+	DDRB = 0b00000000;   // werden im Programm gesetzt 
+ 42c:	14 b8       	out	0x04, r1	; 4
+	PORTD =0b00000000;
+ 42e:	1b b8       	out	0x0b, r1	; 11
+
+
+		// PORTC
+		// PORT5 / Umschalten Senden (HIGH) / Empfangen (LOW) (485) 
+		DDRC =  0b00100000;
+ 430:	80 e2       	ldi	r24, 0x20	; 32
+ 432:	87 b9       	out	0x07, r24	; 7
+		PORTC = 0b00000000;
+ 434:	18 b8       	out	0x08, r1	; 8
+	// PORT4 = Spalte 3 (LED 3,8,13,18)
+	// PORT5 = Spalte 2 (LED 2,7,12,17)
+	// PORT6 = Spalte 1 (LED 1,6,11,16
+	// PORT7 =  Zeile 4 (LED 16 bis LED 19) 
+	
+	DDRD =  0b01111100;
+ 436:	8c e7       	ldi	r24, 0x7C	; 124
+ 438:	8a b9       	out	0x0a, r24	; 10
+	PORTD = 0b01100000;
+ 43a:	80 e6       	ldi	r24, 0x60	; 96
+ 43c:	8b b9       	out	0x0b, r24	; 11
+ 43e:	08 95       	ret
+
+00000440 <TIMER_init>:
+****************************************************************************************/
+void TIMER_init(void)
+{
+	
+	/**************** TIMER 0	*********************************/
+	TCCR0B = 0b00000001; // Teiler 1024 3,68MHZ = 259ns*8*256(8BIT) = 0,5ms
+ 440:	81 e0       	ldi	r24, 0x01	; 1
+ 442:	85 bd       	out	0x25, r24	; 37
+	TCCR0A = 0x00;
+ 444:	14 bc       	out	0x24, r1	; 36
+	OCR0A = 0;			// Output Compare Register
+ 446:	17 bc       	out	0x27, r1	; 39
+	OCR0B = 0;			// Output Compare Register
+ 448:	18 bc       	out	0x28, r1	; 40
+	TCNT0 = 0;			// counter Timer 0
+ 44a:	16 bc       	out	0x26, r1	; 38
+	//TIMSK0 = 0b00000001;
+	sbi(0,TIMSK0);		// Timer0 Overflow Interrupt Enable löst alle XXX ms aus
+ 44c:	ee e6       	ldi	r30, 0x6E	; 110
+ 44e:	f0 e0       	ldi	r31, 0x00	; 0
+ 450:	80 81       	ld	r24, Z
+ 452:	81 60       	ori	r24, 0x01	; 1
+ 454:	80 83       	st	Z, r24
+	//TCNT1L Zähler  LOW Byte (8bit)	
+	
+	/*************** TIMER 2 *************************************/
+
+	//TCCR2B = 0x07;	// Teiler 1024 3,68MHZ = 259ns*1024*256(8BIT) = 67,91ms
+	TCCR2B = 0x06;		// Teiler  256 3,68MHZ = 259ns* 256*256(8BIT) = 16,97ms
+ 456:	86 e0       	ldi	r24, 0x06	; 6
+ 458:	80 93 b1 00 	sts	0x00B1, r24
+	//TCCR2B = 0x05;	// Teiler  128 3,68MHZ = 259ns* 128*256(8BIT) =  8,49ms
+	//TCCR2B = 0x04;	// Teiler   64 3,68MHZ =  83ns*  64*256(8BIT) =  4,248ms
+	//TIMSK2 = 0x01;
+	sbi(0,TIMSK2);		// Timer0 Overflow Interrupt Enable löst alle XXX ms aus
+ 45c:	e0 e7       	ldi	r30, 0x70	; 112
+ 45e:	f0 e0       	ldi	r31, 0x00	; 0
+ 460:	80 81       	ld	r24, Z
+ 462:	81 60       	ori	r24, 0x01	; 1
+ 464:	80 83       	st	Z, r24
+	
+	/************** Init Analog Digital Wandler, Auslesen des Temperatursensors im Singel Conversations Modus **********/
+	ADMUX = 0b11001000;  // Auswahl Temperatursensor BIT4, Internal 1.1V Voltage Reference BIT 6&7
+ 466:	88 ec       	ldi	r24, 0xC8	; 200
+ 468:	80 93 7c 00 	sts	0x007C, r24
+	//ADMUX = 0b11001110;  // Auswahl 1,1V BIT4,3,2, Internal 1.1V Voltage Reference BIT 6&7
+	ADCSRA = 0b10000101; // ADC Enable BIT 7,ADC Start Conversion BIT 6,ADC Auto Trigger Enable BIT 5, Vorteiler auf 32 für den ADC BIT 1-3 
+ 46c:	85 e8       	ldi	r24, 0x85	; 133
+ 46e:	80 93 7a 00 	sts	0x007A, r24
+	ADCSRB = 0b00000000; // Timer/Counter1 Overflow startet Wandlung, BIT 1&2 (wird nicht genutzt) 
+ 472:	10 92 7b 00 	sts	0x007B, r1
+ 476:	08 95       	ret
+
+00000478 <UART_init>:
+/*****************************************************************************************
+initialisieren des UART
+*****************************************************************************************/
+void UART_init(void)
+{
+	UBRR0H = HIGH(USARTSPEED);					// Baudrate einstellen
+ 478:	10 92 c5 00 	sts	0x00C5, r1
+	UBRR0L = LOW(USARTSPEED);					// Baudrate einstellen
+ 47c:	86 e1       	ldi	r24, 0x16	; 22
+ 47e:	80 93 c4 00 	sts	0x00C4, r24
+	UCSR0B = _BV(TXEN0) | _BV(RXEN0) | _BV(RXCIE0);	// senden, empfangen,receiveint aktivieren
+ 482:	88 e9       	ldi	r24, 0x98	; 152
+ 484:	80 93 c1 00 	sts	0x00C1, r24
+	//UCSR0B = _BV(TXEN0);								// senden aktivieren
+	//	UCSR0B = _BV(TXEN0) ;							// senden
+	// Frame Format setzen:8data, 1stop bit (URSEL=1 -> UCSRC->Settings werden genutzt)
+	UCSR0C = (0<<USBS0)|(3<<UCSZ00);
+ 488:	86 e0       	ldi	r24, 0x06	; 6
+ 48a:	80 93 c2 00 	sts	0x00C2, r24
+ 48e:	08 95       	ret
+
+00000490 <UART_SendByte>:
+//=======================================================================================
+// Sendet ein Byte über die UART
+//=======================================================================================
+void UART_SendByte(uint8_t data)			// sendet ein Byte über das Uart
+{
+	SENDEN_AKTIV;							// Gibt SENDEN Frei
+ 490:	45 9a       	sbi	0x08, 5	; 8
+	rucksetzcount = 3;						// wird nach 6 Zyklen 48ms wieder rückgesetz
+ 492:	93 e0       	ldi	r25, 0x03	; 3
+ 494:	90 93 65 01 	sts	0x0165, r25
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+ 498:	ef ee       	ldi	r30, 0xEF	; 239
+ 49a:	f3 e2       	ldi	r31, 0x23	; 35
+ 49c:	31 97       	sbiw	r30, 0x01	; 1
+ 49e:	f1 f7       	brne	.-4      	; 0x49c <UART_SendByte+0xc>
+ 4a0:	00 c0       	rjmp	.+0      	; 0x4a2 <UART_SendByte+0x12>
+ 4a2:	00 00       	nop
+	_delay_ms(10);
+	while(bit_is_clear(UCSR0A, UDRE0));		// warten bis UART bereit ist zum senden
+ 4a4:	e0 ec       	ldi	r30, 0xC0	; 192
+ 4a6:	f0 e0       	ldi	r31, 0x00	; 0
+ 4a8:	90 81       	ld	r25, Z
+ 4aa:	95 ff       	sbrs	r25, 5
+ 4ac:	fd cf       	rjmp	.-6      	; 0x4a8 <UART_SendByte+0x18>
+	UDR0 = data;								// data ausgeben
+ 4ae:	80 93 c6 00 	sts	0x00C6, r24
+ 4b2:	08 95       	ret
+
+000004b4 <putstring>:
+
+//=======================================================================================
+// sendet einen String über das UART
+//=======================================================================================
+void putstring(char *s)						// setze den Pointer s an den Anfang des übergebenen chararrays
+{
+ 4b4:	cf 93       	push	r28
+ 4b6:	df 93       	push	r29
+ 4b8:	ec 01       	movw	r28, r24
+	while (*s != 0)							// ist der Pointer des Zeichens=0 dann chararray zu Ende
+ 4ba:	88 81       	ld	r24, Y
+ 4bc:	88 23       	and	r24, r24
+ 4be:	31 f0       	breq	.+12     	; 0x4cc <putstring+0x18>
+ 4c0:	21 96       	adiw	r28, 0x01	; 1
+	{
+		UART_SendByte(*s);					// übergibt das Zeichen an UART_SendByte
+ 4c2:	0e 94 48 02 	call	0x490	; 0x490 <UART_SendByte>
+//=======================================================================================
+// sendet einen String über das UART
+//=======================================================================================
+void putstring(char *s)						// setze den Pointer s an den Anfang des übergebenen chararrays
+{
+	while (*s != 0)							// ist der Pointer des Zeichens=0 dann chararray zu Ende
+ 4c6:	89 91       	ld	r24, Y+
+ 4c8:	81 11       	cpse	r24, r1
+ 4ca:	fb cf       	rjmp	.-10     	; 0x4c2 <putstring+0xe>
+	{
+		UART_SendByte(*s);					// übergibt das Zeichen an UART_SendByte
+		*s++;								// zeigt auf das nächste Zeichen
+	}
+}
+ 4cc:	df 91       	pop	r29
+ 4ce:	cf 91       	pop	r28
+ 4d0:	08 95       	ret
+
+000004d2 <errorcodeu>:
+
+//=======================================================================================
+// sendet den Fehlercode (Wandlung Hexzahl >> ASCII)
+//=======================================================================================
+void errorcodeu(uint8_t zahl)
+{
+ 4d2:	cf 93       	push	r28
+	uint8_t temp = 0;
+
+	temp = zahl % 10;						// niederwertigste Ziffer
+ 4d4:	2d ec       	ldi	r18, 0xCD	; 205
+ 4d6:	82 9f       	mul	r24, r18
+ 4d8:	21 2d       	mov	r18, r1
+ 4da:	11 24       	eor	r1, r1
+ 4dc:	26 95       	lsr	r18
+ 4de:	26 95       	lsr	r18
+ 4e0:	26 95       	lsr	r18
+ 4e2:	22 0f       	add	r18, r18
+ 4e4:	92 2f       	mov	r25, r18
+ 4e6:	99 0f       	add	r25, r25
+ 4e8:	99 0f       	add	r25, r25
+ 4ea:	29 0f       	add	r18, r25
+ 4ec:	98 2f       	mov	r25, r24
+ 4ee:	92 1b       	sub	r25, r18
+ 4f0:	29 2f       	mov	r18, r25
+	zahl = (zahl - temp) / 10;				// Rest von 10 ergibt die Einer
+ 4f2:	90 e0       	ldi	r25, 0x00	; 0
+ 4f4:	82 1b       	sub	r24, r18
+ 4f6:	91 09       	sbc	r25, r1
+ 4f8:	6a e0       	ldi	r22, 0x0A	; 10
+ 4fa:	70 e0       	ldi	r23, 0x00	; 0
+ 4fc:	0e 94 c2 04 	call	0x984	; 0x984 <__divmodhi4>
+	temp = temp | 0x30;						// Erzeuge ASCII Zeichen
+ 500:	c2 2f       	mov	r28, r18
+ 502:	c0 63       	ori	r28, 0x30	; 48
+	if(zahl != 0){	errorcodeu(zahl);	}	// Recursiv function
+ 504:	66 23       	and	r22, r22
+ 506:	19 f0       	breq	.+6      	; 0x50e <__stack+0xf>
+ 508:	86 2f       	mov	r24, r22
+ 50a:	0e 94 69 02 	call	0x4d2	; 0x4d2 <errorcodeu>
+
+	UART_SendByte(temp);					// Sendet Ziffer
+ 50e:	8c 2f       	mov	r24, r28
+ 510:	0e 94 48 02 	call	0x490	; 0x490 <UART_SendByte>
+}
+ 514:	cf 91       	pop	r28
+ 516:	08 95       	ret
+
+00000518 <errorcodeu16>:
+
+//=======================================================================================
+// sendet den Fehlercode (Wandlung Hexzahl >> ASCII) (16BIT)
+//=======================================================================================
+void errorcodeu16(int16_t zahl)
+{
+ 518:	cf 93       	push	r28
+ 51a:	fc 01       	movw	r30, r24
+	uint8_t temp = 0;
+
+	temp = zahl % 10;						// niederwertigste Ziffer
+ 51c:	2a e0       	ldi	r18, 0x0A	; 10
+ 51e:	30 e0       	ldi	r19, 0x00	; 0
+ 520:	b9 01       	movw	r22, r18
+ 522:	0e 94 c2 04 	call	0x984	; 0x984 <__divmodhi4>
+ 526:	48 2f       	mov	r20, r24
+	zahl = (zahl - temp) / 10;				// Rest von 10 ergibt die Einer
+ 528:	cf 01       	movw	r24, r30
+ 52a:	84 1b       	sub	r24, r20
+ 52c:	91 09       	sbc	r25, r1
+ 52e:	b9 01       	movw	r22, r18
+ 530:	0e 94 c2 04 	call	0x984	; 0x984 <__divmodhi4>
+	temp = temp | 0x30;						// Erzeuge ASCII Zeichen
+ 534:	c4 2f       	mov	r28, r20
+ 536:	c0 63       	ori	r28, 0x30	; 48
+	if(zahl != 0){	errorcodeu16(zahl);	}	// Recursiv function
+ 538:	61 15       	cp	r22, r1
+ 53a:	71 05       	cpc	r23, r1
+ 53c:	19 f0       	breq	.+6      	; 0x544 <errorcodeu16+0x2c>
+ 53e:	cb 01       	movw	r24, r22
+ 540:	0e 94 8c 02 	call	0x518	; 0x518 <errorcodeu16>
+
+	UART_SendByte(temp);					// Sendet Ziffer
+ 544:	8c 2f       	mov	r24, r28
+ 546:	0e 94 48 02 	call	0x490	; 0x490 <UART_SendByte>
+}
+ 54a:	cf 91       	pop	r28
+ 54c:	08 95       	ret
+
+0000054e <usart_getc_intr>:
+						4 - CRC
+
+
+*******************************************************************************************/
+void usart_getc_intr(void)
+{
+ 54e:	cf 93       	push	r28
+uint8_t schreibzeigernew;
+
+// Berechnung: Anzahl der Zeichen, wieviel sich im UART Buffer befinden
+
+// Kontrolle ob Übertrag ausgelösst wurde
+	if(lesezeiger > schreibzeiger)											// Prüfung Übertrag
+ 550:	80 91 63 01 	lds	r24, 0x0163
+ 554:	30 91 56 01 	lds	r19, 0x0156
+ 558:	38 17       	cp	r19, r24
+ 55a:	08 f4       	brcc	.+2      	; 0x55e <usart_getc_intr+0x10>
+		{
+		schreibzeigernew = PUFFER_GROESSE + schreibzeiger; 					// Übertrag wird dazugerechnet
+ 55c:	36 50       	subi	r19, 0x06	; 6
+		{
+		schreibzeigernew = schreibzeiger;									// Keine Korrektur notwendig
+		}
+	
+
+	zeicheninbuffer = schreibzeigernew - lesezeiger;						// Berechnung Anzahl der Zeichen(im UART Buffer)
+ 55e:	38 1b       	sub	r19, r24
+ 560:	30 93 54 01 	sts	0x0154, r19
+	{
+	//sbi(BUFFEROVR,PORTD);													// Warnlampe für BUFFEROVR wird gesetzt (Rücksetzen erfolgt mit Neustart !!)
+	//putstring("[ERR_BUF_OVERFLOW]");											// Error für Buffer Overflow !!!	
+	}
+	
+if(zeicheninbuffer && !qbi(CONTROLLWORD_VOLL,UFLAGS))						// Wenn Zeichen im Buffer und Controllbuffer nicht gesperrt ist erfolgt Abarbeitung
+ 564:	33 23       	and	r19, r19
+ 566:	09 f4       	brne	.+2      	; 0x56a <usart_getc_intr+0x1c>
+ 568:	4b c0       	rjmp	.+150    	; 0x600 <usart_getc_intr+0xb2>
+ 56a:	50 91 97 02 	lds	r21, 0x0297
+ 56e:	50 fd       	sbrc	r21, 0
+ 570:	47 c0       	rjmp	.+142    	; 0x600 <usart_getc_intr+0xb2>
+ 572:	20 91 63 01 	lds	r18, 0x0163
+ 576:	80 91 57 01 	lds	r24, 0x0157
+ 57a:	90 91 58 01 	lds	r25, 0x0158
+ 57e:	31 50       	subi	r19, 0x01	; 1
+		if(puffer[lesezeiger] == STEUERZEICHEN)								// hier befindet sich das Steuerzeichen zum rücksetzen des Zeigers
+			{
+			UARTINDEX = CLEAR; 												// das Zeichen > setzt den INDEX vom Controllword auf 0 zurück 
+			}
+			
+		if( (UARTINDEX >= 0) && (UARTINDEX < CW_SIZE) )						// nur wenn sich der INDEX zwischen 0 und Buffergröße befindet
+ 580:	c0 e0       	ldi	r28, 0x00	; 0
+ 582:	70 e0       	ldi	r23, 0x00	; 0
+			{
+			CONTROLLWORD[UARTINDEX] = puffer[lesezeiger];					// wird das aktuelle Zeichen im Buffer ins Controllword geschrieben
+			UARTINDEX++;													// INDEX wird um eins erhöht
+			}
+		
+		if( (UARTINDEX == CW_SIZE) && (CONTROLLWORD[0] == STEUERZEICHEN) )	// Wenn Controllword gefüllt, wird geprüft ob es sich beim ersten Zeichen um das Steuerzeichen handelt
+ 584:	ab e8       	ldi	r26, 0x8B	; 139
+ 586:	b2 e0       	ldi	r27, 0x02	; 2
+			sbi(CONTROLLWORD_VOLL,UFLAGS);									// wenn beide Bedingung erfüllt, wird Controllword für Weiterbearbeitung freigegeben und gleichzeitig fürs beschreiben gesperrt
+			CONTROLLWORD[0] = 0;											// Controllword "0" löschen
+			}
+		lesezeiger++;														// Lesezeiger um eins erhöhen
+		zeicheninbuffer--;													// Da keine Neuberechnung in der Schleife für die Anzahl der Zeichen im UART Buffer erfolgt wird manuell eins runtergezählt
+ 		if(lesezeiger==PUFFER_GROESSE) lesezeiger=0;						// wenn Lesepuffer am Ende rücksetzen
+ 588:	60 e0       	ldi	r22, 0x00	; 0
+if(zeicheninbuffer && !qbi(CONTROLLWORD_VOLL,UFLAGS))						// Wenn Zeichen im Buffer und Controllbuffer nicht gesperrt ist erfolgt Abarbeitung
+	{
+	do
+		{
+				
+		if(puffer[lesezeiger] == STEUERZEICHEN)								// hier befindet sich das Steuerzeichen zum rücksetzen des Zeigers
+ 58a:	e2 2f       	mov	r30, r18
+ 58c:	f0 e0       	ldi	r31, 0x00	; 0
+ 58e:	ef 56       	subi	r30, 0x6F	; 111
+ 590:	fe 4f       	sbci	r31, 0xFE	; 254
+ 592:	40 81       	ld	r20, Z
+ 594:	4e 33       	cpi	r20, 0x3E	; 62
+ 596:	21 f0       	breq	.+8      	; 0x5a0 <usart_getc_intr+0x52>
+			{
+			UARTINDEX = CLEAR; 												// das Zeichen > setzt den INDEX vom Controllword auf 0 zurück 
+			}
+			
+		if( (UARTINDEX >= 0) && (UARTINDEX < CW_SIZE) )						// nur wenn sich der INDEX zwischen 0 und Buffergröße befindet
+ 598:	85 30       	cpi	r24, 0x05	; 5
+ 59a:	91 05       	cpc	r25, r1
+ 59c:	40 f4       	brcc	.+16     	; 0x5ae <usart_getc_intr+0x60>
+ 59e:	02 c0       	rjmp	.+4      	; 0x5a4 <usart_getc_intr+0x56>
+ 5a0:	8c 2f       	mov	r24, r28
+ 5a2:	97 2f       	mov	r25, r23
+			{
+			CONTROLLWORD[UARTINDEX] = puffer[lesezeiger];					// wird das aktuelle Zeichen im Buffer ins Controllword geschrieben
+ 5a4:	fc 01       	movw	r30, r24
+ 5a6:	e5 57       	subi	r30, 0x75	; 117
+ 5a8:	fd 4f       	sbci	r31, 0xFD	; 253
+ 5aa:	40 83       	st	Z, r20
+			UARTINDEX++;													// INDEX wird um eins erhöht
+ 5ac:	01 96       	adiw	r24, 0x01	; 1
+			}
+		
+		if( (UARTINDEX == CW_SIZE) && (CONTROLLWORD[0] == STEUERZEICHEN) )	// Wenn Controllword gefüllt, wird geprüft ob es sich beim ersten Zeichen um das Steuerzeichen handelt
+ 5ae:	85 30       	cpi	r24, 0x05	; 5
+ 5b0:	91 05       	cpc	r25, r1
+ 5b2:	29 f4       	brne	.+10     	; 0x5be <usart_getc_intr+0x70>
+ 5b4:	4c 91       	ld	r20, X
+ 5b6:	4e 33       	cpi	r20, 0x3E	; 62
+ 5b8:	11 f4       	brne	.+4      	; 0x5be <usart_getc_intr+0x70>
+			{
+			sbi(CONTROLLWORD_VOLL,UFLAGS);									// wenn beide Bedingung erfüllt, wird Controllword für Weiterbearbeitung freigegeben und gleichzeitig fürs beschreiben gesperrt
+			CONTROLLWORD[0] = 0;											// Controllword "0" löschen
+ 5ba:	1c 92       	st	X, r1
+			UARTINDEX++;													// INDEX wird um eins erhöht
+			}
+		
+		if( (UARTINDEX == CW_SIZE) && (CONTROLLWORD[0] == STEUERZEICHEN) )	// Wenn Controllword gefüllt, wird geprüft ob es sich beim ersten Zeichen um das Steuerzeichen handelt
+			{
+			sbi(CONTROLLWORD_VOLL,UFLAGS);									// wenn beide Bedingung erfüllt, wird Controllword für Weiterbearbeitung freigegeben und gleichzeitig fürs beschreiben gesperrt
+ 5bc:	51 60       	ori	r21, 0x01	; 1
+			CONTROLLWORD[0] = 0;											// Controllword "0" löschen
+			}
+		lesezeiger++;														// Lesezeiger um eins erhöhen
+ 5be:	2f 5f       	subi	r18, 0xFF	; 255
+		zeicheninbuffer--;													// Da keine Neuberechnung in der Schleife für die Anzahl der Zeichen im UART Buffer erfolgt wird manuell eins runtergezählt
+ 		if(lesezeiger==PUFFER_GROESSE) lesezeiger=0;						// wenn Lesepuffer am Ende rücksetzen
+ 5c0:	2a 3f       	cpi	r18, 0xFA	; 250
+ 5c2:	09 f4       	brne	.+2      	; 0x5c6 <usart_getc_intr+0x78>
+ 5c4:	26 2f       	mov	r18, r22
+		}while(zeicheninbuffer && !qbi(CONTROLLWORD_VOLL,UFLAGS));			// wenn keine Zeichen mehr im UART Buffer sind oder das Controllword gesperrt wurde wird Schleife verlassen		
+ 5c6:	31 11       	cpse	r19, r1
+ 5c8:	0b c0       	rjmp	.+22     	; 0x5e0 <usart_getc_intr+0x92>
+ 5ca:	20 93 63 01 	sts	0x0163, r18
+ 5ce:	90 93 58 01 	sts	0x0158, r25
+ 5d2:	80 93 57 01 	sts	0x0157, r24
+ 5d6:	50 93 97 02 	sts	0x0297, r21
+ 5da:	30 93 54 01 	sts	0x0154, r19
+ 5de:	10 c0       	rjmp	.+32     	; 0x600 <usart_getc_intr+0xb2>
+ 5e0:	4f ef       	ldi	r20, 0xFF	; 255
+ 5e2:	43 0f       	add	r20, r19
+ 5e4:	50 fd       	sbrc	r21, 0
+ 5e6:	02 c0       	rjmp	.+4      	; 0x5ec <usart_getc_intr+0x9e>
+ 5e8:	34 2f       	mov	r19, r20
+ 5ea:	cf cf       	rjmp	.-98     	; 0x58a <usart_getc_intr+0x3c>
+ 5ec:	20 93 63 01 	sts	0x0163, r18
+ 5f0:	90 93 58 01 	sts	0x0158, r25
+ 5f4:	80 93 57 01 	sts	0x0157, r24
+ 5f8:	50 93 97 02 	sts	0x0297, r21
+ 5fc:	30 93 54 01 	sts	0x0154, r19
+
+	}
+
+}
+ 600:	cf 91       	pop	r28
+ 602:	08 95       	ret
+
+00000604 <main>:
+int main(void)
+{
+    // uint8_t temp = mysensors_command_t.C_INTERNAL;
+	uint8_t  ztemp = 0, templ = 0,temph = 0, drehcounter = 0, drehaktiv = 0;
+	uint16_t temperaturdaten = 0;
+	LED_HELLIGKEIT = 0;
+ 604:	10 92 66 01 	sts	0x0166, r1
+	PORTs_init();						// Init der Ein und Ausgabeports
+ 608:	0e 94 16 02 	call	0x42c	; 0x42c <PORTs_init>
+	TIMER_init();						// Timer Init
+ 60c:	0e 94 20 02 	call	0x440	; 0x440 <TIMER_init>
+	UART_init();						// INIT 485
+ 610:	0e 94 3c 02 	call	0x478	; 0x478 <UART_init>
+	sei();								// INTERRUPTS GLOBAL AN
+ 614:	78 94       	sei
+		
+			LED_TASK[step][0]=1;
+		
+	}
+	*/
+	putstring("Tempampel Ver 0.2");			// Ausgabe Versionstext Text
+ 616:	80 e0       	ldi	r24, 0x00	; 0
+ 618:	91 e0       	ldi	r25, 0x01	; 1
+ 61a:	0e 94 5a 02 	call	0x4b4	; 0x4b4 <putstring>
+
+int main(void)
+{
+    // uint8_t temp = mysensors_command_t.C_INTERNAL;
+	uint8_t  ztemp = 0, templ = 0,temph = 0, drehcounter = 0, drehaktiv = 0;
+	uint16_t temperaturdaten = 0;
+ 61e:	00 e0       	ldi	r16, 0x00	; 0
+ 620:	10 e0       	ldi	r17, 0x00	; 0
+
+
+int main(void)
+{
+    // uint8_t temp = mysensors_command_t.C_INTERNAL;
+	uint8_t  ztemp = 0, templ = 0,temph = 0, drehcounter = 0, drehaktiv = 0;
+ 622:	31 2c       	mov	r3, r1
+ 624:	41 2c       	mov	r4, r1
+		
+		usart_getc_intr();							// CHECK und Verarbeitung des UART Buffers
+		if(qbi(CONTROLLWORD_VOLL,UFLAGS))		// wenn Puffer voll beginnt Bearbeitung
+			{
+			cbi(CONTROLLWORD_VOLL,UFLAGS); 		// Rücksetzung des FLAG nach Abarbeitung des Eingangspuffer
+			if(CONTROLLWORD[1] == ADR485)		// Abarbeitung beginnen wenn Adresse matcht
+ 626:	0f 2e       	mov	r0, r31
+ 628:	fc e8       	ldi	r31, 0x8C	; 140
+ 62a:	cf 2e       	mov	r12, r31
+ 62c:	f2 e0       	ldi	r31, 0x02	; 2
+ 62e:	df 2e       	mov	r13, r31
+ 630:	f0 2d       	mov	r31, r0
+				{
+				switch(CONTROLLWORD[2])		// Abarbeitung der eingegebene Komandos
+ 632:	0f 2e       	mov	r0, r31
+ 634:	fd e8       	ldi	r31, 0x8D	; 141
+ 636:	6f 2e       	mov	r6, r31
+ 638:	f2 e0       	ldi	r31, 0x02	; 2
+ 63a:	7f 2e       	mov	r7, r31
+ 63c:	f0 2d       	mov	r31, r0
+					case 1:					// Ausgabe Version der Software auf RS485
+					if(CONTROLLWORD[4] == ADR485)	// Prüfnummer Adresse des Devices muss gesetzt sein um INIT zu starten
+						{
+						putstring("LED AN");			// Ausgabe Versionstext Text
+						UART_SendByte(10);						// Ausgabe Return
+						LED_TASK[CONTROLLWORD[3]][0]=1; // LED  AN 
+ 63e:	55 24       	eor	r5, r5
+ 640:	53 94       	inc	r5
+			}
+			
+		
+		if (counter == 50 )
+			{
+			sbi(6,ADCSRA);							// startet den Analogdigitalwandler, also die Messung des internen Temperatursensors
+ 642:	0f 2e       	mov	r0, r31
+ 644:	fa e7       	ldi	r31, 0x7A	; 122
+ 646:	ef 2e       	mov	r14, r31
+ 648:	f1 2c       	mov	r15, r1
+ 64a:	f0 2d       	mov	r31, r0
+			{
+			LED_TASK[19][0]=1; // blinken der LED 19 für Test 
+			}
+		else
+			{
+			LED_TASK[19][0]=0;	// blinken der LED 19 für Test 
+ 64c:	cd e8       	ldi	r28, 0x8D	; 141
+ 64e:	d1 e0       	ldi	r29, 0x01	; 1
+			}
+		
+		if (counter == 70 )
+			{
+			templ = ADCL;							// liest die Temperaturdaten aus dem unteren Byte
+ 650:	0f 2e       	mov	r0, r31
+ 652:	f8 e7       	ldi	r31, 0x78	; 120
+ 654:	af 2e       	mov	r10, r31
+ 656:	b1 2c       	mov	r11, r1
+ 658:	f0 2d       	mov	r31, r0
+			temph = ADCH;							// liest die Daten aus den unteren Temperaturbyte
+ 65a:	0f 2e       	mov	r0, r31
+ 65c:	f9 e7       	ldi	r31, 0x79	; 121
+ 65e:	8f 2e       	mov	r8, r31
+ 660:	91 2c       	mov	r9, r1
+ 662:	f0 2d       	mov	r31, r0
+	putstring("Tempampel Ver 0.2");			// Ausgabe Versionstext Text
+	while(1)
+    {	
+		
+		
+		usart_getc_intr();							// CHECK und Verarbeitung des UART Buffers
+ 664:	0e 94 a7 02 	call	0x54e	; 0x54e <usart_getc_intr>
+		if(qbi(CONTROLLWORD_VOLL,UFLAGS))		// wenn Puffer voll beginnt Bearbeitung
+ 668:	80 91 97 02 	lds	r24, 0x0297
+ 66c:	80 ff       	sbrs	r24, 0
+ 66e:	84 c0       	rjmp	.+264    	; 0x778 <main+0x174>
+			{
+			cbi(CONTROLLWORD_VOLL,UFLAGS); 		// Rücksetzung des FLAG nach Abarbeitung des Eingangspuffer
+ 670:	8e 7f       	andi	r24, 0xFE	; 254
+ 672:	80 93 97 02 	sts	0x0297, r24
+			if(CONTROLLWORD[1] == ADR485)		// Abarbeitung beginnen wenn Adresse matcht
+ 676:	d6 01       	movw	r26, r12
+ 678:	8c 91       	ld	r24, X
+ 67a:	8d 30       	cpi	r24, 0x0D	; 13
+ 67c:	09 f0       	breq	.+2      	; 0x680 <main+0x7c>
+ 67e:	7c c0       	rjmp	.+248    	; 0x778 <main+0x174>
+				{
+				switch(CONTROLLWORD[2])		// Abarbeitung der eingegebene Komandos
+ 680:	f3 01       	movw	r30, r6
+ 682:	80 81       	ld	r24, Z
+ 684:	82 30       	cpi	r24, 0x02	; 2
+ 686:	91 f1       	breq	.+100    	; 0x6ec <main+0xe8>
+ 688:	28 f4       	brcc	.+10     	; 0x694 <main+0x90>
+ 68a:	88 23       	and	r24, r24
+ 68c:	51 f0       	breq	.+20     	; 0x6a2 <main+0x9e>
+ 68e:	81 30       	cpi	r24, 0x01	; 1
+ 690:	b1 f0       	breq	.+44     	; 0x6be <main+0xba>
+ 692:	72 c0       	rjmp	.+228    	; 0x778 <main+0x174>
+ 694:	83 30       	cpi	r24, 0x03	; 3
+ 696:	09 f4       	brne	.+2      	; 0x69a <main+0x96>
+ 698:	40 c0       	rjmp	.+128    	; 0x71a <main+0x116>
+ 69a:	84 30       	cpi	r24, 0x04	; 4
+ 69c:	09 f4       	brne	.+2      	; 0x6a0 <main+0x9c>
+ 69e:	5c c0       	rjmp	.+184    	; 0x758 <main+0x154>
+ 6a0:	6b c0       	rjmp	.+214    	; 0x778 <main+0x174>
+					{
+					case 0:					// Ausgabe Version der Software auf RS485
+					if(CONTROLLWORD[4] == ADR485)	// Prüfnummer Adresse des Devices muss gesetzt sein um INIT zu starten
+ 6a2:	af e8       	ldi	r26, 0x8F	; 143
+ 6a4:	b2 e0       	ldi	r27, 0x02	; 2
+ 6a6:	8c 91       	ld	r24, X
+ 6a8:	8d 30       	cpi	r24, 0x0D	; 13
+ 6aa:	09 f0       	breq	.+2      	; 0x6ae <main+0xaa>
+ 6ac:	65 c0       	rjmp	.+202    	; 0x778 <main+0x174>
+						{
+						putstring("CNTR Version 0.2");			// Ausgabe Versionstext Text
+ 6ae:	82 e1       	ldi	r24, 0x12	; 18
+ 6b0:	91 e0       	ldi	r25, 0x01	; 1
+ 6b2:	0e 94 5a 02 	call	0x4b4	; 0x4b4 <putstring>
+						UART_SendByte(10);						// Ausgabe Return
+ 6b6:	8a e0       	ldi	r24, 0x0A	; 10
+ 6b8:	0e 94 48 02 	call	0x490	; 0x490 <UART_SendByte>
+ 6bc:	5d c0       	rjmp	.+186    	; 0x778 <main+0x174>
+						}
+					break; //END CASE0
+					
+					case 1:					// Ausgabe Version der Software auf RS485
+					if(CONTROLLWORD[4] == ADR485)	// Prüfnummer Adresse des Devices muss gesetzt sein um INIT zu starten
+ 6be:	ef e8       	ldi	r30, 0x8F	; 143
+ 6c0:	f2 e0       	ldi	r31, 0x02	; 2
+ 6c2:	80 81       	ld	r24, Z
+ 6c4:	8d 30       	cpi	r24, 0x0D	; 13
+ 6c6:	09 f0       	breq	.+2      	; 0x6ca <main+0xc6>
+ 6c8:	57 c0       	rjmp	.+174    	; 0x778 <main+0x174>
+						{
+						putstring("LED AN");			// Ausgabe Versionstext Text
+ 6ca:	83 e2       	ldi	r24, 0x23	; 35
+ 6cc:	91 e0       	ldi	r25, 0x01	; 1
+ 6ce:	0e 94 5a 02 	call	0x4b4	; 0x4b4 <putstring>
+						UART_SendByte(10);						// Ausgabe Return
+ 6d2:	8a e0       	ldi	r24, 0x0A	; 10
+ 6d4:	0e 94 48 02 	call	0x490	; 0x490 <UART_SendByte>
+						LED_TASK[CONTROLLWORD[3]][0]=1; // LED  AN 
+ 6d8:	ae e8       	ldi	r26, 0x8E	; 142
+ 6da:	b2 e0       	ldi	r27, 0x02	; 2
+ 6dc:	ec 91       	ld	r30, X
+ 6de:	f0 e0       	ldi	r31, 0x00	; 0
+ 6e0:	ee 0f       	add	r30, r30
+ 6e2:	ff 1f       	adc	r31, r31
+ 6e4:	e9 59       	subi	r30, 0x99	; 153
+ 6e6:	fe 4f       	sbci	r31, 0xFE	; 254
+ 6e8:	50 82       	st	Z, r5
+ 6ea:	46 c0       	rjmp	.+140    	; 0x778 <main+0x174>
+						}
+					break; //END CASE1
+					
+					case 2:					// Ausgabe Version der Software auf RS485
+					if(CONTROLLWORD[4] == ADR485)	// Prüfnummer Adresse des Devices muss gesetzt sein um INIT zu starten
+ 6ec:	ef e8       	ldi	r30, 0x8F	; 143
+ 6ee:	f2 e0       	ldi	r31, 0x02	; 2
+ 6f0:	80 81       	ld	r24, Z
+ 6f2:	8d 30       	cpi	r24, 0x0D	; 13
+ 6f4:	09 f0       	breq	.+2      	; 0x6f8 <main+0xf4>
+ 6f6:	40 c0       	rjmp	.+128    	; 0x778 <main+0x174>
+						{
+						putstring("LED AUS");			// Ausgabe Versionstext Text
+ 6f8:	8a e2       	ldi	r24, 0x2A	; 42
+ 6fa:	91 e0       	ldi	r25, 0x01	; 1
+ 6fc:	0e 94 5a 02 	call	0x4b4	; 0x4b4 <putstring>
+						UART_SendByte(10);						// Ausgabe Return
+ 700:	8a e0       	ldi	r24, 0x0A	; 10
+ 702:	0e 94 48 02 	call	0x490	; 0x490 <UART_SendByte>
+						LED_TASK[CONTROLLWORD[3]][0]=0; // LED  AN 
+ 706:	ae e8       	ldi	r26, 0x8E	; 142
+ 708:	b2 e0       	ldi	r27, 0x02	; 2
+ 70a:	ec 91       	ld	r30, X
+ 70c:	f0 e0       	ldi	r31, 0x00	; 0
+ 70e:	ee 0f       	add	r30, r30
+ 710:	ff 1f       	adc	r31, r31
+ 712:	e9 59       	subi	r30, 0x99	; 153
+ 714:	fe 4f       	sbci	r31, 0xFE	; 254
+ 716:	10 82       	st	Z, r1
+ 718:	2f c0       	rjmp	.+94     	; 0x778 <main+0x174>
+						}
+					break; //END CASE2
+					
+					case 3:					// Ausgabe Version der Software auf RS485
+					if(CONTROLLWORD[4] == ADR485)	// Prüfnummer Adresse des Devices muss gesetzt sein um INIT zu starten
+ 71a:	ef e8       	ldi	r30, 0x8F	; 143
+ 71c:	f2 e0       	ldi	r31, 0x02	; 2
+ 71e:	80 81       	ld	r24, Z
+ 720:	8d 30       	cpi	r24, 0x0D	; 13
+ 722:	51 f5       	brne	.+84     	; 0x778 <main+0x174>
+						{
+						ztemp = zufall;
+ 724:	20 90 55 01 	lds	r2, 0x0155
+						UART_SendByte(10);						// Ausgabe Return	
+ 728:	8a e0       	ldi	r24, 0x0A	; 10
+ 72a:	0e 94 48 02 	call	0x490	; 0x490 <UART_SendByte>
+						putstring("Würfel: ");			// Ausgabe Versionstext Text						
+ 72e:	82 e3       	ldi	r24, 0x32	; 50
+ 730:	91 e0       	ldi	r25, 0x01	; 1
+ 732:	0e 94 5a 02 	call	0x4b4	; 0x4b4 <putstring>
+						errorcodeu(ztemp);
+ 736:	82 2d       	mov	r24, r2
+ 738:	0e 94 69 02 	call	0x4d2	; 0x4d2 <errorcodeu>
+						wuerfel(ztemp);	
+ 73c:	82 2d       	mov	r24, r2
+ 73e:	0e 94 6d 00 	call	0xda	; 0xda <wuerfel>
+						UART_SendByte(10);						// Ausgabe Return
+ 742:	8a e0       	ldi	r24, 0x0A	; 10
+ 744:	0e 94 48 02 	call	0x490	; 0x490 <UART_SendByte>
+						putstring("Würfel Test");			// Ausgabe Versionstext Text
+ 748:	8b e3       	ldi	r24, 0x3B	; 59
+ 74a:	91 e0       	ldi	r25, 0x01	; 1
+ 74c:	0e 94 5a 02 	call	0x4b4	; 0x4b4 <putstring>
+						UART_SendByte(10);						// Ausgabe Return										
+ 750:	8a e0       	ldi	r24, 0x0A	; 10
+ 752:	0e 94 48 02 	call	0x490	; 0x490 <UART_SendByte>
+ 756:	10 c0       	rjmp	.+32     	; 0x778 <main+0x174>
+						}
+					break; //END CASE3
+					
+					case 4:					// Ausgabe Version der Software auf RS485
+					if(CONTROLLWORD[4] == ADR485)	// Prüfnummer Adresse des Devices muss gesetzt sein um INIT zu starten
+ 758:	af e8       	ldi	r26, 0x8F	; 143
+ 75a:	b2 e0       	ldi	r27, 0x02	; 2
+ 75c:	8c 91       	ld	r24, X
+ 75e:	8d 30       	cpi	r24, 0x0D	; 13
+ 760:	59 f4       	brne	.+22     	; 0x778 <main+0x174>
+					{
+						ztemp = zufall;
+						UART_SendByte(10);						// Ausgabe Return
+ 762:	8a e0       	ldi	r24, 0x0A	; 10
+ 764:	0e 94 48 02 	call	0x490	; 0x490 <UART_SendByte>
+						putstring("drehen an: ");			// Ausgabe Versionstext Text										
+ 768:	87 e4       	ldi	r24, 0x47	; 71
+ 76a:	91 e0       	ldi	r25, 0x01	; 1
+ 76c:	0e 94 5a 02 	call	0x4b4	; 0x4b4 <putstring>
+						drehaktiv = 5; 		
+ 770:	0f 2e       	mov	r0, r31
+ 772:	f5 e0       	ldi	r31, 0x05	; 5
+ 774:	3f 2e       	mov	r3, r31
+ 776:	f0 2d       	mov	r31, r0
+				}
+			
+			}
+			
+		
+		if (counter == 50 )
+ 778:	80 91 95 02 	lds	r24, 0x0295
+ 77c:	82 33       	cpi	r24, 0x32	; 50
+ 77e:	49 f4       	brne	.+18     	; 0x792 <main+0x18e>
+			{
+			sbi(6,ADCSRA);							// startet den Analogdigitalwandler, also die Messung des internen Temperatursensors
+ 780:	f7 01       	movw	r30, r14
+ 782:	80 81       	ld	r24, Z
+ 784:	80 64       	ori	r24, 0x40	; 64
+ 786:	80 83       	st	Z, r24
+			counter++;								// Damit die Routine nur einmal durchlaufen wird 
+ 788:	80 91 95 02 	lds	r24, 0x0295
+ 78c:	8f 5f       	subi	r24, 0xFF	; 255
+ 78e:	80 93 95 02 	sts	0x0295, r24
+			}
+			
+		if(counter == 64 )
+ 792:	80 91 95 02 	lds	r24, 0x0295
+ 796:	80 34       	cpi	r24, 0x40	; 64
+ 798:	81 f4       	brne	.+32     	; 0x7ba <main+0x1b6>
+			{
+			if (drehaktiv)
+ 79a:	33 20       	and	r3, r3
+ 79c:	71 f0       	breq	.+28     	; 0x7ba <main+0x1b6>
+				{					
+				drehenr(drehcounter);
+ 79e:	84 2d       	mov	r24, r4
+ 7a0:	0e 94 c7 00 	call	0x18e	; 0x18e <drehenr>
+				counter++;	
+ 7a4:	80 91 95 02 	lds	r24, 0x0295
+ 7a8:	8f 5f       	subi	r24, 0xFF	; 255
+ 7aa:	80 93 95 02 	sts	0x0295, r24
+				drehcounter++;
+ 7ae:	43 94       	inc	r4
+				if (drehcounter >= 7)
+ 7b0:	f6 e0       	ldi	r31, 0x06	; 6
+ 7b2:	f4 15       	cp	r31, r4
+ 7b4:	10 f4       	brcc	.+4      	; 0x7ba <main+0x1b6>
+					{
+					drehcounter = 1;
+					drehaktiv--;
+ 7b6:	3a 94       	dec	r3
+				drehenr(drehcounter);
+				counter++;	
+				drehcounter++;
+				if (drehcounter >= 7)
+					{
+					drehcounter = 1;
+ 7b8:	45 2c       	mov	r4, r5
+			
+				
+			
+			}
+		
+		if (counter < 128 )
+ 7ba:	80 91 95 02 	lds	r24, 0x0295
+ 7be:	88 23       	and	r24, r24
+ 7c0:	14 f0       	brlt	.+4      	; 0x7c6 <main+0x1c2>
+			{
+			LED_TASK[19][0]=1; // blinken der LED 19 für Test 
+ 7c2:	58 82       	st	Y, r5
+ 7c4:	01 c0       	rjmp	.+2      	; 0x7c8 <main+0x1c4>
+			}
+		else
+			{
+			LED_TASK[19][0]=0;	// blinken der LED 19 für Test 
+ 7c6:	18 82       	st	Y, r1
+			}
+		
+		if (counter == 70 )
+ 7c8:	80 91 95 02 	lds	r24, 0x0295
+ 7cc:	86 34       	cpi	r24, 0x46	; 70
+ 7ce:	59 f4       	brne	.+22     	; 0x7e6 <main+0x1e2>
+			{
+			templ = ADCL;							// liest die Temperaturdaten aus dem unteren Byte
+ 7d0:	d5 01       	movw	r26, r10
+ 7d2:	0c 91       	ld	r16, X
+			temph = ADCH;							// liest die Daten aus den unteren Temperaturbyte
+ 7d4:	f4 01       	movw	r30, r8
+ 7d6:	80 81       	ld	r24, Z
+			temperaturdaten = HILO(temph,templ);	// schreibt die Daten in eine 16 BIT Variable	
+ 7d8:	10 e0       	ldi	r17, 0x00	; 0
+ 7da:	18 2b       	or	r17, r24
+			counter++;
+ 7dc:	80 91 95 02 	lds	r24, 0x0295
+ 7e0:	8f 5f       	subi	r24, 0xFF	; 255
+ 7e2:	80 93 95 02 	sts	0x0295, r24
+			}
+			
+		
+		if (counter == 100)
+ 7e6:	80 91 95 02 	lds	r24, 0x0295
+ 7ea:	84 36       	cpi	r24, 0x64	; 100
+ 7ec:	89 f4       	brne	.+34     	; 0x810 <main+0x20c>
+			{
+			UART_SendByte('T');							
+ 7ee:	84 e5       	ldi	r24, 0x54	; 84
+ 7f0:	0e 94 48 02 	call	0x490	; 0x490 <UART_SendByte>
+			errorcodeu16(temperaturdaten);
+ 7f4:	c8 01       	movw	r24, r16
+ 7f6:	0e 94 8c 02 	call	0x518	; 0x518 <errorcodeu16>
+			UART_SendByte(':');		
+ 7fa:	8a e3       	ldi	r24, 0x3A	; 58
+ 7fc:	0e 94 48 02 	call	0x490	; 0x490 <UART_SendByte>
+			UART_SendByte(0x0A);						// LF
+ 800:	8a e0       	ldi	r24, 0x0A	; 10
+ 802:	0e 94 48 02 	call	0x490	; 0x490 <UART_SendByte>
+			counter++;
+ 806:	80 91 95 02 	lds	r24, 0x0295
+ 80a:	8f 5f       	subi	r24, 0xFF	; 255
+ 80c:	80 93 95 02 	sts	0x0295, r24
+					}
+				}
+			
+			*/
+			
+			if (counter == 200)
+ 810:	80 91 95 02 	lds	r24, 0x0295
+ 814:	88 3c       	cpi	r24, 0xC8	; 200
+ 816:	09 f0       	breq	.+2      	; 0x81a <main+0x216>
+ 818:	25 cf       	rjmp	.-438    	; 0x664 <main+0x60>
+				{				
+				ledband(temperaturdaten,330);
+ 81a:	6a e4       	ldi	r22, 0x4A	; 74
+ 81c:	71 e0       	ldi	r23, 0x01	; 1
+ 81e:	c8 01       	movw	r24, r16
+ 820:	0e 94 0e 01 	call	0x21c	; 0x21c <ledband>
+				counter++;
+ 824:	80 91 95 02 	lds	r24, 0x0295
+ 828:	8f 5f       	subi	r24, 0xFF	; 255
+ 82a:	80 93 95 02 	sts	0x0295, r24
+ 82e:	1a cf       	rjmp	.-460    	; 0x664 <main+0x60>
+
+00000830 <__vector_16>:
+/***************************************************************************************
+INTERRUPT Timerüberlauf (Timer 0)
+Einsprung alle XX ms
+***************************************************************************************/
+ISR(TIMER0_OVF_vect)
+{
+ 830:	1f 92       	push	r1
+ 832:	0f 92       	push	r0
+ 834:	0f b6       	in	r0, 0x3f	; 63
+ 836:	0f 92       	push	r0
+ 838:	11 24       	eor	r1, r1
+ 83a:	2f 93       	push	r18
+ 83c:	3f 93       	push	r19
+ 83e:	4f 93       	push	r20
+ 840:	5f 93       	push	r21
+ 842:	6f 93       	push	r22
+ 844:	7f 93       	push	r23
+ 846:	8f 93       	push	r24
+ 848:	9f 93       	push	r25
+ 84a:	af 93       	push	r26
+ 84c:	bf 93       	push	r27
+ 84e:	ef 93       	push	r30
+ 850:	ff 93       	push	r31
+
+
+if ( (LED_TASK[LED_Timer][0]) && ( taskcount < 1 ) )
+ 852:	80 91 90 01 	lds	r24, 0x0190
+ 856:	e8 2f       	mov	r30, r24
+ 858:	f0 e0       	ldi	r31, 0x00	; 0
+ 85a:	ee 0f       	add	r30, r30
+ 85c:	ff 1f       	adc	r31, r31
+ 85e:	e9 59       	subi	r30, 0x99	; 153
+ 860:	fe 4f       	sbci	r31, 0xFE	; 254
+ 862:	90 81       	ld	r25, Z
+ 864:	99 23       	and	r25, r25
+ 866:	39 f0       	breq	.+14     	; 0x876 <__vector_16+0x46>
+ 868:	90 91 8f 01 	lds	r25, 0x018F
+ 86c:	91 11       	cpse	r25, r1
+ 86e:	03 c0       	rjmp	.+6      	; 0x876 <__vector_16+0x46>
+	{
+	zeilenwahl(LED_Timer);	// wenn LED in Array auf 1 gesetzt wir eingeschaltet
+ 870:	0e 94 43 01 	call	0x286	; 0x286 <zeilenwahl>
+ 874:	03 c0       	rjmp	.+6      	; 0x87c <__vector_16+0x4c>
+	}
+else
+	{
+	zeilenwahl(0);			// sonst wird ausgeschaltet
+ 876:	80 e0       	ldi	r24, 0x00	; 0
+ 878:	0e 94 43 01 	call	0x286	; 0x286 <zeilenwahl>
+	}
+taskcount++;
+ 87c:	20 91 8f 01 	lds	r18, 0x018F
+ 880:	2f 5f       	subi	r18, 0xFF	; 255
+ 882:	20 93 8f 01 	sts	0x018F, r18
+if (taskcount > (MAX_HELL -LED_HELLIGKEIT))
+ 886:	30 e0       	ldi	r19, 0x00	; 0
+ 888:	40 91 66 01 	lds	r20, 0x0166
+ 88c:	81 e1       	ldi	r24, 0x11	; 17
+ 88e:	90 e0       	ldi	r25, 0x00	; 0
+ 890:	84 1b       	sub	r24, r20
+ 892:	91 09       	sbc	r25, r1
+ 894:	82 17       	cp	r24, r18
+ 896:	93 07       	cpc	r25, r19
+ 898:	14 f4       	brge	.+4      	; 0x89e <__vector_16+0x6e>
+	{
+	taskcount = 0;
+ 89a:	10 92 8f 01 	sts	0x018F, r1
+	}
+
+LED_Timer++;
+ 89e:	80 91 90 01 	lds	r24, 0x0190
+ 8a2:	8f 5f       	subi	r24, 0xFF	; 255
+if (LED_Timer > LED_ANZAHL)
+ 8a4:	84 31       	cpi	r24, 0x14	; 20
+ 8a6:	18 f4       	brcc	.+6      	; 0x8ae <__vector_16+0x7e>
+if (taskcount > (MAX_HELL -LED_HELLIGKEIT))
+	{
+	taskcount = 0;
+	}
+
+LED_Timer++;
+ 8a8:	80 93 90 01 	sts	0x0190, r24
+ 8ac:	03 c0       	rjmp	.+6      	; 0x8b4 <__vector_16+0x84>
+if (LED_Timer > LED_ANZAHL)
+	{
+	LED_Timer = 1;
+ 8ae:	81 e0       	ldi	r24, 0x01	; 1
+ 8b0:	80 93 90 01 	sts	0x0190, r24
+	}
+
+
+}
+ 8b4:	ff 91       	pop	r31
+ 8b6:	ef 91       	pop	r30
+ 8b8:	bf 91       	pop	r27
+ 8ba:	af 91       	pop	r26
+ 8bc:	9f 91       	pop	r25
+ 8be:	8f 91       	pop	r24
+ 8c0:	7f 91       	pop	r23
+ 8c2:	6f 91       	pop	r22
+ 8c4:	5f 91       	pop	r21
+ 8c6:	4f 91       	pop	r20
+ 8c8:	3f 91       	pop	r19
+ 8ca:	2f 91       	pop	r18
+ 8cc:	0f 90       	pop	r0
+ 8ce:	0f be       	out	0x3f, r0	; 63
+ 8d0:	0f 90       	pop	r0
+ 8d2:	1f 90       	pop	r1
+ 8d4:	18 95       	reti
+
+000008d6 <__vector_14>:
+
+ISR (TIMER0_COMPA_vect)  // timer0 overflow interrupt
+{
+ 8d6:	1f 92       	push	r1
+ 8d8:	0f 92       	push	r0
+ 8da:	0f b6       	in	r0, 0x3f	; 63
+ 8dc:	0f 92       	push	r0
+ 8de:	11 24       	eor	r1, r1
+	//event to be
+}
+ 8e0:	0f 90       	pop	r0
+ 8e2:	0f be       	out	0x3f, r0	; 63
+ 8e4:	0f 90       	pop	r0
+ 8e6:	1f 90       	pop	r1
+ 8e8:	18 95       	reti
+
+000008ea <__vector_9>:
+INTERRUPT Timerüberlauf (Timer 2)
+Einsprung alle XX ms
+***************************************************************************************/
+
+ISR(TIMER2_OVF_vect)
+{
+ 8ea:	1f 92       	push	r1
+ 8ec:	0f 92       	push	r0
+ 8ee:	0f b6       	in	r0, 0x3f	; 63
+ 8f0:	0f 92       	push	r0
+ 8f2:	11 24       	eor	r1, r1
+ 8f4:	8f 93       	push	r24
+	counter++;
+ 8f6:	80 91 95 02 	lds	r24, 0x0295
+ 8fa:	8f 5f       	subi	r24, 0xFF	; 255
+ 8fc:	80 93 95 02 	sts	0x0295, r24
+// Funktion zum Rücksetzen des aktiven Sendekanals der Schnittstelle RS485
+if(rucksetzcount)
+ 900:	80 91 65 01 	lds	r24, 0x0165
+ 904:	88 23       	and	r24, r24
+ 906:	51 f0       	breq	.+20     	; 0x91c <__vector_9+0x32>
+	{
+	if(rucksetzcount == 1)
+ 908:	80 91 65 01 	lds	r24, 0x0165
+ 90c:	81 30       	cpi	r24, 0x01	; 1
+ 90e:	09 f4       	brne	.+2      	; 0x912 <__vector_9+0x28>
+		{
+		SENDEN_INAKTIV;
+ 910:	45 98       	cbi	0x08, 5	; 8
+		//LED1_OFF;					//RS485 Device inaktiv
+		}
+	rucksetzcount--;
+ 912:	80 91 65 01 	lds	r24, 0x0165
+ 916:	81 50       	subi	r24, 0x01	; 1
+ 918:	80 93 65 01 	sts	0x0165, r24
+	}
+if (zufall >= 6)
+ 91c:	80 91 55 01 	lds	r24, 0x0155
+ 920:	86 30       	cpi	r24, 0x06	; 6
+ 922:	10 f0       	brcs	.+4      	; 0x928 <__vector_9+0x3e>
+	{
+	zufall = 0;
+ 924:	10 92 55 01 	sts	0x0155, r1
+	}
+zufall++;
+ 928:	80 91 55 01 	lds	r24, 0x0155
+ 92c:	8f 5f       	subi	r24, 0xFF	; 255
+ 92e:	80 93 55 01 	sts	0x0155, r24
+
+		
+}
+ 932:	8f 91       	pop	r24
+ 934:	0f 90       	pop	r0
+ 936:	0f be       	out	0x3f, r0	; 63
+ 938:	0f 90       	pop	r0
+ 93a:	1f 90       	pop	r1
+ 93c:	18 95       	reti
+
+0000093e <__vector_18>:
+/*******************************************************************************************
+INTERRUPT ROUTINE für UART, schreibt empfangenes Zeichen in den BUFFER
+
+********************************************************************************************/
+ISR(USART_RX_vect)
+{
+ 93e:	1f 92       	push	r1
+ 940:	0f 92       	push	r0
+ 942:	0f b6       	in	r0, 0x3f	; 63
+ 944:	0f 92       	push	r0
+ 946:	11 24       	eor	r1, r1
+ 948:	8f 93       	push	r24
+ 94a:	9f 93       	push	r25
+ 94c:	ef 93       	push	r30
+ 94e:	ff 93       	push	r31
+
+//Automatisch empfangene Daten in den Puffer schreiben:
+puffer[schreibzeiger]=UDR0;							// Empfangenes Zeichen in den Buffer schreiben
+ 950:	80 91 56 01 	lds	r24, 0x0156
+ 954:	90 91 c6 00 	lds	r25, 0x00C6
+ 958:	e8 2f       	mov	r30, r24
+ 95a:	f0 e0       	ldi	r31, 0x00	; 0
+ 95c:	ef 56       	subi	r30, 0x6F	; 111
+ 95e:	fe 4f       	sbci	r31, 0xFE	; 254
+ 960:	90 83       	st	Z, r25
+schreibzeiger++;
+ 962:	8f 5f       	subi	r24, 0xFF	; 255
+if(schreibzeiger==PUFFER_GROESSE) schreibzeiger=0; // Befindet sich Zeiger am Ende, wird dieser zurückgesetzt	
+ 964:	8a 3f       	cpi	r24, 0xFA	; 250
+ 966:	19 f0       	breq	.+6      	; 0x96e <__vector_18+0x30>
+ISR(USART_RX_vect)
+{
+
+//Automatisch empfangene Daten in den Puffer schreiben:
+puffer[schreibzeiger]=UDR0;							// Empfangenes Zeichen in den Buffer schreiben
+schreibzeiger++;
+ 968:	80 93 56 01 	sts	0x0156, r24
+ 96c:	02 c0       	rjmp	.+4      	; 0x972 <__vector_18+0x34>
+if(schreibzeiger==PUFFER_GROESSE) schreibzeiger=0; // Befindet sich Zeiger am Ende, wird dieser zurückgesetzt	
+ 96e:	10 92 56 01 	sts	0x0156, r1
+ 972:	ff 91       	pop	r31
+ 974:	ef 91       	pop	r30
+ 976:	9f 91       	pop	r25
+ 978:	8f 91       	pop	r24
+ 97a:	0f 90       	pop	r0
+ 97c:	0f be       	out	0x3f, r0	; 63
+ 97e:	0f 90       	pop	r0
+ 980:	1f 90       	pop	r1
+ 982:	18 95       	reti
+
+00000984 <__divmodhi4>:
+ 984:	97 fb       	bst	r25, 7
+ 986:	07 2e       	mov	r0, r23
+ 988:	16 f4       	brtc	.+4      	; 0x98e <__divmodhi4+0xa>
+ 98a:	00 94       	com	r0
+ 98c:	07 d0       	rcall	.+14     	; 0x99c <__divmodhi4_neg1>
+ 98e:	77 fd       	sbrc	r23, 7
+ 990:	09 d0       	rcall	.+18     	; 0x9a4 <__divmodhi4_neg2>
+ 992:	0e 94 dc 04 	call	0x9b8	; 0x9b8 <__udivmodhi4>
+ 996:	07 fc       	sbrc	r0, 7
+ 998:	05 d0       	rcall	.+10     	; 0x9a4 <__divmodhi4_neg2>
+ 99a:	3e f4       	brtc	.+14     	; 0x9aa <__divmodhi4_exit>
+
+0000099c <__divmodhi4_neg1>:
+ 99c:	90 95       	com	r25
+ 99e:	81 95       	neg	r24
+ 9a0:	9f 4f       	sbci	r25, 0xFF	; 255
+ 9a2:	08 95       	ret
+
+000009a4 <__divmodhi4_neg2>:
+ 9a4:	70 95       	com	r23
+ 9a6:	61 95       	neg	r22
+ 9a8:	7f 4f       	sbci	r23, 0xFF	; 255
+
+000009aa <__divmodhi4_exit>:
+ 9aa:	08 95       	ret
+
+000009ac <__tablejump2__>:
+ 9ac:	ee 0f       	add	r30, r30
+ 9ae:	ff 1f       	adc	r31, r31
+
+000009b0 <__tablejump__>:
+ 9b0:	05 90       	lpm	r0, Z+
+ 9b2:	f4 91       	lpm	r31, Z
+ 9b4:	e0 2d       	mov	r30, r0
+ 9b6:	09 94       	ijmp
+
+000009b8 <__udivmodhi4>:
+ 9b8:	aa 1b       	sub	r26, r26
+ 9ba:	bb 1b       	sub	r27, r27
+ 9bc:	51 e1       	ldi	r21, 0x11	; 17
+ 9be:	07 c0       	rjmp	.+14     	; 0x9ce <__udivmodhi4_ep>
+
+000009c0 <__udivmodhi4_loop>:
+ 9c0:	aa 1f       	adc	r26, r26
+ 9c2:	bb 1f       	adc	r27, r27
+ 9c4:	a6 17       	cp	r26, r22
+ 9c6:	b7 07       	cpc	r27, r23
+ 9c8:	10 f0       	brcs	.+4      	; 0x9ce <__udivmodhi4_ep>
+ 9ca:	a6 1b       	sub	r26, r22
+ 9cc:	b7 0b       	sbc	r27, r23
+
+000009ce <__udivmodhi4_ep>:
+ 9ce:	88 1f       	adc	r24, r24
+ 9d0:	99 1f       	adc	r25, r25
+ 9d2:	5a 95       	dec	r21
+ 9d4:	a9 f7       	brne	.-22     	; 0x9c0 <__udivmodhi4_loop>
+ 9d6:	80 95       	com	r24
+ 9d8:	90 95       	com	r25
+ 9da:	bc 01       	movw	r22, r24
+ 9dc:	cd 01       	movw	r24, r26
+ 9de:	08 95       	ret
+
+000009e0 <_exit>:
+ 9e0:	f8 94       	cli
+
+000009e2 <__stop_program>:
+ 9e2:	ff cf       	rjmp	.-2      	; 0x9e2 <__stop_program>
