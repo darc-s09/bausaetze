@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.0025" unitdist="inch" unit="mm" style="lines" multiple="1" display="no" altdistance="0.00125" altunitdist="inch" altunit="mm"/>
+<grid distance="0.0025" unitdist="inch" unit="mil" style="lines" multiple="1" display="no" altdistance="0.00125" altunitdist="inch" altunit="mil"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="2" name="Route2" color="1" fill="3" visible="no" active="no"/>
@@ -40,24 +40,24 @@
 <layer number="30" name="bStop" color="7" fill="6" visible="no" active="yes"/>
 <layer number="31" name="tCream" color="7" fill="4" visible="no" active="yes"/>
 <layer number="32" name="bCream" color="7" fill="5" visible="no" active="yes"/>
-<layer number="33" name="tFinish" color="6" fill="3" visible="no" active="yes"/>
-<layer number="34" name="bFinish" color="6" fill="6" visible="no" active="yes"/>
-<layer number="35" name="tGlue" color="7" fill="4" visible="no" active="yes"/>
-<layer number="36" name="bGlue" color="7" fill="5" visible="no" active="yes"/>
-<layer number="37" name="tTest" color="7" fill="1" visible="no" active="yes"/>
-<layer number="38" name="bTest" color="7" fill="1" visible="no" active="yes"/>
+<layer number="33" name="tFinish" color="6" fill="3" visible="yes" active="yes"/>
+<layer number="34" name="bFinish" color="6" fill="6" visible="yes" active="yes"/>
+<layer number="35" name="tGlue" color="7" fill="4" visible="yes" active="yes"/>
+<layer number="36" name="bGlue" color="7" fill="5" visible="yes" active="yes"/>
+<layer number="37" name="tTest" color="7" fill="1" visible="yes" active="yes"/>
+<layer number="38" name="bTest" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="39" name="tKeepout" color="4" fill="11" visible="yes" active="yes"/>
 <layer number="40" name="bKeepout" color="1" fill="11" visible="yes" active="yes"/>
 <layer number="41" name="tRestrict" color="4" fill="10" visible="yes" active="yes"/>
 <layer number="42" name="bRestrict" color="1" fill="10" visible="yes" active="yes"/>
 <layer number="43" name="vRestrict" color="2" fill="10" visible="yes" active="yes"/>
-<layer number="44" name="Drills" color="7" fill="1" visible="no" active="yes"/>
+<layer number="44" name="Drills" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="45" name="Holes" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="46" name="Milling" color="3" fill="1" visible="yes" active="yes"/>
-<layer number="47" name="Measures" color="7" fill="1" visible="no" active="yes"/>
+<layer number="47" name="Measures" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="48" name="Document" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="49" name="Reference" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="50" name="dxf" color="7" fill="1" visible="no" active="yes"/>
+<layer number="50" name="dxf" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="51" name="tDocu" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="52" name="bDocu" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="53" name="tGND_GNDA" color="7" fill="9" visible="no" active="no"/>
@@ -138,10 +138,8 @@
 <wire x1="54.7855" y1="0.038" x2="54.849" y2="54.953" width="0" layer="20"/>
 <wire x1="54.849" y1="54.953" x2="-0.0585" y2="54.953" width="0" layer="20"/>
 <wire x1="-0.0585" y1="54.953" x2="0.005" y2="-0.0255" width="0" layer="20"/>
-<text x="1.0795" y="52.6415" size="1.016" layer="25">DARC OV S09 V3.1</text>
+<text x="1.0795" y="52.6415" size="1.016" layer="25">DARC OV S09 V3.2</text>
 <text x="1.143" y="50.927" size="0.8128" layer="25">http://s09.sax.de/</text>
-<hole x="5" y="25" drill="3.2"/>
-<hole x="15" y="25" drill="3.2"/>
 </plain>
 <libraries>
 <library name="avr-4_2">
@@ -578,6 +576,63 @@ WR-COM_USB_Micro Type B_Vertical_THT Micro Type B Vertical THT- Tape &amp; Reel 
 </package>
 </packages>
 </library>
+<library name="switch-omron">
+<description>&lt;b&gt;Omron Switches&lt;/b&gt;&lt;p&gt;
+&lt;author&gt;Created by librarian@cadsoft.de&lt;/author&gt;</description>
+<packages>
+<package name="B3FS-1002">
+<description>Omron Schalter</description>
+<wire x1="3.048" y1="-1.016" x2="3.048" y2="1.016" width="0.1524" layer="21"/>
+<wire x1="3.048" y1="1.016" x2="3.048" y2="3.048" width="0.1524" layer="51"/>
+<wire x1="-3.048" y1="1.016" x2="-3.048" y2="-1.016" width="0.1524" layer="21"/>
+<wire x1="3.048" y1="-3.048" x2="3.048" y2="-1.016" width="0.1524" layer="51"/>
+<wire x1="-3.048" y1="3.048" x2="-3.048" y2="1.016" width="0.1524" layer="51"/>
+<wire x1="-3.048" y1="-3.048" x2="-3.048" y2="-1.016" width="0.1524" layer="51"/>
+<wire x1="-1.27" y1="1.27" x2="-1.27" y2="-1.27" width="0.0508" layer="51"/>
+<wire x1="1.27" y1="-1.27" x2="-1.27" y2="-1.27" width="0.0508" layer="51"/>
+<wire x1="1.27" y1="-1.27" x2="1.27" y2="1.27" width="0.0508" layer="51"/>
+<wire x1="-1.27" y1="1.27" x2="1.27" y2="1.27" width="0.0508" layer="51"/>
+<wire x1="-1.27" y1="3.048" x2="-1.27" y2="2.794" width="0.0508" layer="21"/>
+<wire x1="1.27" y1="2.794" x2="-1.27" y2="2.794" width="0.0508" layer="21"/>
+<wire x1="1.27" y1="2.794" x2="1.27" y2="3.048" width="0.0508" layer="21"/>
+<wire x1="1.143" y1="-2.794" x2="-1.27" y2="-2.794" width="0.0508" layer="21"/>
+<wire x1="1.143" y1="-2.794" x2="1.143" y2="-3.048" width="0.0508" layer="21"/>
+<wire x1="-1.27" y1="-2.794" x2="-1.27" y2="-3.048" width="0.0508" layer="21"/>
+<wire x1="3.048" y1="-3.048" x2="2.159" y2="-3.048" width="0.1524" layer="51"/>
+<wire x1="-3.048" y1="-3.048" x2="-2.159" y2="-3.048" width="0.1524" layer="51"/>
+<wire x1="-2.159" y1="-3.048" x2="-1.27" y2="-3.048" width="0.1524" layer="21"/>
+<wire x1="-3.048" y1="3.048" x2="-2.159" y2="3.048" width="0.1524" layer="51"/>
+<wire x1="3.048" y1="3.048" x2="2.159" y2="3.048" width="0.1524" layer="51"/>
+<wire x1="2.159" y1="3.048" x2="1.27" y2="3.048" width="0.1524" layer="21"/>
+<wire x1="1.27" y1="3.048" x2="-1.27" y2="3.048" width="0.1524" layer="21"/>
+<wire x1="-1.27" y1="3.048" x2="-2.159" y2="3.048" width="0.1524" layer="21"/>
+<wire x1="-1.27" y1="-3.048" x2="1.143" y2="-3.048" width="0.1524" layer="21"/>
+<wire x1="1.143" y1="-3.048" x2="2.159" y2="-3.048" width="0.1524" layer="21"/>
+<wire x1="-1.27" y1="-2.159" x2="1.27" y2="-2.159" width="0.1524" layer="51"/>
+<wire x1="1.27" y1="2.286" x2="-1.27" y2="2.286" width="0.1524" layer="51"/>
+<wire x1="-2.413" y1="1.27" x2="-2.413" y2="0.508" width="0.1524" layer="51"/>
+<wire x1="-2.413" y1="-0.508" x2="-2.413" y2="-1.27" width="0.1524" layer="51"/>
+<wire x1="-2.413" y1="0.508" x2="-2.159" y2="-0.381" width="0.1524" layer="51"/>
+<circle x="0" y="0" radius="1.778" width="0.1524" layer="21"/>
+<circle x="-2.159" y="-2.159" radius="0.508" width="0.1524" layer="51"/>
+<circle x="2.159" y="-2.032" radius="0.508" width="0.1524" layer="51"/>
+<circle x="2.159" y="2.159" radius="0.508" width="0.1524" layer="51"/>
+<circle x="-2.159" y="2.159" radius="0.508" width="0.1524" layer="51"/>
+<circle x="0" y="0" radius="0.635" width="0.0508" layer="51"/>
+<circle x="0" y="0" radius="0.254" width="0.1524" layer="21"/>
+<text x="-3.048" y="3.683" size="1.27" layer="25" ratio="10">&gt;NAME</text>
+<text x="-3.048" y="-5.08" size="1.27" layer="27" ratio="10">&gt;VALUE</text>
+<text x="4.445" y="-1.524" size="1.27" layer="51" ratio="10" rot="R90">1</text>
+<text x="-3.302" y="-1.524" size="1.27" layer="51" ratio="10" rot="R90">2</text>
+<text x="4.572" y="0.508" size="1.27" layer="51" ratio="10" rot="R90">3</text>
+<text x="-3.302" y="0.508" size="1.27" layer="51" ratio="10" rot="R90">4</text>
+<smd name="P$1" x="3.95" y="-2.25" dx="1.5" dy="1.4" layer="1" rot="R180"/>
+<smd name="P$2" x="-3.95" y="-2.25" dx="1.5" dy="1.4" layer="1" rot="R180"/>
+<smd name="P$3" x="3.95" y="2.25" dx="1.5" dy="1.4" layer="1" rot="R180"/>
+<smd name="P$4" x="-3.95" y="2.25" dx="1.5" dy="1.4" layer="1" rot="R180"/>
+</package>
+</packages>
+</library>
 </libraries>
 <attributes>
 </attributes>
@@ -587,7 +642,7 @@ WR-COM_USB_Micro Type B_Vertical_THT Micro Type B Vertical THT- Tape &amp; Reel 
 <class number="0" name="default" width="0" drill="0">
 </class>
 </classes>
-<designrules name="multi_pcb">
+<designrules name="multi_pcb *">
 <description language="de">&lt;b&gt;EAGLE Design Rules&lt;/b&gt;
 &lt;p&gt;
 Design Regel Lötstopmaske wird über die Vias gelegt für Multi pcb</description>
@@ -640,8 +695,8 @@ Design Regel Lötstopmaske wird über die Vias gelegt für Multi pcb</descriptio
 <param name="psElongationOffset" value="100"/>
 <param name="mvStopFrame" value="1"/>
 <param name="mvCreamFrame" value="0"/>
-<param name="mlMinStopFrame" value="3mil"/>
-<param name="mlMaxStopFrame" value="11mil"/>
+<param name="mlMinStopFrame" value="1mil"/>
+<param name="mlMaxStopFrame" value="2mil"/>
 <param name="mlMinCreamFrame" value="0mil"/>
 <param name="mlMaxCreamFrame" value="0mil"/>
 <param name="mlViaStopLimit" value="6mil"/>
@@ -812,7 +867,11 @@ Design Regel Lötstopmaske wird über die Vias gelegt für Multi pcb</descriptio
 <attribute name="NAME" x="9.86521875" y="4.1351" size="1.27" layer="25" font="vector" ratio="13" rot="SR270"/>
 <attribute name="VALUE" x="0.7894" y="5.109" size="1.27" layer="27" font="vector" ratio="13" rot="SR0"/>
 </element>
-<element name="F1" library="fuse" package="FUSE_1206" value="FUSE" x="14.224" y="2.2225"/>
+<element name="F1" library="fuse" package="FUSE_1206" value="FUSE" x="14.224" y="2.2225" smashed="yes">
+<attribute name="NAME" x="13.335" y="3.3655" size="1.27" layer="25"/>
+<attribute name="VALUE" x="12.192" y="0.0635" size="1.27" layer="27"/>
+</element>
+<element name="U$1" library="switch-omron" package="B3FS-1002" value="B3FS-1002" x="10.668" y="25.3365" rot="R180"/>
 </elements>
 <signals>
 <signal name="GND">
@@ -835,26 +894,18 @@ Design Regel Lötstopmaske wird über die Vias gelegt für Multi pcb</descriptio
 <wire x1="40.2381" y1="16.804" x2="43.013" y2="16.804" width="0.4064" layer="16"/>
 <wire x1="43.013" y1="16.804" x2="43.7515" y2="16.0655" width="0.4064" layer="16"/>
 <wire x1="50.1015" y1="7.239" x2="50.038" y2="7.239" width="0.6096" layer="16"/>
-<wire x1="31.6529" y1="16.004" x2="33.8455" y2="16.131" width="0.4064" layer="16"/>
-<wire x1="33.8455" y1="16.131" x2="33.8455" y2="16.129" width="0.4064" layer="16"/>
-<wire x1="33.8455" y1="16.129" x2="33.9725" y2="16.129" width="0.4064" layer="16"/>
-<wire x1="33.9725" y1="16.129" x2="33.9725" y2="16.8275" width="0.4064" layer="16"/>
-<wire x1="33.9725" y1="16.8275" x2="33.9725" y2="17.4625" width="0.4064" layer="16"/>
+<wire x1="31.6529" y1="16.004" x2="33.0835" y2="16.004" width="0.4064" layer="16"/>
+<wire x1="33.0835" y1="16.004" x2="33.0835" y2="16.002" width="0.4064" layer="16"/>
+<wire x1="33.0835" y1="16.002" x2="33.2105" y2="16.129" width="0.4064" layer="16"/>
+<wire x1="33.2105" y1="16.129" x2="33.2105" y2="17.6295" width="0.4064" layer="16"/>
 <wire x1="31.8135" y1="17.604" x2="31.8135" y2="17.653" width="0.4064" layer="16"/>
 <wire x1="31.8135" y1="17.604" x2="31.6529" y2="17.604" width="0.4064" layer="16"/>
-<wire x1="33.9725" y1="17.4625" x2="31.8135" y2="17.5895" width="0.4064" layer="16"/>
 <wire x1="31.8135" y1="17.5895" x2="31.8135" y2="17.604" width="0.4064" layer="16"/>
-<wire x1="33.9725" y1="16.8275" x2="34.036" y2="16.8275" width="0.4064" layer="16"/>
-<wire x1="34.036" y1="16.804" x2="40.2381" y2="16.804" width="0.4064" layer="16"/>
-<wire x1="34.036" y1="16.8275" x2="34.036" y2="16.804" width="0.4064" layer="16"/>
 <wire x1="43.815" y1="16.195" x2="43.815" y2="16.0655" width="0.4064" layer="16"/>
 <wire x1="43.815" y1="16.0655" x2="43.8785" y2="16.0655" width="0.4064" layer="16"/>
-<wire x1="31.6529" y1="17.604" x2="33.704" y2="17.604" width="0.3048" layer="16"/>
-<wire x1="33.704" y1="17.604" x2="33.909" y2="17.399" width="0.3048" layer="16"/>
-<wire x1="33.909" y1="17.399" x2="33.909" y2="16.891" width="0.3048" layer="16"/>
-<wire x1="33.909" y1="16.891" x2="34.036" y2="16.764" width="0.3048" layer="16"/>
-<wire x1="34.036" y1="16.764" x2="43.1165" y2="16.764" width="0.3048" layer="16"/>
-<wire x1="43.1165" y1="16.764" x2="43.4975" y2="16.383" width="0.3048" layer="16"/>
+<wire x1="31.6529" y1="17.604" x2="32.3705" y2="17.5405" width="0.3048" layer="16"/>
+<wire x1="32.3705" y1="17.5405" x2="31.877" y2="17.5895" width="0.3048" layer="16"/>
+<wire x1="31.877" y1="17.5895" x2="33.274" y2="17.5895" width="0.3048" layer="16"/>
 <wire x1="43.561" y1="16.383" x2="43.4975" y2="16.383" width="0.3048" layer="16"/>
 <wire x1="43.8785" y1="16.0655" x2="43.561" y2="16.383" width="0.3048" layer="16"/>
 <wire x1="49.2125" y1="14.3535" x2="49.2125" y2="14.478" width="0.6096" layer="16"/>
@@ -901,6 +952,18 @@ Design Regel Lötstopmaske wird über die Vias gelegt für Multi pcb</descriptio
 <wire x1="50.0405" y1="10.922" x2="50.0405" y2="14.3535" width="0.6096" layer="16"/>
 <wire x1="50.0405" y1="14.3535" x2="49.2125" y2="14.3535" width="0.6096" layer="16"/>
 <wire x1="7.178" y1="14.181" x2="7.178" y2="19.939" width="0.8128" layer="16"/>
+<contactref element="U$1" pad="P$2"/>
+<contactref element="U$1" pad="P$1"/>
+<wire x1="6.718" y1="27.5865" x2="2.032" y2="27.5865" width="0.6096" layer="1"/>
+<wire x1="2.032" y1="27.5865" x2="2.032" y2="24.892" width="0.6096" layer="1"/>
+<via x="2.032" y="24.892" extent="1-16" drill="0.6"/>
+<wire x1="2.032" y1="24.892" x2="2.032" y2="20.6375" width="0.6096" layer="16"/>
+<wire x1="2.032" y1="20.6375" x2="2.098" y2="19.939" width="0.6096" layer="16"/>
+<wire x1="6.718" y1="27.5865" x2="14.618" y2="27.5865" width="0.6096" layer="1"/>
+<wire x1="33.274" y1="17.5895" x2="33.2105" y2="17.6295" width="0.3048" layer="16"/>
+<wire x1="40.2381" y1="16.804" x2="37.973" y2="16.891" width="0.3048" layer="16"/>
+<wire x1="37.973" y1="16.891" x2="37.973" y2="17.653" width="0.3048" layer="16"/>
+<wire x1="37.973" y1="17.653" x2="33.2105" y2="17.6295" width="0.3048" layer="16"/>
 </signal>
 <signal name="VCC">
 <contactref element="IC1" pad="4"/>
@@ -920,8 +983,7 @@ Design Regel Lötstopmaske wird über die Vias gelegt für Multi pcb</descriptio
 <wire x1="31.612" y1="18.404" x2="31.6529" y2="18.404" width="0.4064" layer="16"/>
 <wire x1="30.353" y1="18.3515" x2="31.5595" y2="18.3515" width="0.4064" layer="16"/>
 <wire x1="27.747" y1="14.8565" x2="27.747" y2="14.351" width="0.4064" layer="16"/>
-<wire x1="28.6385" y1="15.748" x2="27.747" y2="14.8565" width="0.4064" layer="16"/>
-<wire x1="28.6385" y1="15.748" x2="30.226" y2="17.3355" width="0.4064" layer="16"/>
+<wire x1="27.747" y1="14.8565" x2="30.226" y2="17.3355" width="0.4064" layer="16"/>
 <wire x1="27.747" y1="14.29" x2="27.7495" y2="14.2875" width="0.4064" layer="16"/>
 <wire x1="27.747" y1="14.351" x2="27.747" y2="14.29" width="0.4064" layer="16"/>
 <wire x1="27.747" y1="14.285" x2="27.747" y2="10.6045" width="0.4064" layer="16"/>
@@ -947,7 +1009,6 @@ Design Regel Lötstopmaske wird über die Vias gelegt für Multi pcb</descriptio
 <wire x1="27.1145" y1="3.7465" x2="27.1145" y2="2.2225" width="0.4064" layer="16"/>
 <wire x1="27.178" y1="3.7465" x2="27.1145" y2="3.7465" width="0.4064" layer="16"/>
 <wire x1="27.6225" y1="4.191" x2="27.178" y2="3.7465" width="0.4064" layer="16"/>
-<wire x1="28.3845" y1="16.002" x2="28.6385" y2="15.748" width="0.6096" layer="16"/>
 <via x="27.1145" y="2.2225" extent="1-16" drill="0.6" shape="square"/>
 <wire x1="15.6185" y1="11.303" x2="18.4785" y2="8.763" width="0.8128" layer="16"/>
 <via x="18.4785" y="8.763" extent="1-16" drill="0.6"/>
@@ -1106,9 +1167,6 @@ Design Regel Lötstopmaske wird über die Vias gelegt für Multi pcb</descriptio
 <wire x1="45.53" y1="43.3075" x2="45.72" y2="43.4975" width="0.8128" layer="1"/>
 <wire x1="31.6529" y1="14.404" x2="32.3745" y2="14.404" width="0.3048" layer="16"/>
 <wire x1="32.3745" y1="14.404" x2="33.0835" y2="15.113" width="0.3048" layer="16"/>
-<wire x1="33.0835" y1="15.113" x2="35.306" y2="15.113" width="0.3048" layer="16"/>
-<wire x1="35.306" y1="15.113" x2="35.306" y2="15.748" width="0.3048" layer="16"/>
-<wire x1="35.306" y1="15.748" x2="35.6235" y2="28.0035" width="0.3048" layer="1"/>
 <wire x1="35.6235" y1="28.0035" x2="37.211" y2="29.464" width="0.3048" layer="1"/>
 <wire x1="37.211" y1="29.464" x2="42.8625" y2="29.464" width="0.3048" layer="1"/>
 <wire x1="42.8625" y1="29.464" x2="44.958" y2="31.5595" width="0.3048" layer="1"/>
@@ -1122,7 +1180,9 @@ Design Regel Lötstopmaske wird über die Vias gelegt für Multi pcb</descriptio
 <wire x1="45.53" y1="43.4335" x2="45.53" y2="43.38" width="0.3048" layer="1"/>
 <wire x1="45.593" y1="41.5925" x2="45.593" y2="43.3705" width="0.3048" layer="1"/>
 <wire x1="45.593" y1="43.3705" x2="45.53" y2="43.4335" width="0.3048" layer="1"/>
-<via x="35.306" y="15.748" extent="1-16" drill="0.6" shape="square"/>
+<wire x1="33.0835" y1="15.113" x2="34.544" y2="16.256" width="0.3048" layer="16"/>
+<via x="34.544" y="16.256" extent="1-16" drill="0.6"/>
+<wire x1="34.544" y1="16.256" x2="35.6235" y2="28.0035" width="0.3048" layer="1"/>
 </signal>
 <signal name="N$15">
 <contactref element="IC1" pad="17"/>
@@ -1486,12 +1546,12 @@ Design Regel Lötstopmaske wird über die Vias gelegt für Multi pcb</descriptio
 <signal name="N$1">
 <contactref element="R1" pad="1"/>
 <contactref element="IC1" pad="23"/>
-<wire x1="40.2381" y1="15.204" x2="40.2106" y2="15.1765" width="0.3048" layer="16"/>
-<wire x1="40.2106" y1="15.1765" x2="36.8935" y2="15.1765" width="0.3048" layer="16"/>
-<via x="36.8935" y="15.1765" extent="1-16" drill="0.6"/>
-<wire x1="36.8935" y1="15.1765" x2="33.909" y2="12.192" width="0.3048" layer="1"/>
-<wire x1="33.909" y1="12.192" x2="33.909" y2="9.398" width="0.3048" layer="1"/>
-<wire x1="33.909" y1="9.398" x2="20.8915" y2="9.398" width="0.3048" layer="1"/>
+<wire x1="40.2381" y1="15.204" x2="39.1311" y2="15.24" width="0.3048" layer="16"/>
+<wire x1="39.1311" y1="15.24" x2="36.322" y2="16.7005" width="0.3048" layer="16"/>
+<via x="36.322" y="16.7005" extent="1-16" drill="0.6"/>
+<wire x1="36.322" y1="16.7005" x2="33.909" y2="12.192" width="0.3048" layer="1"/>
+<wire x1="33.909" y1="12.192" x2="32.1945" y2="9.3345" width="0.3048" layer="1"/>
+<wire x1="32.1945" y1="9.3345" x2="20.8915" y2="9.398" width="0.3048" layer="1"/>
 <via x="20.8915" y="9.398" extent="1-16" drill="0.6"/>
 <wire x1="20.8915" y1="9.398" x2="15.555" y2="14.7345" width="0.3048" layer="16"/>
 <wire x1="15.555" y1="14.7345" x2="15.555" y2="16.8275" width="0.3048" layer="16"/>
@@ -1548,6 +1608,25 @@ Design Regel Lötstopmaske wird über die Vias gelegt für Multi pcb</descriptio
 <wire x1="6.604" y1="3.0185" x2="6.604" y2="0.889" width="0.8128" layer="1"/>
 <wire x1="6.604" y1="0.889" x2="12.802" y2="0.889" width="0.8128" layer="1"/>
 <wire x1="12.802" y1="0.889" x2="12.802" y2="2.2225" width="0.8128" layer="1"/>
+</signal>
+<signal name="N$6">
+<contactref element="IC1" pad="27"/>
+<contactref element="U$1" pad="P$4"/>
+<contactref element="U$1" pad="P$3"/>
+<wire x1="14.618" y1="23.0865" x2="6.718" y2="23.0865" width="0.6096" layer="1"/>
+<wire x1="14.618" y1="23.0865" x2="14.6455" y2="23.114" width="0.3048" layer="1"/>
+<wire x1="14.6455" y1="23.114" x2="22.1615" y2="23.114" width="0.3048" layer="1"/>
+<wire x1="22.1615" y1="23.114" x2="22.225" y2="23.0505" width="0.3048" layer="1"/>
+<wire x1="22.225" y1="23.0505" x2="22.225" y2="10.668" width="0.3048" layer="1"/>
+<wire x1="22.225" y1="10.668" x2="19.558" y2="10.668" width="0.3048" layer="1"/>
+<wire x1="19.558" y1="10.668" x2="19.558" y2="7.62" width="0.3048" layer="1"/>
+<wire x1="19.558" y1="7.62" x2="19.558" y2="7.5565" width="0.3048" layer="1"/>
+<wire x1="19.558" y1="7.62" x2="19.6215" y2="7.5565" width="0.3048" layer="1"/>
+<wire x1="19.6215" y1="7.5565" x2="32.004" y2="7.5565" width="0.3048" layer="1"/>
+<wire x1="32.004" y1="7.5565" x2="36.7665" y2="15.24" width="0.3048" layer="1"/>
+<via x="36.7665" y="15.24" extent="1-16" drill="0.6"/>
+<wire x1="36.7665" y1="15.24" x2="37.084" y2="14.0335" width="0.3048" layer="16"/>
+<wire x1="37.084" y1="14.0335" x2="37.1455" y2="12.9114" width="0.3048" layer="16"/>
 </signal>
 </signals>
 </board>
