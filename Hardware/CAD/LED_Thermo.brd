@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="7.7.0">
+<eagle version="7.1.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -35,9 +35,9 @@
 <layer number="25" name="tNames" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="26" name="bNames" color="7" fill="1" visible="yes" active="yes"/>
 <layer number="27" name="tValues" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="28" name="bValues" color="7" fill="1" visible="yes" active="yes"/>
-<layer number="29" name="tStop" color="7" fill="3" visible="yes" active="yes"/>
-<layer number="30" name="bStop" color="7" fill="6" visible="yes" active="yes"/>
+<layer number="28" name="bValues" color="7" fill="1" visible="no" active="yes"/>
+<layer number="29" name="tStop" color="7" fill="3" visible="no" active="yes"/>
+<layer number="30" name="bStop" color="7" fill="6" visible="no" active="yes"/>
 <layer number="31" name="tCream" color="7" fill="4" visible="no" active="yes"/>
 <layer number="32" name="bCream" color="7" fill="5" visible="no" active="yes"/>
 <layer number="33" name="tFinish" color="6" fill="3" visible="no" active="yes"/>
@@ -138,9 +138,12 @@
 <wire x1="54.7855" y1="-0.0255" x2="54.849" y2="54.953" width="0" layer="20"/>
 <wire x1="54.849" y1="54.953" x2="-0.0585" y2="54.953" width="0" layer="20"/>
 <wire x1="-0.0585" y1="54.953" x2="0.005" y2="-0.0255" width="0" layer="20"/>
-<text x="1.0795" y="52.6415" size="1.016" layer="25">DARC OV S09 V3.3</text>
-<text x="1.016" y="50.2285" size="1.016" layer="25">http://s09.sax.de/</text>
+<text x="30.9245" y="24.5745" size="1.778" layer="25">DARC OV S09 V3.3</text>
+<text x="30.861" y="21.7805" size="1.778" layer="25">http://s09.sax.de/</text>
 <circle x="53.7845" y="1.016" radius="0.26940625" width="0.4064" layer="21"/>
+<text x="26.2255" y="3.3655" size="1.778" layer="25">RS-485</text>
+<text x="37.465" y="5.588" size="1.778" layer="25">A</text>
+<text x="42.799" y="5.715" size="1.778" layer="25">B</text>
 </plain>
 <libraries>
 <library name="avr-4_2">
@@ -936,8 +939,7 @@ Design Regel Lötstopmaske wird über die Vias gelegt für Multi pcb</descriptio
 <attribute name="VALUE" x="44.069" y="33.8455" size="1.27" layer="27" ratio="10"/>
 </element>
 <element name="JP1" library="atmel" package="AVR-ISP-6" value="AVR-ISP-6" x="51.308" y="4.699" smashed="yes" rot="R90">
-<attribute name="NAME" x="46.863" y="7.493" size="0.8128" layer="25" ratio="10"/>
-<attribute name="VALUE" x="47.6885" y="7.239" size="0.8128" layer="27" ratio="12" rot="R270"/>
+<attribute name="NAME" x="49.9745" y="10.0965" size="1.27" layer="25" ratio="10"/>
 </element>
 <element name="C7" library="rcl" package="C0805" value="100nF" x="43.815" y="17.145" smashed="yes" rot="MR90">
 <attribute name="NAME" x="44.7675" y="19.304" size="1.27" layer="26" rot="MR0"/>
@@ -960,11 +962,9 @@ Design Regel Lötstopmaske wird über die Vias gelegt für Multi pcb</descriptio
 <attribute name="VALUE" x="27.94" y="8.509" size="0.8128" layer="28" rot="MR90"/>
 </element>
 <element name="485B" library="wirepad" package="2,54/1,0" value="B(-)" x="43.561" y="3.683" smashed="yes">
-<attribute name="NAME" x="41.9735" y="1.0795" size="1.016" layer="25" ratio="10"/>
 <attribute name="VALUE" x="43.561" y="4.683" size="0.0254" layer="27"/>
 </element>
 <element name="485A" library="wirepad" package="2,54/1,0" value="(+)" x="38.4175" y="3.683" smashed="yes">
-<attribute name="NAME" x="36.957" y="1.2065" size="1.016" layer="25" ratio="10"/>
 <attribute name="VALUE" x="38.4175" y="4.683" size="0.0254" layer="27"/>
 </element>
 <element name="LED5" library="led" package="LED3MM" value="" x="24.35" y="52.3" smashed="yes">
@@ -977,26 +977,16 @@ Design Regel Lötstopmaske wird über die Vias gelegt für Multi pcb</descriptio
 <attribute name="VALUE" x="35.405" y="32.349" size="1.27" layer="27" ratio="10"/>
 </element>
 <element name="JP2" library="jumper" package="JP2" value="Opt. 1 Wirer" x="43.7515" y="11.557" smashed="yes" rot="R180">
-<attribute name="NAME" x="48.7045" y="10.6045" size="1.016" layer="25" ratio="10" rot="R90"/>
-<attribute name="VALUE" x="46.101" y="10.0965" size="0.6096" layer="27" ratio="10" rot="R180"/>
+<attribute name="NAME" x="47.3075" y="9.2075" size="1.27" layer="25" ratio="10" rot="R180"/>
 </element>
 <element name="R11" library="rcl" package="M0805" value="4.7k" x="49.2125" y="15.3035" rot="MR90"/>
 <element name="R3" library="rcl" package="M0805" value="1.5k" x="10.16" y="10.287" smashed="yes" rot="MR0">
 <attribute name="NAME" x="11.176" y="11.303" size="1.27" layer="26" rot="MR0"/>
 <attribute name="VALUE" x="7.9375" y="11.557" size="1.016" layer="28" rot="MR270"/>
 </element>
-<element name="JP3" library="InputOutputIO (rev19b)" package="614105150721" value="USB_Micro" x="5.2705" y="3.2385" smashed="yes" rot="R180">
-<attribute name="NAME" x="9.86521875" y="4.5796" size="1.016" layer="25" font="vector" ratio="13" rot="SR270"/>
-<attribute name="VALUE" x="1.4879" y="5.4265" size="1.016" layer="27" font="vector" ratio="13" rot="SR0"/>
-</element>
-<element name="F1" library="fuse" package="FUSE_1206" value="FUSE" x="14.224" y="2.2225" smashed="yes">
-<attribute name="NAME" x="13.335" y="3.3655" size="1.27" layer="25"/>
-<attribute name="VALUE" x="13.208" y="0.127" size="1.016" layer="27"/>
-</element>
-<element name="SW1" library="switch-omron" package="B3FS-1002" value="B3FS-1002" x="10.668" y="25.3365" smashed="yes" rot="R180">
-<attribute name="NAME" x="4.445" y="26.924" size="1.27" layer="25" ratio="10" rot="R270"/>
-<attribute name="VALUE" x="13.6525" y="21.7805" size="1.016" layer="27" ratio="10" rot="R180"/>
-</element>
+<element name="JP3" library="InputOutputIO (rev19b)" package="614105150721" value="USB_Micro" x="5.2705" y="3.2385" smashed="yes" rot="R180"/>
+<element name="F1" library="fuse" package="FUSE_1206" value="FUSE" x="14.224" y="2.2225" smashed="yes"/>
+<element name="SW1" library="switch-omron" package="B3FS-1002" value="B3FS-1002" x="10.668" y="25.3365" smashed="yes" rot="R180"/>
 <element name="IC3" library="IP4220CZ6" package="SOT95P275X110-6N" value="IP4220CZ6" x="4.0005" y="14.732" smashed="yes" rot="MR180">
 <attribute name="DESCRIPTION" value=" Integrated circuit: ESD protection; SOT457 " x="4.0005" y="14.732" size="1.778" layer="28" rot="MR180" display="off"/>
 <attribute name="AVAILABILITY" value="Unavailable" x="4.0005" y="14.732" size="1.778" layer="28" rot="MR180" display="off"/>
@@ -1012,8 +1002,6 @@ Design Regel Lötstopmaske wird über die Vias gelegt für Multi pcb</descriptio
 <attribute name="MF" value="" x="24.3205" y="19.7485" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="OC_NEWARK" value="unknown" x="24.3205" y="19.7485" size="1.778" layer="27" rot="R270" display="off"/>
 <attribute name="OC_FARNELL" value="unknown" x="24.3205" y="19.7485" size="1.778" layer="27" rot="R270" display="off"/>
-<attribute name="NAME" x="22.5171" y="27.2034" size="1.27" layer="25" ratio="10" rot="R180"/>
-<attribute name="VALUE" x="20.701" y="12.5857" size="1.27" layer="27" ratio="10"/>
 </element>
 <element name="C1" library="rcl" package="C0805" value="22pF" x="18.923" y="17.145" smashed="yes" rot="MR180">
 <attribute name="NAME" x="18.161" y="19.177" size="0.8128" layer="26" rot="MR180"/>
