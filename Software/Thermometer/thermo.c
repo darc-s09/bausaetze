@@ -1,8 +1,9 @@
 /*
   Thermometer.c
 
-  Created: 12.11.2018 19:36:08
-  Author: uwe
+  Created: 01.12.2019 14:00:00
+  Author:  Uwe Liedtke und Joerg Wunsch
+  Projekt: Temperaturanzeige und Wuerfel
   fuer Atmega 168A
  */
 
@@ -12,7 +13,6 @@
 
 int main(void)
 {
-    // uint8_t temp = mysensors_command_t.C_INTERNAL;
     uint8_t  ztemp = 0, templ = 0,temph = 0, drehcounter = 0, drehaktiv = 0;
     uint16_t temperaturdaten = 0;
     LED_HELLIGKEIT = 0;
@@ -20,7 +20,8 @@ int main(void)
     TIMER_init();                       // Timer Init
     UART_init();                        // INIT 485
     sei();                              // INTERRUPTS GLOBAL AN
-
+	
+    //DEBUG
     //LED_TASK[1][0]=1; // LED 1 AN
     //LED_TASK[3][0]=1; // LED 3 AN
     /*
@@ -31,65 +32,66 @@ int main(void)
 
     }
     */
-    putstring("Tempampel Ver 0.2");         // Ausgabe Versionstext Text
+    
+	putstring("Tempanzeige und Wuerfel Ver 0.1");         // Ausgabe Versionstext Text
+	
     while(1)
     {
 
-
-        usart_getc_intr();                          // CHECK und Verarbeitung des UART Buffers
-        if(qbi(CONTROLLWORD_VOLL,UFLAGS))       // wenn Puffer voll beginnt Bearbeitung
+        usart_getc_intr();                      // CHECK und Verarbeitung des UART Buffers
+        if(qbi(CONTROLLWORD_VOLL,UFLAGS))       // Daten im Puffer > Run
             {
-            cbi(CONTROLLWORD_VOLL,UFLAGS);      // Ruecksetzung des FLAG nach Abarbeitung des Eingangspuffer
-            if(CONTROLLWORD[1] == ADR485)       // Abarbeitung beginnen wenn Adresse matcht
+            cbi(CONTROLLWORD_VOLL,UFLAGS);      // Clear FLAG "RUN"
+            if(CONTROLLWORD[1] == ADR485)       // Check Richtige Adresse
                 {
-                switch(CONTROLLWORD[2])     // Abarbeitung der eingegebene Komandos
+                switch(CONTROLLWORD[2])         // Abarbeitung switch
                     {
-                    case 0:                 // Ausgabe Version der Software auf RS485
-                    if(CONTROLLWORD[4] == ADR485)   // Pruefnummer Adresse des Devices muss gesetzt sein um INIT zu starten
+                    case 0:                     // Ausgabe Software Version
+                    if(CONTROLLWORD[4] == ADR485) // CRC CHECK 
                         {
-                        putstring("CNTR Version 0.2");          // Ausgabe Versionstext Text
-                        UART_SendByte(10);                      // Ausgabe Return
-                        }
+                        putstring("CNTR Version 0.2");   // Ausgabe Versionstext Text
+                        UART_SendByte(10);               // Ausgabe Return
+                        }                                // DEBUG
                     break; //END CASE0
 
-                    case 1:                 // Ausgabe Version der Software auf RS485
-                    if(CONTROLLWORD[4] == ADR485)   // Pruefnummer Adresse des Devices muss gesetzt sein um INIT zu starten
+                    case 1:
+                    if(CONTROLLWORD[4] == ADR485)       // CRC CHECK
                         {
-                        putstring("LED AN");            // Ausgabe Versionstext Text
-                        UART_SendByte(10);                      // Ausgabe Return
+                        putstring("LED AN");            // Ausgabe Text
+                        UART_SendByte(10);              // Ausgabe Return
                         LED_TASK[CONTROLLWORD[3]][0]=1; // LED  AN
                         }
                     break; //END CASE1
 
-                    case 2:                 // Ausgabe Version der Software auf RS485
-                    if(CONTROLLWORD[4] == ADR485)   // Pruefnummer Adresse des Devices muss gesetzt sein um INIT zu starten
+                    case 2:               
+                    if(CONTROLLWORD[4] == ADR485)       // CRC CHECK
                         {
-                        putstring("LED AUS");           // Ausgabe Versionstext Text
-                        UART_SendByte(10);                      // Ausgabe Return
+                        putstring("LED AUS");           // Ausgabe Text
+                        UART_SendByte(10);              // Ausgabe Return
                         LED_TASK[CONTROLLWORD[3]][0]=0; // LED  AN
                         }
                     break; //END CASE2
 
-                    case 3:                 // Ausgabe Version der Software auf RS485
-                    if(CONTROLLWORD[4] == ADR485)   // Pruefnummer Adresse des Devices muss gesetzt sein um INIT zu starten
+                    case 3: 
+                    if(CONTROLLWORD[4] == ADR485)       // CRC CHECK
                         {
                         ztemp = zufall;
-                        UART_SendByte(10);                      // Ausgabe Return
-                        putstring("Wuerfel: ");          // Ausgabe Versionstext Text
+                        UART_SendByte(10);              // Ausgabe Return
+                        putstring("Wuerfel: ");         // Ausgabe Text
                         errorcodeu(ztemp);
                         wuerfel(ztemp);
-                        UART_SendByte(10);                      // Ausgabe Return
-                        putstring("Wuerfel Test");           // Ausgabe Versionstext Text
-                        UART_SendByte(10);                      // Ausgabe Return
+                        UART_SendByte(10);              // Ausgabe Return
+                        putstring("Wuerfel Test");      // Ausgabe Text
+                        UART_SendByte(10);              // Ausgabe Return
                         }
                     break; //END CASE3
 
-                    case 4:                 // Ausgabe Version der Software auf RS485
-                    if(CONTROLLWORD[4] == ADR485)   // Pruefnummer Adresse des Devices muss gesetzt sein um INIT zu starten
+                    case 4:                             
+                    if(CONTROLLWORD[4] == ADR485)      // CRC CHECK
                     {
-                        ztemp = zufall;
-                        UART_SendByte(10);                      // Ausgabe Return
-                        putstring("drehen an: ");           // Ausgabe Versionstext Text
+                        ztemp = zufall;                // Zufahlszahl
+                        UART_SendByte(10);             // Ausgabe Return
+                        putstring("drehen an: ");      // Ausgabe Versionstext Text
                         drehaktiv = 5;
                     }
                     break; //END CASE3
@@ -102,10 +104,13 @@ int main(void)
 
         if (counter == 50 )
             {
-            sbi(6,ADCSRA);                          // startet den Analogdigitalwandler, also die Messung des internen Temperatursensors
-            counter++;                              // Damit die Routine nur einmal durchlaufen wird
+            sbi(6,ADCSRA);                          // startet den Analogdigitalwandler int. Temp Sensor
+            counter++;                              // counter hoch um doppel Messung zu unterbinden
             }
 
+/* Aktion auf dem Wuerfel beginnt
+Beschreibung folgt
+*/
         if(counter == 64 )
             {
             if (drehaktiv)
@@ -123,24 +128,33 @@ int main(void)
 
 
             }
-
+/*
+DEBUG LED 19 blinkt 
+*/
         if (counter < 128 )
             {
-            LED_TASK[19][0]=1; // blinken der LED 19 fuer Test
+            LED_TASK[19][0]=1;
             }
         else
             {
-            LED_TASK[19][0]=0;  // blinken der LED 19 fuer Test
+            LED_TASK[19][0]=0;
             }
 
+/*
+Auslesen der Temperaturdaten aus den AD Wandler 
+und die Daten schreiben in die Variable 
+*/
         if (counter == 70 )
             {
-            templ = ADCL;                           // liest die Temperaturdaten aus dem unteren Byte
-            temph = ADCH;                           // liest die Daten aus den unteren Temperaturbyte
-            temperaturdaten = HILO(temph,templ);    // schreibt die Daten in eine 16 BIT Variable
+            templ = ADCL;                          
+            temph = ADCH;                          
+            temperaturdaten = HILO(temph,templ); 
             counter++;
             }
 
+/*
+Schreibt die Temperaturdaten auf die UART DEBUG
+*/
 
         if (counter == 100)
             {
@@ -151,7 +165,7 @@ int main(void)
             counter++;
             }
 
-            /*
+            /* DEBUG
             for (uint8_t step = 0; step <= 9 ; step++)  // Fuer Testzwecke werden die Daten als Binaere Zahl auf die LED`s 1 bis 10 geschrieben.
                 {
 
@@ -167,6 +181,10 @@ int main(void)
 
             */
 
+
+/*
+Ausgabe der Temperaturdaten auf das LED Band
+*/ 
             if (counter == 200)
                 {
                 ledband(temperaturdaten,330);
@@ -179,7 +197,7 @@ int main(void)
 
 
 // Hier beginnen die Funktionen
-
+// Weiterbearbeitung folgt 01.11.2019
 
 /***************************************************************************************
 Steuerung des LED Multiplexers

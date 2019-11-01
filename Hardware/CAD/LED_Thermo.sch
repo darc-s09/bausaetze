@@ -6,7 +6,7 @@
 <setting alwaysvectorfont="no"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.1" unitdist="inch" unit="inch" style="lines" multiple="1" display="no" altdistance="0.01" altunitdist="inch" altunit="inch"/>
+<grid distance="25" unitdist="mil" unit="mil" style="lines" multiple="1" display="no" altdistance="2.5" altunitdist="mil" altunit="mil"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="no" active="no"/>
 <layer number="2" name="Route2" color="1" fill="3" visible="no" active="no"/>
@@ -9618,9 +9618,9 @@ Source: 008-0260-0_E.pdf</description>
 <sheets>
 <sheet>
 <plain>
-<text x="137.16" y="160.02" size="1.778" layer="96">MEGA168P</text>
+<text x="137.16" y="156.845" size="1.778" layer="96">MEGA168P</text>
 <text x="158.75" y="171.45" size="1.778" layer="96">+</text>
-<text x="254" y="7.62" size="2.54" layer="94">V3.3</text>
+<text x="254" y="7.62" size="2.54" layer="94">V3.4</text>
 <text x="100.33" y="175.26" size="2.54" layer="94">JP2 für zusätzlichen 1Wirer Tempsensor</text>
 </plain>
 <instances>
@@ -9672,7 +9672,7 @@ Source: 008-0260-0_E.pdf</description>
 <instance part="LED15" gate="G$1" x="234.95" y="127"/>
 <instance part="JP2" gate="1" x="171.45" y="172.72"/>
 <instance part="GND9" gate="1" x="158.75" y="170.18" rot="R270"/>
-<instance part="R11" gate="G$1" x="165.1" y="162.56" rot="R270"/>
+<instance part="R11" gate="G$1" x="162.56" y="160.02"/>
 <instance part="R3" gate="G$1" x="67.31" y="129.54" rot="R90"/>
 <instance part="JP3" gate="G$1" x="12.065" y="38.735" rot="R180"/>
 <instance part="GND3" gate="1" x="19.685" y="10.795"/>
@@ -9736,13 +9736,9 @@ Source: 008-0260-0_E.pdf</description>
 <junction x="86.36" y="135.255"/>
 </segment>
 <segment>
-<wire x1="161.29" y1="170.18" x2="165.1" y2="170.18" width="0.1524" layer="91"/>
-<wire x1="165.1" y1="170.18" x2="168.91" y2="170.18" width="0.1524" layer="91"/>
-<wire x1="165.1" y1="167.64" x2="165.1" y2="170.18" width="0.1524" layer="91"/>
-<junction x="165.1" y="170.18"/>
+<wire x1="161.29" y1="170.18" x2="168.91" y2="170.18" width="0.1524" layer="91"/>
 <pinref part="GND9" gate="1" pin="GND"/>
 <pinref part="JP2" gate="1" pin="1"/>
-<pinref part="R11" gate="G$1" pin="1"/>
 </segment>
 <segment>
 <pinref part="JP3" gate="G$1" pin="SHIELD"/>
@@ -9784,7 +9780,8 @@ Source: 008-0260-0_E.pdf</description>
 <wire x1="87.63" y1="114.3" x2="87.63" y2="118.11" width="0.1524" layer="91"/>
 <wire x1="93.98" y1="114.3" x2="93.98" y2="118.11" width="0.1524" layer="91"/>
 <wire x1="77.47" y1="114.3" x2="77.47" y2="118.11" width="0.1524" layer="91"/>
-<wire x1="67.31" y1="118.11" x2="77.47" y2="118.11" width="0.1524" layer="91"/>
+<wire x1="67.31" y1="118.11" x2="71.12" y2="118.11" width="0.1524" layer="91"/>
+<wire x1="71.12" y1="118.11" x2="77.47" y2="118.11" width="0.1524" layer="91"/>
 <wire x1="67.31" y1="124.46" x2="67.31" y2="118.11" width="0.1524" layer="91"/>
 <junction x="107.95" y="116.84"/>
 <junction x="107.95" y="114.3"/>
@@ -9807,6 +9804,10 @@ Source: 008-0260-0_E.pdf</description>
 <wire x1="14.605" y1="90.17" x2="10.16" y2="90.17" width="0.1524" layer="91"/>
 <wire x1="10.16" y1="90.17" x2="10.16" y2="118.11" width="0.1524" layer="91"/>
 <wire x1="10.16" y1="118.11" x2="67.31" y2="118.11" width="0.1524" layer="91"/>
+<pinref part="R11" gate="G$1" pin="1"/>
+<wire x1="157.48" y1="160.02" x2="71.12" y2="160.02" width="0.1524" layer="91"/>
+<wire x1="71.12" y1="160.02" x2="71.12" y2="118.11" width="0.1524" layer="91"/>
+<junction x="71.12" y="118.11"/>
 </segment>
 </net>
 <net name="N$2" class="0">
@@ -10171,11 +10172,11 @@ Source: 008-0260-0_E.pdf</description>
 <segment>
 <wire x1="172.72" y1="165.1" x2="171.45" y2="165.1" width="0.1524" layer="91"/>
 <wire x1="171.45" y1="165.1" x2="171.45" y2="170.18" width="0.1524" layer="91"/>
-<wire x1="172.72" y1="157.48" x2="172.72" y2="165.1" width="0.1524" layer="91"/>
-<wire x1="165.1" y1="157.48" x2="172.72" y2="157.48" width="0.1524" layer="91"/>
+<wire x1="172.72" y1="160.02" x2="172.72" y2="165.1" width="0.1524" layer="91"/>
+<wire x1="167.64" y1="160.02" x2="172.72" y2="160.02" width="0.1524" layer="91"/>
 <wire x1="168.91" y1="139.7" x2="172.72" y2="139.7" width="0.1524" layer="91"/>
-<wire x1="172.72" y1="139.7" x2="172.72" y2="157.48" width="0.1524" layer="91"/>
-<junction x="172.72" y="157.48"/>
+<wire x1="172.72" y1="139.7" x2="172.72" y2="160.02" width="0.1524" layer="91"/>
+<junction x="172.72" y="160.02"/>
 <pinref part="JP2" gate="1" pin="2"/>
 <pinref part="R11" gate="G$1" pin="2"/>
 <pinref part="IC1" gate="1" pin="PC2(ADC2/PCINT10)"/>

@@ -1,0 +1,28 @@
+PC0 = USB D-
+PC1 = USB D+
+PC2 = 1 Wirer DATA 4,7K Widerstand geht auf Masse, in der Rev. 3.3 falsch?
+PC3 = 1 Wirer Power 
+PC4 = Taster Start Wuerfel, Eingang mit internen Pull_UP
+PC5 = RX/TX Umschaltung fuer RS485 HI=TX LOW=RX
+PC6 = RESET
+PC7 = NC
+
+PD0 = RXD (485)
+PD1 = TXD (485)
+PD2 = Anode LED  5,10,15
+PD3 = Anode LED  4,9,14,19
+PD4 = Anode LED  3,8,13,18
+PD5 = Anode LED  2,7,12,17
+PD6 = Anode LED  1,6,11,16
+PD7 = Kathode LED 16,17,18,19
+
+PB0 = Kathode LED 11,12,13,14,15 
+PB1 = Kathode LED  6, 7, 8, 9,10
+PB2 = Kathode LED  1, 2, 3, 4, 5
+PB3 = MOSI / Jumper Konfig
+PB4 = MISO / Jumper Konfig 
+PB5 = SCK  / Jumper Konfig
+PB6 = Quarz
+PB7 = Quarz 	
+
+Schaltung und Board angepasst, noch keine neuen Gerberdateien erzeugt.
