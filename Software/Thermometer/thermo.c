@@ -49,7 +49,7 @@ int main(void)
                     case 0:                     // Ausgabe Software Version
                     if(CONTROLLWORD[4] == ADR485) // CRC CHECK 
                         {
-                        putstring("CNTR Version 0.2");   // Ausgabe Versionstext Text
+                        putstring("Version 0.1");   // Ausgabe Versionstext Text
                         UART_SendByte(10);               // Ausgabe Return
                         }                                // DEBUG
                     break; //END CASE0
@@ -68,7 +68,7 @@ int main(void)
                         {
                         putstring("LED AUS");           // Ausgabe Text
                         UART_SendByte(10);              // Ausgabe Return
-                        LED_TASK[CONTROLLWORD[3]][0]=0; // LED  AN
+                        LED_TASK[CONTROLLWORD[3]][0]=0; // LED  AUS
                         }
                     break; //END CASE2
 
@@ -78,7 +78,7 @@ int main(void)
                         ztemp = zufall;
                         UART_SendByte(10);              // Ausgabe Return
                         putstring("Wuerfel: ");         // Ausgabe Text
-                        errorcodeu(ztemp);
+                        errorcodeu(ztemp);              // Ausgabe Zufallszahl
                         wuerfel(ztemp);
                         UART_SendByte(10);              // Ausgabe Return
                         putstring("Wuerfel Test");      // Ausgabe Text
@@ -109,7 +109,8 @@ int main(void)
             }
 
 /* Aktion auf dem Wuerfel beginnt
-Beschreibung folgt
+Wuerfel LEDs blinken beim Wuerfel Start bis die endgueltige Zahl anliegt
+Test Test  
 */
         if(counter == 64 )
             {
@@ -197,7 +198,6 @@ Ausgabe der Temperaturdaten auf das LED Band
 
 
 // Hier beginnen die Funktionen
-// Weiterbearbeitung folgt 01.11.2019
 
 /***************************************************************************************
 Steuerung des LED Multiplexers
@@ -348,9 +348,9 @@ switch (wstep)
     }
 }
 
-/***************************************************************************************
+/******************************************************************************
 Ansteuerung LED Band auf Basis AD Wandler
-***************************************************************************************/
+******************************************************************************/
 
 void ledband(uint16_t tempwert, uint16_t tempset)
 {
@@ -383,9 +383,10 @@ for (uint8_t step = 0; step <= 9 ; step++)      // Zur Ansteuerung des LED Tempe
 }
 
 
-/***************************************************************************************
-Auswahl Zeilennummer
-***************************************************************************************/
+/******************************************************************************
+Ansteuerung der LED im Multiplex Verfahren
+Das Timing wird per Timer Interrupt gesteuert
+******************************************************************************/
 void zeilenwahl(uint8_t zeile)
 {
 
@@ -621,124 +622,146 @@ INIT der Ein und Ausgabeports
 
 void PORTs_init(void)
 {
-    // PORTB
-    // PORT0 = Zeile 3 (LED 11 bis 15)
-    // PORT1 = Zeile 2 (LED 6 bis 10)
-    // PORT2 = Zeile 1 (LED 1 bis 5)
+/* Belegung PORTB
+	
+PB0 = Kathode LED 11,12,13,14,15 
+PB1 = Kathode LED  6, 7, 8, 9,10
+PB2 = Kathode LED  1, 2, 3, 4, 5
+PB3 = MOSI / Jumper Konfig
+PB4 = MISO / Jumper Konfig 
+PB5 = SCK  / Jumper Konfig
+PB6 = Quarz
+PB7 = Quarz 
+Bei Init werden die PORTS PB0 bis PB2 als Ausgang gesetzt
+und die PORTS PB3 bis PB7 als Ausgang
+PULLUP Widerstaende zur Abfrage der Jumper Stellung werden im Programm gesetzt.
 
-
-
-
-    DDRB = 0b00000000;   // werden im Programm gesetzt
+*/
+    DDRB = 0b00000111;
     PORTD =0b00000000;
 
+/* Belegung PORTC
+PC0 = USB D-
+PC1 = USB D+
+PC2 = 1 Wirer DATA 4,7K Widerstand geht auf Masse, in der Rev. 3.3 falsch?
+PC3 = 1 Wirer Power 
+PC4 = Taster Start Wuerfel, Eingang mit internen Pull_UP
+PC5 = RX/TX Umschaltung fuer RS485 HI=TX LOW=RX
+PC6 = RESET
+PC7 = NC
+Alle Ports auf Eingang, bis auf PORT PC5 AUSGANG fuer DEBUG Ausgabe 
+PULLUP Widerstand vom PORT PC2,PC4 aktive
+*/
+    DDRC =  0b00100000;
+    PORTC = 0b00010100;
 
-        // PORTC
-        // PORT5 / Umschalten Senden (HIGH) / Empfangen (LOW) (485)
-        DDRC =  0b00100000;
-        PORTC = 0b00000000;
 
-    // PORT D
-    // PORT0 = RS232 RX = IN
-    // PORT1 = RS232 TX = OUT
-    // PORT2 = Spalte 5 (LED 5,10,15)
-    // PORT3 = Spalte 4 (LED 4,9,14,19)
-    // PORT4 = Spalte 3 (LED 3,8,13,18)
-    // PORT5 = Spalte 2 (LED 2,7,12,17)
-    // PORT6 = Spalte 1 (LED 1,6,11,16
-    // PORT7 =  Zeile 4 (LED 16 bis LED 19)
+/* Belegung PORTD
+PD0 = RXD (485)
+PD1 = TXD (485)
+PD2 = Anode LED  5,10,15    > Spalte
+PD3 = Anode LED  4,9,14,19  > Spalte 
+PD4 = Anode LED  3,8,13,18  > Spalte
+PD5 = Anode LED  2,7,12,17  > Spalte
+PD6 = Anode LED  1,6,11,16  > Spalte
+PD7 = Kathode LED 16,17,18,19 > Zeile
+Port PD2 bis PD7 auf Ausgang
 
+
+
+*/
     DDRD =  0b01111100;
-    PORTD = 0b01100000;
+    PORTD = 0b00000000;
 }
 
-/*****************************************************************************************
+/******************************************************************************
 TIMER INIT
-TIMER0 > nicht genutzt
+TIMER0 > Multiplexer
 TIMER1 > nicht genutzt
-TIMER2 > Fuer einen Interrupt aller XX ms
-****************************************************************************************/
+TIMER2 > Zufallsgenerator und Rucksetzen des TX Betriebes UART
+AD-Wandler > Auslesen des internen Temperatursensor 
+im Singel Conversations Modus 
+******************************************************************************/
 void TIMER_init(void)
 {
 
-    /**************** TIMER 0   *********************************/
+/************************ TIMER 0 8 BIT Zaehler  *****************************/
     TCCR0B = 0b00000001; // Teiler 1024 3,68MHZ = 259ns*8*256(8BIT) = 0,5ms
     TCCR0A = 0x00;
     OCR0A = 0;          // Output Compare Register
     OCR0B = 0;          // Output Compare Register
     TCNT0 = 0;          // counter Timer 0
-    //TIMSK0 = 0b00000001;
-    sbi(0,TIMSK0);      // Timer0 Overflow Interrupt Enable loest alle XXX ms aus
+    sbi(0,TIMSK0);      // Timer0 Overflow Interrupt Enable
 
-    /************** Timer 1 16 BIT Zaehler **************************************/
+
+/************************ Timer 1 16 BIT Zaehler *****************************/
     //TCCR1B = 0x05;    // Teiler 1024 3,68MHZ = 259ns
     //TCNT1H Zaehler HIGH Byte (8bit)
     //TCNT1L Zaehler  LOW Byte (8bit)
 
-    /*************** TIMER 2 *************************************/
+
+/************************ TIMER 2 8 BIT Zaehler ******************************/
 
     //TCCR2B = 0x07;    // Teiler 1024 3,68MHZ = 259ns*1024*256(8BIT) = 67,91ms
     TCCR2B = 0x06;      // Teiler  256 3,68MHZ = 259ns* 256*256(8BIT) = 16,97ms
     //TCCR2B = 0x05;    // Teiler  128 3,68MHZ = 259ns* 128*256(8BIT) =  8,49ms
     //TCCR2B = 0x04;    // Teiler   64 3,68MHZ =  83ns*  64*256(8BIT) =  4,248ms
     //TIMSK2 = 0x01;
-    sbi(0,TIMSK2);      // Timer0 Overflow Interrupt Enable loest alle XXX ms aus
+    sbi(0,TIMSK2);      // Timer0 Overflow Interrupt Enable
 
-    /************** Init Analog Digital Wandler, Auslesen des Temperatursensors im Singel Conversations Modus **********/
-    ADMUX = 0b11001000;  // Auswahl Temperatursensor BIT4, Internal 1.1V Voltage Reference BIT 6&7
-    //ADMUX = 0b11001110;  // Auswahl 1,1V BIT4,3,2, Internal 1.1V Voltage Reference BIT 6&7
-    ADCSRA = 0b10000101; // ADC Enable BIT 7,ADC Start Conversion BIT 6,ADC Auto Trigger Enable BIT 5, Vorteiler auf 32 fuer den ADC BIT 1-3
-    ADCSRB = 0b00000000; // Timer/Counter1 Overflow startet Wandlung, BIT 1&2 (wird nicht genutzt)
+/************************ Analog Digital Wandler Singel **********************/
+    ADMUX = 0b11001000;  //int.	T-Sensor BIT4, Internal Reference 1,1V BIT 6&7
+    // ADC Enable BIT7, ADC Start Conversion BIT 6,ADC Auto Trigger Enable BIT 5, Vorteiler auf 32 fuer den ADC BIT 1-3
+	ADCSRA = 0b10000101; 
+    ADCSRB = 0b00000000; // Timer/Counter1 Overflow startet Wandlung, BIT 1&2
     // ADCL zuerst lesen, dann ADHL
-
 }
 
 
 /*****************************************************************************************
 initialisieren des UART
+Bautrate einstellen 
+Aktivieren der Betriebsart Senden und Empfangen
+Aktivieren des Empfangs Interrupts 
 *****************************************************************************************/
 void UART_init(void)
 {
-    UBRR0H = HIGH(USARTSPEED);                  // Baudrate einstellen
-    UBRR0L = LOW(USARTSPEED);                   // Baudrate einstellen
-    UCSR0B = _BV(TXEN0) | _BV(RXEN0) | _BV(RXCIE0); // senden, empfangen,receiveint aktivieren
-    //UCSR0B = _BV(TXEN0);                              // senden aktivieren
-    //  UCSR0B = _BV(TXEN0) ;                           // senden
-    // Frame Format setzen:8data, 1stop bit (URSEL=1 -> UCSRC->Settings werden genutzt)
+    UBRR0H = HIGH(USARTSPEED);
+    UBRR0L = LOW(USARTSPEED);
+    UCSR0B = _BV(TXEN0) | _BV(RXEN0) | _BV(RXCIE0);
     UCSR0C = (0<<USBS0)|(3<<UCSZ00);
-
 }
 
 
 
-//=======================================================================================
-// Sendet ein Byte ueber die UART
-//=======================================================================================
-void UART_SendByte(uint8_t data)            // sendet ein Byte ueber das Uart
+/******************************************************************************
+Sendet ein Byte ueber die UART
+******************************************************************************/
+void UART_SendByte(uint8_t data)
 {
-    SENDEN_AKTIV;                           // Gibt SENDEN Frei
-    rucksetzcount = 3;                      // wird nach 6 Zyklen 48ms wieder rueckgesetz
+    SENDEN_AKTIV;                         // RX > TX Umschaltung 
+    rucksetzcount = 3;                    // Delay zur Rueckschaltung RX
     _delay_ms(10);
-    while(bit_is_clear(UCSR0A, UDRE0));     // warten bis UART bereit ist zum senden
-    UDR0 = data;                                // data ausgeben
+    while(bit_is_clear(UCSR0A, UDRE0));   // wartet auf UART Ready 
+    UDR0 = data;                            
 }
 
 
-//=======================================================================================
-// sendet einen String ueber das UART
-//=======================================================================================
-void putstring(char *s)                     // setze den Pointer s an den Anfang des uebergebenen chararrays
+/******************************************************************************
+sendet einen String ueber UART
+******************************************************************************/
+void putstring(char *s)                     
 {
-    while (*s != 0)                         // ist der Pointer des Zeichens=0 dann chararray zu Ende
+    while (*s != 0)                        
     {
-        UART_SendByte(*s);                  // uebergibt das Zeichen an UART_SendByte
-        *s++;                               // zeigt auf das naechste Zeichen
+        UART_SendByte(*s);
+        *s++;
     }
 }
 
-//=======================================================================================
-// sendet den Fehlercode (Wandlung Hexzahl >> ASCII)
-//=======================================================================================
+/******************************************************************************
+sendet den Fehlercode (Wandlung Hexzahl >> ASCII)
+******************************************************************************/
 void errorcodeu(uint8_t zahl)
 {
     uint8_t temp = 0;
@@ -746,15 +769,15 @@ void errorcodeu(uint8_t zahl)
     temp = zahl % 10;                       // niederwertigste Ziffer
     zahl = (zahl - temp) / 10;              // Rest von 10 ergibt die Einer
     temp = temp | 0x30;                     // Erzeuge ASCII Zeichen
-    if(zahl != 0){  errorcodeu(zahl);   }   // Recursiv function
+    if(zahl != 0){  errorcodeu(zahl);   }   
 
     UART_SendByte(temp);                    // Sendet Ziffer
 }
 
 
-//=======================================================================================
-// sendet den Fehlercode (Wandlung Hexzahl >> ASCII) (16BIT)
-//=======================================================================================
+/******************************************************************************
+sendet den Fehlercode (Wandlung Hexzahl >> ASCII) (16BIT)
+******************************************************************************/
 void errorcodeu16(int16_t zahl)
 {
     uint8_t temp = 0;
@@ -762,7 +785,7 @@ void errorcodeu16(int16_t zahl)
     temp = zahl % 10;                       // niederwertigste Ziffer
     zahl = (zahl - temp) / 10;              // Rest von 10 ergibt die Einer
     temp = temp | 0x30;                     // Erzeuge ASCII Zeichen
-    if(zahl != 0){  errorcodeu16(zahl); }   // Recursiv function
+    if(zahl != 0){  errorcodeu16(zahl); }   
 
     UART_SendByte(temp);                    // Sendet Ziffer
 }
@@ -776,10 +799,10 @@ void warte_sekunde(void)
     _delay_ms(250);
 }
 
-/*******************************************************************************************
+/******************************************************************************
 Diese Funktion Liest ein Byte aus dem UART Puffer
 Berechnet wieviel Zeichen sich noch im Buffer befinden
-Wenn Controllword freigegeben werden die Zeichen dort eingeschrieben.
+Wenn Controllword freigegeben, werden die Zeichen dort eingeschrieben.
 Ruecksetzbedingung in Bearbeitungsroutine:
 Controllword[0]         > loeschen
 UART_PUFFER_VOLL,FLAGS  > loeschen
@@ -803,15 +826,15 @@ Belegung CONTROLLWORD:
                         4 - CRC
 
 
-*******************************************************************************************/
+******************************************************************************/
 void usart_getc_intr(void)
 {
 
 uint8_t schreibzeigernew;
 
 // Berechnung: Anzahl der Zeichen, wieviel sich im UART Buffer befinden
-
 // Kontrolle ob Uebertrag ausgeloesst wurde
+
     if(lesezeiger > schreibzeiger)                                          // Pruefung Uebertrag
         {
         schreibzeigernew = PUFFER_GROESSE + schreibzeiger;                  // Uebertrag wird dazugerechnet
@@ -825,8 +848,7 @@ uint8_t schreibzeigernew;
     zeicheninbuffer = schreibzeigernew - lesezeiger;                        // Berechnung Anzahl der Zeichen(im UART Buffer)
 if ( zeicheninbuffer > ( PUFFER_GROESSE - 20) )
     {
-    //sbi(BUFFEROVR,PORTD);                                                 // Warnlampe fuer BUFFEROVR wird gesetzt (Ruecksetzen erfolgt mit Neustart !!)
-    //putstring("[ERR_BUF_OVERFLOW]");                                          // Error fuer Buffer Overflow !!!
+    //putstring("[ERR_BUF_OVERFLOW]");                                        // Error fuer Buffer Overflow !!!
     }
 
 if(zeicheninbuffer && !qbi(CONTROLLWORD_VOLL,UFLAGS))                       // Wenn Zeichen im Buffer und Controllbuffer nicht gesperrt ist erfolgt Abarbeitung
@@ -858,21 +880,22 @@ if(zeicheninbuffer && !qbi(CONTROLLWORD_VOLL,UFLAGS))                       // W
     }
 
 }
-/***************************************************************************************
-INTERRUPT Timerueberlauf (Timer 0)
+/******************************************************************************
+INTERRUPT Timer 0 Timerueberlauf
 Einsprung alle XX ms
-***************************************************************************************/
+Dieser Timer wird fuer den Multiplexer genutzt
+*******************************************************************************/
 ISR(TIMER0_OVF_vect)
 {
 
 
 if ( (LED_TASK[LED_Timer][0]) && ( taskcount < 1 ) )
     {
-    zeilenwahl(LED_Timer);  // wenn LED in Array auf 1 gesetzt wir eingeschaltet
+    zeilenwahl(LED_Timer);  // LED Ein
     }
 else
     {
-    zeilenwahl(0);          // sonst wird ausgeschaltet
+    zeilenwahl(0);          // LED Aus 
     }
 taskcount++;
 if (taskcount > (MAX_HELL -LED_HELLIGKEIT))
@@ -889,16 +912,23 @@ if (LED_Timer > LED_ANZAHL)
 
 }
 
-ISR (TIMER0_COMPA_vect)  // timer0 overflow interrupt
+
+/******************************************************************************
+INTERRUPT Timer 0 Vergleich A 
+Wird nicht genutzt
+******************************************************************************/
+ISR (TIMER0_COMPA_vect)
 {
-    //event to be
+
 }
 
 
-/***************************************************************************************
-INTERRUPT Timerueberlauf (Timer 2)
+/******************************************************************************
+INTERRUPT Timer 2 Timerueberlauf
 Einsprung alle XX ms
-***************************************************************************************/
+Setzt UART nach Zeit X wieder in den Empfangsmodus 
+Zufallsgenerator fuer den Wuerfel
+******************************************************************************/
 
 ISR(TIMER2_OVF_vect)
 {
@@ -909,10 +939,12 @@ if(rucksetzcount)
     if(rucksetzcount == 1)
         {
         SENDEN_INAKTIV;
-        //LED1_OFF;                 //RS485 Device inaktiv
         }
     rucksetzcount--;
     }
+	
+// Test Zufallsgenerator fuer den Wuerfel	
+
 if (zufall >= 6)
     {
     zufall = 0;
@@ -924,15 +956,15 @@ zufall++;
 
 
 
-/*******************************************************************************************
+/******************************************************************************
 INTERRUPT ROUTINE fuer UART, schreibt empfangenes Zeichen in den BUFFER
-
-********************************************************************************************/
+Empfangene Zeichen werden in den Puffer geschrieben 
+Ist der Zeiger am Ende des Puffesr wird dieser an den Anfang gesetzt
+******************************************************************************/
 ISR(USART_RX_vect)
 {
 
-//Automatisch empfangene Daten in den Puffer schreiben:
-puffer[schreibzeiger]=UDR0;                         // Empfangenes Zeichen in den Buffer schreiben
+puffer[schreibzeiger]=UDR0;
 schreibzeiger++;
-if(schreibzeiger==PUFFER_GROESSE) schreibzeiger=0; // Befindet sich Zeiger am Ende, wird dieser zurueckgesetzt
+if(schreibzeiger==PUFFER_GROESSE) schreibzeiger=0;
 }
