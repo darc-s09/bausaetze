@@ -116,11 +116,12 @@ void usart_getc_intr(void);               // Funktion Liest Byte aus UART Puffer
 
 
 // Globale Variable
-volatile uint8_t counter;                 // Counter für Taskmanager
+volatile uint8_t counter;                 // Counter fuer Taskmanager
+volatile uint16_t wzeiger;                 // Counter fuer den drehenden Wuerfel 
 volatile uint8_t rucksetzcount;           // clear Sendeanforderung
 uint8_t debug;                            // debug Variable	
-uint8_t zufall;                           // Variable für Zufallsgenerator
-uint8_t taskcount;                        // Counter für Multiplexer
+uint8_t zufall;                           // Variable fuer Zufallsgenerator
+uint8_t taskcount;                        // Counter fuer Multiplexer
 uint8_t FLAGS;                            // Flags, Verwendung siehe Flags declaration
 uint8_t LED_TASK[20][2];                  // Array LED Ansteuerung [0 = AN/AUS oder Timer
 uint8_t LED_Timer;                        // Multiplexer

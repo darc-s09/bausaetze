@@ -1,7 +1,7 @@
 /*
   Thermometer.c
 
-  Created: 01.12.2019 14:00:00
+  Created: 01.11.2019 14:00:00
   Author:  Uwe Liedtke und Joerg Wunsch
   Projekt: Temperaturanzeige und Wuerfel
   fuer Atmega 168A
@@ -57,9 +57,10 @@ int main(void)
                     case 1:
                     if(CONTROLLWORD[4] == ADR485)       // CRC CHECK
                         {
-                        putstring("LED AN");            // Ausgabe Text
-                        UART_SendByte(10);              // Ausgabe Return
-                        LED_TASK[CONTROLLWORD[3]][0]=1; // LED  AN
+                        putstring("Zeiger:");            // Ausgabe Text
+                        errorcodeu(CONTROLLWORD[3]);	// Test 
+						UART_SendByte(10);              // Ausgabe Return
+                        drehenr(CONTROLLWORD[3]);		// DEBUG
                         }
                     break; //END CASE1
 
@@ -92,7 +93,7 @@ int main(void)
                         ztemp = zufall;                // Zufahlszahl
                         UART_SendByte(10);             // Ausgabe Return
                         putstring("drehen an: ");      // Ausgabe Versionstext Text
-                        drehaktiv = 5;
+                        drehaktiv = CONTROLLWORD[3];
                     }
                     break; //END CASE3
                     }
@@ -102,7 +103,7 @@ int main(void)
             }
 
 
-        if (counter == 50 )
+        if (counter == 50)
             {
             sbi(6,ADCSRA);                          // startet den Analogdigitalwandler int. Temp Sensor
             counter++;                              // counter hoch um doppel Messung zu unterbinden
@@ -110,25 +111,27 @@ int main(void)
 
 /* Aktion auf dem Wuerfel beginnt
 Wuerfel LEDs blinken beim Wuerfel Start bis die endgueltige Zahl anliegt
-Test Test  
-*/
-        if(counter == 64 )
-            {
+Die Variable wzeiger bestimmt die Geschwindigkeit 
+*/	
             if (drehaktiv)
                 {
-                drehenr(drehcounter);
-                counter++;
-                drehcounter++;
-                if (drehcounter >= 7)
-                    {
-                    drehcounter = 1;
-                    drehaktiv--;
-                    }
-                }
-
-
-
-            }
+                if (qbi (3,wzeiger))
+                   {
+					wzeiger = 0;
+					drehenr(drehcounter);
+					drehcounter++;
+                    if (drehcounter >= 7)
+                        {
+						drehcounter = 1;
+						drehaktiv--;
+                        }
+                   }
+                 if (!drehaktiv)
+					{
+                    wuerfel(ztemp);
+					errorcodeu(ztemp);              // Ausgabe Zufallszahl	
+					}				   
+                 }
 /*
 DEBUG LED 19 blinkt 
 */
@@ -157,7 +160,7 @@ und die Daten schreiben in die Variable
 Schreibt die Temperaturdaten auf die UART DEBUG
 */
 
-        if (counter == 100)
+   /*     if (counter == 100)
             {
             UART_SendByte('T');
             errorcodeu16(temperaturdaten);
@@ -165,7 +168,7 @@ Schreibt die Temperaturdaten auf die UART DEBUG
             UART_SendByte(0x0A);                        // LF
             counter++;
             }
-
+*/
             /* DEBUG
             for (uint8_t step = 0; step <= 9 ; step++)  // Fuer Testzwecke werden die Daten als Binaere Zahl auf die LED`s 1 bis 10 geschrieben.
                 {
@@ -191,7 +194,7 @@ Ausgabe der Temperaturdaten auf das LED Band
                 ledband(temperaturdaten,330);
                 counter++;
                 }
-
+	
     }
 }
 
@@ -298,8 +301,9 @@ switch (wzahl)
 }
 
 /***************************************************************************************
-Ansteuerung Wuerfelfeld (7 LED`s) um einen zeiger darzustellen
-
+Ansteuerung Wuerfelfeld (7 LED`s) um einen drehenden Zeiger darzustellen
+Wird genutzt um eine Wuerfel Aktivitaet darzustellen
+Uebergabe der Zeigerstellung 
 ***************************************************************************************/
 void drehenr(uint8_t wstep)
 {
@@ -932,7 +936,7 @@ Zufallsgenerator fuer den Wuerfel
 
 ISR(TIMER2_OVF_vect)
 {
-    counter++;
+    
 // Funktion zum Ruecksetzen des aktiven Sendekanals der Schnittstelle RS485
 if(rucksetzcount)
     {
@@ -950,8 +954,8 @@ if (zufall >= 6)
     zufall = 0;
     }
 zufall++;
-
-
+counter++;
+wzeiger++;
 }
 
 
