@@ -13,14 +13,15 @@
 
 int main(void)
 {
-    uint8_t  ztemp = 0, templ = 0,temph = 0, drehcounter = 0, drehaktiv = 0;
+    uint8_t  templ = 0,temph = 0;
     uint16_t temperaturdaten = 0;
     LED_HELLIGKEIT = 0;
+	drehcounter = 0;
     PORTs_init();                       // Init der Ein und Ausgabeports
     TIMER_init();                       // Timer Init
     UART_init();                        // INIT 485
     sei();                              // INTERRUPTS GLOBAL AN
-	
+	LED_TASK[1][0]=1;					// LED 1 AN nach INIT
     //DEBUG
     //LED_TASK[1][0]=1; // LED 1 AN
     //LED_TASK[3][0]=1; // LED 3 AN
@@ -33,7 +34,7 @@ int main(void)
     }
     */
     
-	putstring("Tempanzeige und Wuerfel Ver 0.1");         // Ausgabe Versionstext Text
+	putstring("Tempanzeige und Wuerfel Ver 0.2");         // Ausgabe Versionstext Text
 	
     while(1)
     {
@@ -49,7 +50,7 @@ int main(void)
                     case 0:                     // Ausgabe Software Version
                     if(CONTROLLWORD[4] == ADR485) // CRC CHECK 
                         {
-                        putstring("Version 0.1");   // Ausgabe Versionstext Text
+                        putstring("Version 0.2");   // Ausgabe Versionstext Text
                         UART_SendByte(10);               // Ausgabe Return
                         }                                // DEBUG
                     break; //END CASE0
@@ -67,22 +68,18 @@ int main(void)
                     case 2:               
                     if(CONTROLLWORD[4] == ADR485)       // CRC CHECK
                         {
-                        putstring("LED AUS");           // Ausgabe Text
+                        putstring("TEMPANZEIGE AUS");   // Ausgabe Text
                         UART_SendByte(10);              // Ausgabe Return
-                        LED_TASK[CONTROLLWORD[3]][0]=0; // LED  AUS
+                        sbi(TEMP_OFF,FLAGS);			// Temperaturanzeige AUS 
                         }
                     break; //END CASE2
 
                     case 3: 
                     if(CONTROLLWORD[4] == ADR485)       // CRC CHECK
                         {
-                        ztemp = zufall;
                         UART_SendByte(10);              // Ausgabe Return
-                        putstring("Wuerfel: ");         // Ausgabe Text
-                        errorcodeu(ztemp);              // Ausgabe Zufallszahl
-                        wuerfel(ztemp);
-                        UART_SendByte(10);              // Ausgabe Return
-                        putstring("Wuerfel Test");      // Ausgabe Text
+                        putstring("Wuerfel Spezialmode 7"); // Ausgabe Text
+						sbi(WUERFEL_7,FLAGS);			// Wuerfelspezialmode 7
                         UART_SendByte(10);              // Ausgabe Return
                         }
                     break; //END CASE3
@@ -90,10 +87,11 @@ int main(void)
                     case 4:                             
                     if(CONTROLLWORD[4] == ADR485)      // CRC CHECK
                     {
-                        ztemp = zufall;                // Zufahlszahl
+                        //ztemp = zufall;                // Zufahlszahl
                         UART_SendByte(10);             // Ausgabe Return
                         putstring("drehen an: ");      // Ausgabe Versionstext Text
-                        drehaktiv = CONTROLLWORD[3];
+                        //drehaktiv = CONTROLLWORD[3];
+						drehaktiv = zufall;
                     }
                     break; //END CASE3
                     }
@@ -102,98 +100,65 @@ int main(void)
 
             }
 
+/*****************************************************************************
+ startet den Analogdigitalwandler
+ zum Auslesen des int Temp Sensor                                                                    
+******************************************************************************/
+         if (counter == 20)
+              {
+              sbi(6,ADCSRA);
+              counter++;
+              }
 
-        if (counter == 50)
-            {
-            sbi(6,ADCSRA);                          // startet den Analogdigitalwandler int. Temp Sensor
-            counter++;                              // counter hoch um doppel Messung zu unterbinden
-            }
+/******************************************************************************
+Auslesen der Temperaturdaten aus den AD Wandler
+******************************************************************************/
+         if (counter == 70 )
+              {
+	          templ = ADCL;
+	          temph = ADCH;
+	          temperaturdaten = HILO(temph,templ);
+              counter++;
+              }
 
-/* Aktion auf dem Wuerfel beginnt
-Wuerfel LEDs blinken beim Wuerfel Start bis die endgueltige Zahl anliegt
-Die Variable wzeiger bestimmt die Geschwindigkeit 
-*/	
-            if (drehaktiv)
-                {
-                if (qbi (3,wzeiger))
-                   {
-					wzeiger = 0;
-					drehenr(drehcounter);
-					drehcounter++;
-                    if (drehcounter >= 7)
-                        {
-						drehcounter = 1;
-						drehaktiv--;
-                        }
-                   }
-                 if (!drehaktiv)
-					{
-                    wuerfel(ztemp);
-					errorcodeu(ztemp);              // Ausgabe Zufallszahl	
-					}				   
-                 }
-/*
-DEBUG LED 19 blinkt 
-*/
-        if (counter < 128 )
-            {
-            LED_TASK[19][0]=1;
-            }
-        else
-            {
-            LED_TASK[19][0]=0;
-            }
-
-/*
-Auslesen der Temperaturdaten aus den AD Wandler 
-und die Daten schreiben in die Variable 
-*/
-        if (counter == 70 )
-            {
-            templ = ADCL;                          
-            temph = ADCH;                          
-            temperaturdaten = HILO(temph,templ); 
-            counter++;
-            }
-
-/*
-Schreibt die Temperaturdaten auf die UART DEBUG
-*/
-
-   /*     if (counter == 100)
-            {
-            UART_SendByte('T');
-            errorcodeu16(temperaturdaten);
-            UART_SendByte(':');
-            UART_SendByte(0x0A);                        // LF
-            counter++;
-            }
-*/
-            /* DEBUG
-            for (uint8_t step = 0; step <= 9 ; step++)  // Fuer Testzwecke werden die Daten als Binaere Zahl auf die LED`s 1 bis 10 geschrieben.
-                {
-
-                if(qbi(step,temperaturdaten))
-                    {
-                    LED_TASK[step+1][0]=1;                  // Zuschalten des Bits zur zugehoerigen LED
-                    }
-                else
-                    {
-                    LED_TASK[step+1][0]=0;                  // Abschalten des Bits zur zugehoerigen LED
-                    }
-                }
-
-            */
-
-
-/*
+/******************************************************************************
 Ausgabe der Temperaturdaten auf das LED Band
-*/ 
-            if (counter == 200)
-                {
-                ledband(temperaturdaten,330);
-                counter++;
-                }
+Ist Temp OFF gesetzt werden die TEMP LEDS geloescht 
+FLAG TEMPISOFF wird gesetzt damit das LED Temperaturband nur einmal ruckgesetzt wird                                                                 
+******************************************************************************/
+         if ( qbi(TEMP_OFF,FLAGS) )
+			{
+			if (!qbi(TEMPISOFF,FLAGS))
+			   {
+				sbi(TEMPISOFF,FLAGS);   
+				for (uint8_t step = 0; step <= 10 ; step++)
+                    {
+					LED_TASK[step][0]=0;
+                    }   
+			   }
+			}
+		 else
+			{
+		 if (counter == 200)
+              {
+	          ledband(temperaturdaten,330);
+	          counter++;
+              }
+			}
+			  
+/******************************************************************************
+Wuerfeln
+Uebergabe der Geschwindigkeit beim Wuerfeln
+Uebergabe der Zufahlszahl fuer den Wuerfel
+Beim Start Taster muss noch die Anzahl der Umlaeufe drehaktiv festgelegt werden
+drehaktiv = zufall oder man zaehlt die Taster Prellungen
+******************************************************************************/	
+         if (drehaktiv)
+              {
+              wuerfellos(3,zufall);                  
+              }
+
+            
 	
     }
 }
@@ -298,6 +263,37 @@ switch (wzahl)
 
     }
 
+}
+
+
+/******************************************************************************
+ Ansteuerung des Wuerfels 
+ Beginnt mit einen drehenden Feld im Wuerfel Segment
+ Parameteruebergabe:
+ drehg (Geschwindigkeit des Zeigers)
+ ztemp (Uebergabe der gewuerfelten Zahl
+ 
+
+Die Variable wzeiger bestimmt die Geschwindigkeit und wird im Timer2 hochgezaehlt
+******************************************************************************/
+void wuerfellos(uint8_t drehg,uint8_t ztemp)
+{
+	if (qbi (drehg,wzeiger))
+	{
+		wzeiger = 0;
+		drehenr(drehcounter);
+		drehcounter++;
+		if (drehcounter >= 7)
+		{
+			drehcounter = 1;
+			drehaktiv--;
+		}
+	}
+	if (!drehaktiv)
+	{
+		wuerfel(ztemp);
+		errorcodeu(ztemp);              // Ausgabe Zufallszahl
+	}
 }
 
 /***************************************************************************************
@@ -949,10 +945,23 @@ if(rucksetzcount)
 	
 // Test Zufallsgenerator fuer den Wuerfel	
 
-if (zufall >= 6)
-    {
-    zufall = 0;
+if ( qbi(WUERFEL_7,FLAGS) )
+     {
+     if (zufall >= 7)
+         {
+	     zufall = 0;
+         }
+     }
+else
+	{
+    if (zufall >= 6)
+          {
+          zufall = 0;
+          }	   
     }
+	
+	
+	
 zufall++;
 counter++;
 wzeiger++;

@@ -21,6 +21,9 @@
 
 //FLAGS
 #define PULS_PAUSE          0          // DISPLAY INIT notwendig
+#define WUERFEL_7           1          // Spezialmode wuerfelt bis 7
+#define TEMP_OFF			2          // Tempanzeige OFF
+#define TEMPISOFF           3          // BIT wird gesetzt damit das LED Temperaturband nur einmal ruckgesetzt wird	
 
 // Librery declaration
 //#include <avr/eeprom.h>
@@ -101,6 +104,7 @@ PB2 = Kathode LED  1, 2, 3, 4, 5
 
 void led_multiplex(uint8_t);
 void wuerfel(uint8_t);
+void wuerfellos(uint8_t,uint8_t);
 void drehenr(uint8_t);
 void zeilenwahl(uint8_t);
 void ledband(uint16_t,uint16_t);
@@ -117,6 +121,8 @@ void usart_getc_intr(void);               // Funktion Liest Byte aus UART Puffer
 
 // Globale Variable
 volatile uint8_t counter;                 // Counter fuer Taskmanager
+volatile uint8_t drehcounter;             // Zahlt die Anzahl der Umlaeufe bevor der Wuerfel faellt
+volatile uint8_t drehaktiv;               // Hier wird die Anzahl der Umlaeufe festgelegt
 volatile uint16_t wzeiger;                 // Counter fuer den drehenden Wuerfel 
 volatile uint8_t rucksetzcount;           // clear Sendeanforderung
 uint8_t debug;                            // debug Variable	
