@@ -58,10 +58,10 @@ int main(void)
                     case 1:
                     if(CONTROLLWORD[4] == ADR485)       // CRC CHECK
                         {
-                        putstring("Zeiger:");            // Ausgabe Text
-                        errorcodeu(CONTROLLWORD[3]);	// Test 
+                        putstring("TEMPANZEIGE AN:");            // Ausgabe Text
 						UART_SendByte(10);              // Ausgabe Return
-                        drehenr(CONTROLLWORD[3]);		// DEBUG
+                        cbi(TEMP_OFF,FLAGS);			// Temperaturanzeige AN 
+						cbi(TEMPISOFF,FLAGS);			// Ruecksetzen TEMPIS OFF
                         }
                     break; //END CASE1
 
@@ -87,11 +87,12 @@ int main(void)
                     case 4:                             
                     if(CONTROLLWORD[4] == ADR485)      // CRC CHECK
                     {
-                        //ztemp = zufall;                // Zufahlszahl
+                        ztemp = zufall;                // Zufahlszahl
                         UART_SendByte(10);             // Ausgabe Return
                         putstring("drehen an: ");      // Ausgabe Versionstext Text
                         //drehaktiv = CONTROLLWORD[3];
-						drehaktiv = zufall;
+						drehaktiv = rand()%6+1;
+						errorcodeu(ztemp); //DEBUG
                     }
                     break; //END CASE3
                     }
@@ -155,7 +156,7 @@ drehaktiv = zufall oder man zaehlt die Taster Prellungen
 ******************************************************************************/	
          if (drehaktiv)
               {
-              wuerfellos(3,zufall);                  
+              wuerfellos(3);                  
               }
 
             
@@ -271,12 +272,12 @@ switch (wzahl)
  Beginnt mit einen drehenden Feld im Wuerfel Segment
  Parameteruebergabe:
  drehg (Geschwindigkeit des Zeigers)
- ztemp (Uebergabe der gewuerfelten Zahl
+ ztemp (Uebergabe Zufahls Zahl) 
  
 
 Die Variable wzeiger bestimmt die Geschwindigkeit und wird im Timer2 hochgezaehlt
 ******************************************************************************/
-void wuerfellos(uint8_t drehg,uint8_t ztemp)
+void wuerfellos(uint8_t drehg)
 {
 	if (qbi (drehg,wzeiger))
 	{
@@ -290,10 +291,9 @@ void wuerfellos(uint8_t drehg,uint8_t ztemp)
 		}
 	}
 	if (!drehaktiv)
-	{
+        {
 		wuerfel(ztemp);
-		errorcodeu(ztemp);              // Ausgabe Zufallszahl
-	}
+        }
 }
 
 /***************************************************************************************

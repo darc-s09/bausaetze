@@ -14,6 +14,7 @@
 #define LED_ANZAHL  19                 // Anzahl der LEDs
 #define MAX_HELL    17                 // Maximale Helligkeit der LEDs
 #define ADR485      13                 // Adresse für DEBUG !!!
+#define RAND_MAX    20				   // Max Randomzahl
 
 // Komandos
 #define Ausgabe_TEMP        1          // Temperaturausgabe
@@ -104,7 +105,7 @@ PB2 = Kathode LED  1, 2, 3, 4, 5
 
 void led_multiplex(uint8_t);
 void wuerfel(uint8_t);
-void wuerfellos(uint8_t,uint8_t);
+void wuerfellos(uint8_t);
 void drehenr(uint8_t);
 void zeilenwahl(uint8_t);
 void ledband(uint16_t,uint16_t);
@@ -123,6 +124,7 @@ void usart_getc_intr(void);               // Funktion Liest Byte aus UART Puffer
 volatile uint8_t counter;                 // Counter fuer Taskmanager
 volatile uint8_t drehcounter;             // Zahlt die Anzahl der Umlaeufe bevor der Wuerfel faellt
 volatile uint8_t drehaktiv;               // Hier wird die Anzahl der Umlaeufe festgelegt
+volatile uint8_t ztemp;                   // Hier steht die Zufahlszahl vom aktuellen Wuerfelumlauf drin
 volatile uint16_t wzeiger;                 // Counter fuer den drehenden Wuerfel 
 volatile uint8_t rucksetzcount;           // clear Sendeanforderung
 uint8_t debug;                            // debug Variable	
