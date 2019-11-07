@@ -24,7 +24,8 @@
 #define PULS_PAUSE          0          // DISPLAY INIT notwendig
 #define WUERFEL_7           1          // Spezialmode wuerfelt bis 7
 #define TEMP_OFF			2          // Tempanzeige OFF
-#define TEMPISOFF           3          // BIT wird gesetzt damit das LED Temperaturband nur einmal ruckgesetzt wird	
+#define TEMPISOFF           3          // BIT wird gesetzt damit das LED Temperaturband nur einmal ruckgesetzt wird
+#define PLAYER              4          // 0 = Player 1 / 1 = Player 2 
 
 // Librery declaration
 //#include <avr/eeprom.h>
@@ -104,6 +105,7 @@ PB2 = Kathode LED  1, 2, 3, 4, 5
 
 
 void led_multiplex(uint8_t);
+void multi_player(uint8_t);
 void wuerfel(uint8_t);
 void wuerfellos(uint8_t);
 void drehenr(uint8_t);
@@ -127,6 +129,8 @@ volatile uint8_t drehaktiv;               // Hier wird die Anzahl der Umlaeufe f
 volatile uint8_t ztemp;                   // Hier steht die Zufahlszahl vom aktuellen Wuerfelumlauf drin
 volatile uint16_t wzeiger;                 // Counter fuer den drehenden Wuerfel 
 volatile uint8_t rucksetzcount;           // clear Sendeanforderung
+volatile uint8_t player1;				  // Spielstand Player 1
+volatile uint8_t player2;				  // Spielstand Player 2 
 uint8_t debug;                            // debug Variable	
 uint8_t zufall;                           // Variable fuer Zufallsgenerator
 uint8_t taskcount;                        // Counter fuer Multiplexer

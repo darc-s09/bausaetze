@@ -4,6 +4,11 @@
   Created: 01.11.2019 14:00:00
   Author:  Uwe Liedtke und Joerg Wunsch
   Projekt: Temperaturanzeige und Wuerfel
+  Funktionen: 
+  Temperaturanzeige
+  Wuerfel mit 6 und 7 Ziffern
+  Zweispielermode 20 Gewinnt
+  
   fuer Atmega 168A
  */
 
@@ -34,7 +39,7 @@ int main(void)
     }
     */
     
-	putstring("Tempanzeige und Wuerfel Ver 0.2");         // Ausgabe Versionstext Text
+	putstring("Tempanzeige und Wuerfel Ver 0.3");         // Ausgabe Versionstext Text
 	
     while(1)
     {
@@ -50,7 +55,7 @@ int main(void)
                     case 0:                     // Ausgabe Software Version
                     if(CONTROLLWORD[4] == ADR485) // CRC CHECK 
                         {
-                        putstring("Version 0.2");   // Ausgabe Versionstext Text
+                        putstring("Version 0.3");   // Ausgabe Versionstext Text
                         UART_SendByte(10);               // Ausgabe Return
                         }                                // DEBUG
                     break; //END CASE0
@@ -86,15 +91,23 @@ int main(void)
 
                     case 4:                             
                     if(CONTROLLWORD[4] == ADR485)      // CRC CHECK
-                    {
+                        {
                         ztemp = zufall;                // Zufahlszahl
                         UART_SendByte(10);             // Ausgabe Return
-                        putstring("drehen an: ");      // Ausgabe Versionstext Text
+                        putstring("wuerfeln: ");      // Ausgabe Versionstext Text
                         //drehaktiv = CONTROLLWORD[3];
 						drehaktiv = rand()%6+1;
 						errorcodeu(ztemp); //DEBUG
-                    }
-                    break; //END CASE3
+                        }
+                    break; //END CASE4
+					case 5:
+					if(CONTROLLWORD[4] == ADR485)      // CRC CHECK
+					    {
+						UART_SendByte(10);             // Ausgabe Return
+						putstring("Multiplayer: ");   // Ausgabe Funktion
+						multi_player(CONTROLLWORD[3]);
+					    }
+					break; //END CASE5
                     }
 
                 }
@@ -153,12 +166,41 @@ Uebergabe der Geschwindigkeit beim Wuerfeln
 Uebergabe der Zufahlszahl fuer den Wuerfel
 Beim Start Taster muss noch die Anzahl der Umlaeufe drehaktiv festgelegt werden
 drehaktiv = zufall oder man zaehlt die Taster Prellungen
+Anzeigen sollen schon beim umschalten wechseln BUG
 ******************************************************************************/	
-         if (drehaktiv)
+         if ( (drehaktiv == 1) & (qbi(TEMPISOFF,FLAGS)) )
+			{
+	         
+			  for (uint8_t step = 1; step <= 10 ; step++)
+			      {
+				  LED_TASK[step][0]=0; //LEDs 1 bis 10 aus
+			      }
+			
+			
+			if (qbi(PLAYER,FLAGS))
+			    {
+				for (uint8_t step = 1; step <= (player2 -10) ; step++)
+				    {
+					LED_TASK[step][0]=1;
+				    }
+			    } 
+			else
+			   {
+				for (uint8_t step = 1; step <= (player1 -10) ; step++)
+				    {
+					LED_TASK[step][0]=1;
+				    }   
+			   }
+				  
+			 
+			}
+		 
+		 
+		 if (drehaktiv)
               {
               wuerfellos(3);                  
               }
-
+		
             
 	
     }
@@ -167,6 +209,43 @@ drehaktiv = zufall oder man zaehlt die Taster Prellungen
 
 
 // Hier beginnen die Funktionen
+
+
+/******************************************************************************
+Multi player Mode
+case 0 Spielstart 
+case 1 Aufruf Spieler 1
+case 2 Aufruf Spieler 2
+                                                                     
+******************************************************************************/
+void multi_player(uint8_t playernr)
+        {
+	    sbi(TEMP_OFF,FLAGS);			// Temperaturanzeige AUS 
+		ztemp = zufall;
+	    switch(playernr)
+			{
+			case 0:
+			player1 = 0;
+			player2 = 0;
+			break;	
+			case 1:
+			cbi(PLAYER,FLAGS); // PLAYER 1
+			LED_TASK[18][0]=1; // LED 10 AN
+			LED_TASK[19][0]=0; // LED 19 AuS
+			player1 = player1 + ztemp;
+			errorcodeu(player1); // DEBUG			
+			break;
+			case 2:
+			sbi(PLAYER,FLAGS); // PLAYER 2
+			LED_TASK[18][0]=0; // LED 10 AUS
+			LED_TASK[19][0]=1; // LED 19 AuS
+			player2 = player2 + ztemp;
+			errorcodeu(player2); // DEBUG
+			break;
+			}
+		drehaktiv = rand()%6+1;
+        }
+
 
 /***************************************************************************************
 Steuerung des LED Multiplexers
@@ -274,7 +353,6 @@ switch (wzahl)
  drehg (Geschwindigkeit des Zeigers)
  ztemp (Uebergabe Zufahls Zahl) 
  
-
 Die Variable wzeiger bestimmt die Geschwindigkeit und wird im Timer2 hochgezaehlt
 ******************************************************************************/
 void wuerfellos(uint8_t drehg)
