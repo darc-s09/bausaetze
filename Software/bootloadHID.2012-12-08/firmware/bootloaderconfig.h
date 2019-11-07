@@ -39,7 +39,7 @@ these macros are defined, the boot loader usees them.
 
 /* ---------------------------- Hardware Config ---------------------------- */
 
-#define USB_CFG_IOPORTNAME      D
+#define USB_CFG_IOPORTNAME      C
 /* This is the port where the USB bus is connected. When you configure it to
  * "B", the registers PORTB, PINB and DDRB will be used.
  */
@@ -47,7 +47,7 @@ these macros are defined, the boot loader usees them.
 /* This is the bit number in USB_CFG_IOPORT where the USB D- line is connected.
  * This may be any bit in the port.
  */
-#define USB_CFG_DPLUS_BIT       2
+#define USB_CFG_DPLUS_BIT       1
 /* This is the bit number in USB_CFG_IOPORT where the USB D+ line is connected.
  * This may be any bit in the port. Please note that D+ must also be connected
  * to interrupt pin INT0! [You can also use other interrupts, see section
@@ -93,6 +93,15 @@ these macros are defined, the boot loader usees them.
  * an example: http://git.lochraster.org:2080/?p=fd0/usbload;a=tree
  */
 
+#define USB_INTR_CFG            PCICR
+#define USB_INTR_CFG_SET        (1 << PCIE1)
+//#define USB_INTR_CFG_CLR        0
+#define USB_INTR_ENABLE         PCMSK1
+#define USB_INTR_ENABLE_BIT     PCINT1
+#define USB_INTR_PENDING        PCIFR
+#define USB_INTR_PENDING_BIT    PCIF1
+#define USB_INTR_VECTOR         PCINT1_vect
+
 /* ------------------------------------------------------------------------- */
 
 /* Example configuration: Port D bit 3 is connected to a jumper which ties
@@ -106,13 +115,29 @@ these macros are defined, the boot loader usees them.
 #ifndef __ASSEMBLER__   /* assembler cannot parse function definitions */
 #include <util/delay.h>
 
+#define JUMPER_BIT  2   /* jumper is connected to this bit in port C, active low */
+
+#ifndef MCUCSR          /* compatibility between ATMega8 and ATMega88 */
+#   define MCUCSR   MCUSR
+#endif
+
 static inline void  bootLoaderInit(void)
 {
-    PORTD = 1 << 3; /* activate pull-up for key */
+    PORTC |= (1 << JUMPER_BIT);     /* activate pull-up */
     _delay_us(10);  /* wait for levels to stabilize */
+    if(!(MCUCSR & ((1 << EXTRF) | (1 << PORF))))    /* If this was not an external reset, ignore */
+        leaveBootloader();
+    MCUCSR = 0;                     /* clear all reset flags for next time */
 }
 
-#define bootLoaderCondition()   ((PIND & (1 << 3)) == 0)   /* True if jumper is set */
+static inline void  bootLoaderExit(void)
+{
+    PORTC = 0;                      /* undo bootLoaderInit() changes */
+    DDRD = 0;
+    PORTD = 0;
+}
+
+#define bootLoaderCondition()   ((PINC & (1 << JUMPER_BIT)) == 0)
 
 #endif
 

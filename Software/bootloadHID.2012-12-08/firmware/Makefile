@@ -14,27 +14,27 @@
 #     make flash   # to load the boot loader into flash
 #     make lock    # to protect the boot loader from overwriting
 
-DEVICE = atmega8
-BOOTLOADER_ADDRESS = 1800
+DEVICE = atmega328p
+BOOTLOADER_ADDRESS = 7800
 F_CPU = 12000000
-FUSEH = 0xc0
-FUSEL = 0x9f
+FUSEH = 0xd2
+FUSEL = 0xef
 # Fuse high byte:
-# 0xc0 = 1 1 0 0   0 0 0 0 <-- BOOTRST (boot reset vector at 0x1800)
-#        ^ ^ ^ ^   ^ ^ ^------ BOOTSZ0
-#        | | | |   | +-------- BOOTSZ1
+# 0xd2 = 1 1 0 1   0 0 1 0 <-- BOOTRST (boot reset vector at 0x7800)
+#        ^ ^ ^ ^   ^ ^ ^------ BOOTSZ0 \ 2 KiB
+#        | | | |   | +-------- BOOTSZ1 / boot size
 #        | | | |   + --------- EESAVE (preserve EEPROM over chip erase)
-#        | | | +-------------- CKOPT (full output swing)
+#        | | | +-------------- WDTON (WDT not always on)
 #        | | +---------------- SPIEN (allow serial programming)
-#        | +------------------ WDTON (WDT not always on)
+#        | +------------------ DWEN (debugWIRE enable)
 #        +-------------------- RSTDISBL (reset pin is enabled)
 # Fuse low byte:
-# 0x9f = 1 0 0 1   1 1 1 1
+# 0xef = 1 1 1 0   1 1 1 1
 #        ^ ^ \ /   \--+--/
 #        | |  |       +------- CKSEL 3..0 (external >8M crystal)
-#        | |  +--------------- SUT 1..0 (crystal osc, BOD enabled)
-#        | +------------------ BODEN (BrownOut Detector enabled)
-#        +-------------------- BODLEVEL (2.7V)
+#        | |  +--------------- SUT 1..0 (crystal osc, BOD disabled)
+#        | +------------------ CKOUT (clock output at PB0)
+#        +-------------------- CKDIV8 (initialize clock prescaler to 1:8)
 
 ###############################################################################
 

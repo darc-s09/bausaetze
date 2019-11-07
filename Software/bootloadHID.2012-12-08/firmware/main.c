@@ -84,6 +84,7 @@ static void (*nullVector)(void) __attribute__((__noreturn__));
 static void leaveBootloader()
 {
     DBG1(0x01, 0, 0);
+    bootLoaderExit();
     cli();
     boot_rww_enable();
     USB_INTR_ENABLE = 0;
