@@ -114,6 +114,27 @@ int main(void)
 
             }
 
+
+
+/*****************************************************************************
+ Abfrage Taster zum starten des Wuerfels
+                                                                     
+******************************************************************************/
+         if (counter == 10)
+              {
+              if( !qbi(SW_WUERFEL,SW_PORT) )
+                {
+			     ztemp = zufall;                // Zufahlszahl
+			     UART_SendByte(10);             // Ausgabe Return
+			     putstring("wuerfeln: ");      // Ausgabe Versionstext Text
+			     drehaktiv = rand()%6+1;
+			     errorcodeu(ztemp); //DEBUG
+                 counter++;
+               }
+			  }
+
+
+
 /*****************************************************************************
  startet den Analogdigitalwandler
  zum Auslesen des int Temp Sensor                                                                    

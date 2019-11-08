@@ -97,6 +97,9 @@ PB2 = Kathode LED  1, 2, 3, 4, 5
 #define SPALTE4_OFF             cbi(3,PORTD)  //!< LED 4,9,14,19
 #define SPALTE5_ON              sbi(2,PORTD)  //!< LED 5,10,15
 #define SPALTE5_OFF             cbi(2,PORTD)  //!< LED 5,10,15
+
+#define SW_PORT                 PINC          // PORT Wuerfelstart
+#define SW_WUERFEL              4			  // TASTER Wuerfel 
 //#define LED1_ON       ZEILE1_ON & SPALTE1_ON
 //#define LED1_OFF  ZEILE1_OFF & SPALTE1_OFF
 
