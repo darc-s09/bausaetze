@@ -59,7 +59,10 @@ static inline uint16_t ticks_to_ms(uint16_t t)
 static void start_timer0(void)
 {
   // fast PWM, set OC0A on TOP, clear on compare match
-  TCCR0A = _BV(COM0A1) | _BV(WGM01) | _BV(WGM00);
+  TCCR0A = _BV(WGM01) | _BV(WGM00) |
+  // only activate OC0A if LED is on - otherwise it will yield
+  // a 1-clock (7 µs) pulse resulting in an unwanted dim LED
+  (led_is_on? _BV(COM0A1): 0);
   // prescaler 8 => 150 kHz timer clock
   TCCR0B = _BV(CS01);
   // enable overflow interrupt
@@ -139,7 +142,16 @@ ISR(WDT_vect)
 // Timer overflow interrupt, triggers each 1.7 ms. Just count up.
 ISR(TIM0_OVF_vect)
 {
-  ticks++;
+  // use local shadow variable for volatile global "ticks"
+  uint16_t now = ticks;
+  now++;
+  ticks = now;
+
+  if (ticks_to_ms(now) > dark_light)
+    // Measurement time exceeds the one for darkness - abort
+    // measurement now by discharching the capacitor (this will
+    // trigger the ANA_COMP interrupt immediately)
+    DDRB |= _BV(1);
 }
 
 // Analog comparator interrupt: end of ambient light measurement
@@ -166,6 +178,7 @@ main(void)
     WDTCR = _BV(WDP2) | _BV(WDP1) | _BV(WDTIE);
 
     DDRB = _BV(0); // LED output
+    PORTB = _BV(2) | _BV(3) | _BV(4); // pullups on jumper and SCK
 
     sei();
 
