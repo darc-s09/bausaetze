@@ -34,9 +34,9 @@ static volatile bool start_measurement;
 
 static bool led_is_on;
 
-static inline uint16_t ticks_to_ms(uint16_t ticks)
+static inline uint16_t ticks_to_ms(uint16_t t)
 {
-  return (256ul * 8 * 1000) * ticks / F_CPU;
+  return (256ul * 8 * 1000) * t / F_CPU;
 }
 
 
