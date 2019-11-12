@@ -23,7 +23,7 @@
 static const uint16_t bright_light = 200;
 static const uint16_t dark_light = 500;
 // maximal PWM value to use (to save power)
-static const uint8_t max_pwm = 150;
+static uint8_t max_pwm = 150;
 
 static const uint16_t interval = 10; // measuring interval during daylight
 
@@ -200,6 +200,13 @@ main(void)
           else
             {
               // turn LED on
+
+              // query J2 1-2
+              if ((PINB & _BV(4)) == 0)
+                max_pwm = 75; // plugged: dim LED
+              else
+                max_pwm = 150; // unplugged: bright LED
+
               if (ms > dark_light)
                 OCR0A = max_pwm;
               else
