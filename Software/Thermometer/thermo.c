@@ -184,36 +184,60 @@ FLAG TEMPISOFF wird gesetzt damit das LED Temperaturband nur einmal ruckgesetzt 
 /******************************************************************************
 Wuerfeln
 Uebergabe der Geschwindigkeit beim Wuerfeln
-Uebergabe der Zufahlszahl fuer den Wuerfel
 Beim Start Taster muss noch die Anzahl der Umlaeufe drehaktiv festgelegt werden
 drehaktiv = zufall oder man zaehlt die Taster Prellungen
-Anzeigen sollen schon beim umschalten wechseln BUG
+Im Multiplayermodus wird noch die Anzeige des Spielstandes gesetzt
 ******************************************************************************/	
-         if ( (drehaktiv == 1) & (qbi(TEMPISOFF,FLAGS)) )
-			{
-	         
-			  for (uint8_t step = 1; step <= 10 ; step++)
-			      {
-				  LED_TASK[step][0]=0; //LEDs 1 bis 10 aus
-			      }
-			
-			
+         if ( (drehaktiv == 0) & (qbi(TEMPISOFF,FLAGS)) )
+			{			
 			if (qbi(PLAYER,FLAGS))
-			    {
-				for (uint8_t step = 1; step <= (player2 -10) ; step++)
-				    {
-					LED_TASK[step][0]=1;
-				    }
+			    { // PLAYER 2
+				 if (player2 > 10)
+				     {
+					for (uint8_t step = 1; step <= (player2 -10) ; step++)
+					    {
+						LED_TASK[step][0]=1;
+					    }	 
+					 }
+				 else
+				     {
+					 if (qbi(4,counter))
+					     {
+						 LED_TASK[1][0]=1;
+					     }
+					 else
+					     {
+						 LED_TASK[1][0]=0;
+					     }
+				     }	 
+				
 			    } 
 			else
-			   {
-				for (uint8_t step = 1; step <= (player1 -10) ; step++)
-				    {
-					LED_TASK[step][0]=1;
-				    }   
+			   { //PLAYER 1   
+				if (player1 > 10)
+				   {
+					for (uint8_t step = 1; step <= (player1 -10) ; step++)
+					    {
+						LED_TASK[step][0]=1;
+					    }
+				   }
+				 else
+				   {
+					if (qbi(4,counter))
+					   {
+					   LED_TASK[1][0]=1;
+					   } 
+					else
+					   {
+					   LED_TASK[1][0]=0;   
+					   }					 
+				   }
+				 
+				 
+				   
 			   }
-				  
-			 
+					  
+			        
 			}
 		 
 		 
@@ -243,6 +267,13 @@ void multi_player(uint8_t playernr)
         {
 	    sbi(TEMP_OFF,FLAGS);			// Temperaturanzeige AUS 
 		ztemp = zufall;
+		for (uint8_t step = 1; step <= 10 ; step++)
+		       {
+			   LED_TASK[step][0]=0; //LEDs 1 bis 10 aus
+		       }
+		LED_TASK[18][0]=0; // LED 10 AUS
+		LED_TASK[19][0]=0; // LED 19 AUS	
+		
 	    switch(playernr)
 			{
 			case 0:
@@ -252,14 +283,14 @@ void multi_player(uint8_t playernr)
 			case 1:
 			cbi(PLAYER,FLAGS); // PLAYER 1
 			LED_TASK[18][0]=1; // LED 10 AN
-			LED_TASK[19][0]=0; // LED 19 AuS
+			LED_TASK[19][0]=0; // LED 19 AUS
 			player1 = player1 + ztemp;
 			errorcodeu(player1); // DEBUG			
 			break;
 			case 2:
 			sbi(PLAYER,FLAGS); // PLAYER 2
 			LED_TASK[18][0]=0; // LED 10 AUS
-			LED_TASK[19][0]=1; // LED 19 AuS
+			LED_TASK[19][0]=1; // LED 19 AN
 			player2 = player2 + ztemp;
 			errorcodeu(player2); // DEBUG
 			break;
