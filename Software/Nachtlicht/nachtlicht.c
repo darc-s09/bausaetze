@@ -30,8 +30,12 @@ static uint16_t interval = 10; // measuring interval during daylight
 
 // timer 0 ticks, about 1.7 ms each
 static volatile uint16_t ticks;
-static volatile bool start_measurement;
 
+// action flags for main loop
+static volatile bool start_measurement;
+static volatile bool update_led;
+
+// current LED status
 static bool led_is_on;
 
 static inline uint16_t ticks_to_ms(uint16_t t)
@@ -143,36 +147,13 @@ ISR(TIM0_OVF_vect)
 // Take total time, and decide what to do.
 ISR(ANA_COMP_vect)
 {
-  uint16_t ms = ticks_to_ms(ticks);
-
   // discharge 100 nF C
   DDRB |= _BV(1);
   // turn off analog comparator
   ACSR = _BV(ACD);
 
-  if (ms < bright_light)
-    {
-      // it's bright light, turn LED off
-      OCR0A = 0;
-      stop_timer0();
-      led_is_on = false;
-    }
-  else
-    {
-      // turn LED on
-      if (ms > dark_light)
-        OCR0A = max_pwm;
-      else
-        OCR0A = (ms - bright_light) * max_pwm / (dark_light - bright_light);
-      led_is_on = true;
-    }
-
-  if (!led_is_on)
-    set_sleep_mode(SLEEP_MODE_PWR_DOWN);
-  else
-    start_measurement = true;
+  update_led = true;
 }
-
 
 int
 main(void)
@@ -190,6 +171,35 @@ main(void)
 
     for (;;)
     {
+      if (update_led)
+        {
+          update_led = false;
+
+          uint16_t ms = ticks_to_ms(ticks);
+
+          if (ms < bright_light)
+            {
+              // it's bright light, turn LED off
+              OCR0A = 0;
+              stop_timer0();
+              led_is_on = false;
+            }
+          else
+            {
+              // turn LED on
+              if (ms > dark_light)
+                OCR0A = max_pwm;
+              else
+                OCR0A = (ms - bright_light) * max_pwm / (dark_light - bright_light);
+              led_is_on = true;
+            }
+
+          if (!led_is_on)
+            set_sleep_mode(SLEEP_MODE_PWR_DOWN);
+          else
+            start_measurement = true;
+        }
+
       if (start_measurement)
         {
           start_measurement = false;
