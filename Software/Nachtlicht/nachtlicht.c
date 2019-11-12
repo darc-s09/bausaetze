@@ -25,8 +25,7 @@ static const uint16_t dark_light = 500;
 // maximal PWM value to use (to save power)
 static const uint8_t max_pwm = 150;
 
-static uint16_t seconds;
-static uint16_t interval = 10; // measuring interval during daylight
+static const uint16_t interval = 10; // measuring interval during daylight
 
 // timer 0 ticks, about 1.7 ms each
 static volatile uint16_t ticks;
@@ -55,7 +54,7 @@ static inline uint16_t ticks_to_ms(uint16_t t)
 //
 // If none of both functions is needed, timer 0 can be turned off, and
 // the controller might go to powerdown sleep. If timer 0 needs to
-// run, the controller is only allowed to got to idle sleep.
+// run, the controller is only allowed to go to idle sleep.
 static void start_timer0(void)
 {
   // fast PWM, set OC0A on TOP, clear on compare match
@@ -124,6 +123,7 @@ ISR(WDT_vect)
 {
   if (!led_is_on)
     {
+      static uint16_t seconds;
       static uint16_t previous;
 
       uint16_t now = ++seconds;
