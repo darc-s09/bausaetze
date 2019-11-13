@@ -39,7 +39,7 @@ int main(void)
     }
     */
     
-	putstring("Tempanzeige und Wuerfel Ver 0.3");         // Ausgabe Versionstext Text
+	putstring("Tempanzeige und Wuerfel Ver 0.4");         // Ausgabe Versionstext Text
 	
     while(1)
     {
@@ -55,37 +55,26 @@ int main(void)
                     case 0:                     // Ausgabe Software Version
                     if(CONTROLLWORD[4] == ADR485) // CRC CHECK 
                         {
-                        putstring("Version 0.3");   // Ausgabe Versionstext Text
+                        putstring("Version 0.4");   // Ausgabe Versionstext Text
                         UART_SendByte(10);               // Ausgabe Return
                         }                                // DEBUG
                     break; //END CASE0
-
-                    case 1:
+                    case 1:               
                     if(CONTROLLWORD[4] == ADR485)       // CRC CHECK
                         {
-                        putstring("TEMPANZEIGE AN:");            // Ausgabe Text
-						UART_SendByte(10);              // Ausgabe Return
-                        cbi(TEMP_OFF,FLAGS);			// Temperaturanzeige AN 
-						cbi(TEMPISOFF,FLAGS);			// Ruecksetzen TEMPIS OFF
-                        }
-                    break; //END CASE1
-
-                    case 2:               
-                    if(CONTROLLWORD[4] == ADR485)       // CRC CHECK
-                        {
-                        putstring("TEMPANZEIGE AUS");   // Ausgabe Text
+                        putstring("Wuerfelmode:");		// Ausgabe Text
+						errorcodeu(CONTROLLWORD[3]);	// Wuerfel Funktion wird festgelegt
+						mode = CONTROLLWORD[3];
                         UART_SendByte(10);              // Ausgabe Return
-                        sbi(TEMP_OFF,FLAGS);			// Temperaturanzeige AUS 
+
                         }
                     break; //END CASE2
 
                     case 3: 
                     if(CONTROLLWORD[4] == ADR485)       // CRC CHECK
                         {
-                        UART_SendByte(10);              // Ausgabe Return
-                        putstring("Wuerfel Spezialmode 7"); // Ausgabe Text
-						sbi(WUERFEL_7,FLAGS);			// Wuerfelspezialmode 7
-                        UART_SendByte(10);              // Ausgabe Return
+                        // Simulation Taster 
+						sbi(TASTER,FLAGS); // DEBUG TASTER 
                         }
                     break; //END CASE3
 
@@ -117,7 +106,92 @@ int main(void)
 
 
 /*****************************************************************************
+ DEBUG 
+ Test Jumperabfrage fuer die Wuerfelfunktion
+ Wuerfelmode:
+ 0 = Temperaturanzeige
+ 1 = Wuerfel Singelmode 1 - 6 
+ 2 = Wuerfel Singelmode 1 - 7
+ 3 = Multiplayer Mode   1 - 6 
+ 4 = Multiplayer Mode   1 - 7 
+ 5 = Temperaturanzeige mit DS1820 
+                                                                     
+******************************************************************************/
+ if (qbi(TASTER,FLAGS))
+	{
+	switch(mode)
+		{
+		case 0:                         // Temperaturanzeige
+		putstring("TEMPANZEIGE AN:");   // Ausgabe Text
+		UART_SendByte(10);              // Ausgabe Return
+		cbi(TEMP_OFF,FLAGS);			// Temperaturanzeige AN
+		cbi(TEMPISOFF,FLAGS);			// Ruecksetzen TEMPIS OFF
+		break;
+		case 1:	                        // Wuerfelsingelmode 1-6
+		sbi(TEMP_OFF,FLAGS);			// Temperaturanzeige AUS
+		UART_SendByte(10);              // Ausgabe Return
+		putstring("Wuerfel Spezialmode 6"); // Ausgabe Text
+		cbi(WUERFEL_7,FLAGS);			// Wuerfelspezialmode 6
+		UART_SendByte(10);              // Ausgabe Return
+		break; 
+		case 2:	                        // Wuerfelsingelmode 1-7
+		sbi(TEMP_OFF,FLAGS);			// Temperaturanzeige AUS
+		UART_SendByte(10);              // Ausgabe Return
+		putstring("Wuerfel Spezialmode 7"); // Ausgabe Text
+		sbi(WUERFEL_7,FLAGS);			// Wuerfelspezialmode 7
+		UART_SendByte(10);              // Ausgabe Return
+		break;
+		case 3:	                        // Wuerfel Multiplayer 1-6
+		sbi(TEMP_OFF,FLAGS);			// Temperaturanzeige AUS
+		UART_SendByte(10);              // Ausgabe Return
+		putstring("Wuerfel Spezialmode 6"); // Ausgabe Text
+		cbi(WUERFEL_7,FLAGS);			// Wuerfelspezialmode 6
+		UART_SendByte(10);              // Ausgabe Return
+		break;
+		case 4:	                        // Wuerfelmultiplayer 1-7
+		sbi(TEMP_OFF,FLAGS);			// Temperaturanzeige AUS
+		UART_SendByte(10);              // Ausgabe Return
+		putstring("Wuerfel Spezialmode 7"); // Ausgabe Text
+		sbi(WUERFEL_7,FLAGS);			// Wuerfelspezialmode 7
+		UART_SendByte(10);              // Ausgabe Return
+		break;
+		case 5:
+		// Noch nicht implementiert 
+		break;
+		}
+	ztemp = zufall;                // Zufahlszahl
+	UART_SendByte(10);             // Ausgabe Return
+	putstring("wuerfeln: ");      // Ausgabe Versionstext Text
+	drehaktiv = rand()%6+1;
+	errorcodeu(ztemp); //DEBUG		
+	counter++;	
+	cbi(TASTER,FLAGS); // DEBUG TASTER
+	}
+
+
+/*DEBUG
+
+if (counter == 15)
+{
+	if( qbi(TASTER,FLAGS) )
+	{
+		ztemp = zufall;                // Zufahlszahl
+		UART_SendByte(10);             // Ausgabe Return
+		putstring("wuerfeln: ");      // Ausgabe Versionstext Text
+		drehaktiv = rand()%6+1;
+		errorcodeu(ztemp); //DEBUG
+		counter++;
+		cbi(TASTER,FLAGS); // DEBUG TASTER 
+		
+		
+		
+	}
+}
+*/
+
+/*****************************************************************************
  Abfrage Taster zum starten des Wuerfels
+
                                                                      
 ******************************************************************************/
          if (counter == 10)
@@ -132,6 +206,8 @@ int main(void)
                  counter++;
                }
 			  }
+
+
 
 
 
@@ -182,11 +258,9 @@ FLAG TEMPISOFF wird gesetzt damit das LED Temperaturband nur einmal ruckgesetzt 
 			}
 			  
 /******************************************************************************
-Wuerfeln
-Uebergabe der Geschwindigkeit beim Wuerfeln
-Beim Start Taster muss noch die Anzahl der Umlaeufe drehaktiv festgelegt werden
-drehaktiv = zufall oder man zaehlt die Taster Prellungen
-Im Multiplayermodus wird noch die Anzeige des Spielstandes gesetzt
+Im Multiplayer Mode
+Wird nach dem Wuerfeln die Anzeige des aktuellen Spielstandes aktualisiert
+Ist der Spielstand kleiner 10 blinkt die erste LED der Anzeige
 ******************************************************************************/	
          if ( (drehaktiv == 0) & (qbi(TEMPISOFF,FLAGS)) )
 			{			
@@ -239,7 +313,14 @@ Im Multiplayermodus wird noch die Anzeige des Spielstandes gesetzt
 					  
 			        
 			}
-		 
+
+
+
+/******************************************************************************
+Wenn dreaktiv gesetzt ist startet der Wuerfel, 
+drehaktiv bestimmt die Anzahl der Umlaufe
+Uebergabe der Geschwindigkeit des Wuerfels
+******************************************************************************/		 
 		 
 		 if (drehaktiv)
               {
@@ -400,11 +481,9 @@ switch (wzahl)
 
 /******************************************************************************
  Ansteuerung des Wuerfels 
- Beginnt mit einen drehenden Feld im Wuerfel Segment
+ Startet mit einen drehenden Feld im Wuerfel Segment
  Parameteruebergabe:
  drehg (Geschwindigkeit des Zeigers)
- ztemp (Uebergabe Zufahls Zahl) 
- 
 Die Variable wzeiger bestimmt die Geschwindigkeit und wird im Timer2 hochgezaehlt
 ******************************************************************************/
 void wuerfellos(uint8_t drehg)

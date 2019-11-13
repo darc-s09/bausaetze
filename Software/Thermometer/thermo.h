@@ -26,6 +26,7 @@
 #define TEMP_OFF			2          // Tempanzeige OFF
 #define TEMPISOFF           3          // BIT wird gesetzt damit das LED Temperaturband nur einmal ruckgesetzt wird
 #define PLAYER              4          // 0 = Player 1 / 1 = Player 2 
+#define TASTER              5          // DEBUG Taster Abfrage 
 
 // Librery declaration
 //#include <avr/eeprom.h>
@@ -104,16 +105,13 @@ PB2 = Kathode LED  1, 2, 3, 4, 5
 //#define LED1_OFF  ZEILE1_OFF & SPALTE1_OFF
 
 
-
-
-
-void led_multiplex(uint8_t);
-void multi_player(uint8_t);
-void wuerfel(uint8_t);
-void wuerfellos(uint8_t);
-void drehenr(uint8_t);
-void zeilenwahl(uint8_t);
-void ledband(uint16_t,uint16_t);
+void multi_player(uint8_t);              // Multi player Mode
+void led_multiplex(uint8_t);             // Steuerung des LED Multiplexers
+void wuerfel(uint8_t);                   // Ansteuerung Wuerfel (7 LED`s)
+void wuerfellos(uint8_t);                // Startet Wuerfel aktivitaet 
+void drehenr(uint8_t);                   // Ansteuerung Wuerfelfeld (7 LED`s)
+void zeilenwahl(uint8_t);                // Uebergabe der Zeigerstellung 
+void ledband(uint16_t,uint16_t);         // Ansteuerung LED Band auf Basis AD Wandler
 void PORTs_init(void);                    // PORT INIT
 void TIMER_init(void);                    // Timer INIT
 void UART_init(void);                     // UART INIT
@@ -130,10 +128,11 @@ volatile uint8_t counter;                 // Counter fuer Taskmanager
 volatile uint8_t drehcounter;             // Zahlt die Anzahl der Umlaeufe bevor der Wuerfel faellt
 volatile uint8_t drehaktiv;               // Hier wird die Anzahl der Umlaeufe festgelegt
 volatile uint8_t ztemp;                   // Hier steht die Zufahlszahl vom aktuellen Wuerfelumlauf drin
-volatile uint16_t wzeiger;                 // Counter fuer den drehenden Wuerfel 
+volatile uint16_t wzeiger;                // Counter fuer den drehenden Wuerfel 
 volatile uint8_t rucksetzcount;           // clear Sendeanforderung
 volatile uint8_t player1;				  // Spielstand Player 1
 volatile uint8_t player2;				  // Spielstand Player 2 
+volatile uint8_t mode;                    // wuerfel funktion
 uint8_t debug;                            // debug Variable	
 uint8_t zufall;                           // Variable fuer Zufallsgenerator
 uint8_t taskcount;                        // Counter fuer Multiplexer
