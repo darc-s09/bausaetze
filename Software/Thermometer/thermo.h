@@ -30,11 +30,7 @@
 
 // Librery declaration
 //#include <avr/eeprom.h>
-#include <stdlib.h>
-#include <avr/io.h>
-#include <util/delay.h>
 #include <inttypes.h>
-#include <avr/interrupt.h>
 
 
 
@@ -124,20 +120,20 @@ void usart_getc_intr(void);               // Funktion Liest Byte aus UART Puffer
 
 
 // Globale Variable
-volatile uint8_t counter;                 // Counter fuer Taskmanager
-volatile uint8_t drehcounter;             // Zahlt die Anzahl der Umlaeufe bevor der Wuerfel faellt
-volatile uint8_t drehaktiv;               // Hier wird die Anzahl der Umlaeufe festgelegt
-volatile uint8_t ztemp;                   // Hier steht die Zufahlszahl vom aktuellen Wuerfelumlauf drin
-volatile uint16_t wzeiger;                // Counter fuer den drehenden Wuerfel 
-volatile uint8_t rucksetzcount;           // clear Sendeanforderung
-volatile uint8_t player1;				  // Spielstand Player 1
-volatile uint8_t player2;				  // Spielstand Player 2 
-volatile uint8_t mode;                    // wuerfel funktion
-uint8_t debug;                            // debug Variable	
-uint8_t zufall;                           // Variable fuer Zufallsgenerator
-uint8_t taskcount;                        // Counter fuer Multiplexer
-uint8_t FLAGS;                            // Flags, Verwendung siehe Flags declaration
-uint8_t LED_TASK[20][2];                  // Array LED Ansteuerung [0 = AN/AUS oder Timer
-uint8_t LED_Timer;                        // Multiplexer
-uint8_t LED_HELLIGKEIT;                   // Helligkeit , PWM
-uint8_t T_Sensorwert[5][2];               // Variable [Sensornummer] und [ID/Temperaturwerte]
+extern volatile uint8_t counter;                 // Counter fuer Taskmanager
+extern volatile uint8_t drehcounter;             // Zahlt die Anzahl der Umlaeufe bevor der Wuerfel faellt
+extern volatile uint8_t drehaktiv;               // Hier wird die Anzahl der Umlaeufe festgelegt
+extern volatile uint8_t ztemp;                   // Hier steht die Zufahlszahl vom aktuellen Wuerfelumlauf drin
+extern volatile uint16_t wzeiger;                // Counter fuer den drehenden Wuerfel 
+extern volatile uint8_t rucksetzcount;           // clear Sendeanforderung
+extern volatile uint8_t player1;				  // Spielstand Player 1
+extern volatile uint8_t player2;				  // Spielstand Player 2 
+extern volatile uint8_t mode;                    // wuerfel funktion
+extern uint8_t debug;                            // debug Variable	
+extern uint8_t zufall;                           // Variable fuer Zufallsgenerator
+extern uint8_t taskcount;                        // Counter fuer Multiplexer
+extern uint8_t FLAGS;                            // Flags, Verwendung siehe Flags declaration
+extern uint8_t LED_TASK[20][2];                  // Array LED Ansteuerung [0 = AN/AUS oder Timer
+extern uint8_t LED_Timer;                        // Multiplexer
+extern uint8_t LED_HELLIGKEIT;                   // Helligkeit , PWM
+extern uint8_t T_Sensorwert[5][2];               // Variable [Sensornummer] und [ID/Temperaturwerte]
