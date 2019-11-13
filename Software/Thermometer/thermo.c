@@ -986,8 +986,7 @@ void putstring(char *s)
 {
     while (*s != 0)                        
     {
-        UART_SendByte(*s);
-        *s++;
+        UART_SendByte(*s++);
     }
 }
 
