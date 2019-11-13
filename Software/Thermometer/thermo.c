@@ -1190,3 +1190,11 @@ puffer[schreibzeiger]=UDR0;
 schreibzeiger++;
 if(schreibzeiger==PUFFER_GROESSE) schreibzeiger=0;
 }
+
+/*
+ * Local Variables:
+ * c-basic-offset: 4
+ * tab-width: 4
+ * indent-tabs-mode: nil
+ * End:
+ */
