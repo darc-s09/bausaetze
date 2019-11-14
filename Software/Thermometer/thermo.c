@@ -156,6 +156,7 @@ int main(void)
 		putstring("Wuerfel Spezialmode 6"); // Ausgabe Text
 		cbi(WUERFEL_7,FLAGS);			// Wuerfelspezialmode 6
 		UART_SendByte(10);              // Ausgabe Return
+        multi_player(0);                // Singelplayer
 		break; 
 		case 2:	                        // Wuerfelsingelmode 1-7
 		sbi(TEMP_OFF,FLAGS);			// Temperaturanzeige AUS
@@ -170,6 +171,16 @@ int main(void)
 		putstring("Wuerfel Spezialmode 6"); // Ausgabe Text
 		cbi(WUERFEL_7,FLAGS);			// Wuerfelspezialmode 6
 		UART_SendByte(10);              // Ausgabe Return
+		if(qbi(PLAYER,FLAGS))
+		   {
+		   multi_player(1);                // Multiplayer	1
+		   cbi(PLAYER,FLAGS); // TEST
+		   }
+		else
+		   {
+		   multi_player(2);                // Multiplayer	2
+		   sbi(PLAYER,FLAGS); //TEST
+		   }
 		break;
 		case 4:	                        // Wuerfelmultiplayer 1-7
 		sbi(TEMP_OFF,FLAGS);			// Temperaturanzeige AUS
@@ -182,11 +193,7 @@ int main(void)
 		// Noch nicht implementiert 
 		break;
 		}
-	ztemp = zufall;                // Zufahlszahl
-	UART_SendByte(10);             // Ausgabe Return
-	putstring("wuerfeln: ");      // Ausgabe Versionstext Text
-	drehaktiv = rand()%6+1;
-	errorcodeu(ztemp); //DEBUG		
+	
 	counter++;	
 	cbi(TASTER,FLAGS); // DEBUG TASTER
 	}
@@ -285,7 +292,7 @@ Im Multiplayer Mode
 Wird nach dem Wuerfeln die Anzeige des aktuellen Spielstandes aktualisiert
 Ist der Spielstand kleiner 10 blinkt die erste LED der Anzeige
 ******************************************************************************/	
-         if ( (drehaktiv == 0) & (qbi(TEMPISOFF,FLAGS)) )
+         if ( (drehaktiv == 0) & (qbi(TEMPISOFF,FLAGS)) & (mode > 1) )
 			{			
 			if (qbi(PLAYER,FLAGS))
 			    { // PLAYER 2
