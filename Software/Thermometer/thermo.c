@@ -138,6 +138,7 @@ int main(void)
  3 = Multiplayer Mode   1 - 6 
  4 = Multiplayer Mode   1 - 7 
  5 = Temperaturanzeige mit DS1820 
+ 6 = Test LEDs alle einschalten
                                                                      
 ******************************************************************************/
  if (qbi(TASTER,FLAGS))
@@ -149,6 +150,10 @@ int main(void)
 		UART_SendByte(10);              // Ausgabe Return
 		cbi(TEMP_OFF,FLAGS);			// Temperaturanzeige AN
 		cbi(TEMPISOFF,FLAGS);			// Ruecksetzen TEMPIS OFF
+		for (uint8_t step = 1; step <= 19 ; step++)
+            {
+			LED_TASK[step][0]=0;       // Anzeige loeschen
+            }		
 		break;
 		case 1:	                        // Wuerfelsingelmode 1-6
 		sbi(TEMP_OFF,FLAGS);			// Temperaturanzeige AUS
@@ -164,6 +169,7 @@ int main(void)
 		putstring("Wuerfel Spezialmode 7"); // Ausgabe Text
 		sbi(WUERFEL_7,FLAGS);			// Wuerfelspezialmode 7
 		UART_SendByte(10);              // Ausgabe Return
+		multi_player(0);                // Singelplayer
 		break;
 		case 3:	                        // Wuerfel Multiplayer 1-6
 		sbi(TEMP_OFF,FLAGS);			// Temperaturanzeige AUS
@@ -188,39 +194,38 @@ int main(void)
 		putstring("Wuerfel Spezialmode 7"); // Ausgabe Text
 		sbi(WUERFEL_7,FLAGS);			// Wuerfelspezialmode 7
 		UART_SendByte(10);              // Ausgabe Return
+		if(qbi(PLAYER,FLAGS))
+		    {
+			multi_player(1);                // Multiplayer	1
+			cbi(PLAYER,FLAGS); // TEST
+		    }
+		else
+		    {
+			multi_player(2);                // Multiplayer	2
+			sbi(PLAYER,FLAGS); //TEST
+		    }
 		break;
 		case 5:
 		// Noch nicht implementiert 
 		break;
+		case 6:
+		// Alle LED`s an
+		sbi(TEMP_OFF,FLAGS);			// Temperaturanzeige AUS
+		sbi(TEMPISOFF,FLAGS); 
+		for (uint8_t step = 1; step <= 19 ; step++)
+		    {
+			LED_TASK[step][0]=1;
+		    }
+		break;
 		}
-	
+	    
 	counter++;	
 	cbi(TASTER,FLAGS); // DEBUG TASTER
 	}
 
 
-/*DEBUG
-
-if (counter == 15)
-{
-	if( qbi(TASTER,FLAGS) )
-	{
-		ztemp = zufall;                // Zufahlszahl
-		UART_SendByte(10);             // Ausgabe Return
-		putstring("wuerfeln: ");      // Ausgabe Versionstext Text
-		drehaktiv = rand()%6+1;
-		errorcodeu(ztemp); //DEBUG
-		counter++;
-		cbi(TASTER,FLAGS); // DEBUG TASTER 
-		
-		
-		
-	}
-}
-*/
-
 /*****************************************************************************
- Abfrage Taster zum starten des Wuerfels
+ Abfrage Taster zum starten des Wuerfels und Auswertung der Jumper
 
                                                                      
 ******************************************************************************/
@@ -228,11 +233,68 @@ if (counter == 15)
               {
               if( !qbi(SW_WUERFEL,SW_PORT) )
                 {
-			     ztemp = zufall;                // Zufahlszahl
-			     UART_SendByte(10);             // Ausgabe Return
-			     putstring("wuerfeln: ");      // Ausgabe Versionstext Text
-			     drehaktiv = rand()%6+1;
-			     errorcodeu(ztemp); //DEBUG
+			    switch(mode)
+			    {
+				    case 0:                         // Temperatur Anzeige
+				    cbi(TEMP_OFF,FLAGS);			// Temperaturanzeige AN
+				    cbi(TEMPISOFF,FLAGS);			// Ruecksetzen TEMPIS OFF
+				    for (uint8_t step = 1; step <= 19 ; step++)
+				    {
+					    LED_TASK[step][0]=0;       // LED`s aus
+				    }
+				    break;
+				    case 1:	                        // Wuerfel
+				    sbi(TEMP_OFF,FLAGS);			// Temperaturanzeige AUS
+				    cbi(WUERFEL_7,FLAGS);			// Wuerfel 1 - 6 
+				    multi_player(0);                // Singelplayer
+				    break;
+				    case 2:	                        // Wuerfel
+				    sbi(TEMP_OFF,FLAGS);			// Temperaturanzeige AUS
+				    UART_SendByte(10);              // Ausgabe Return
+				    sbi(WUERFEL_7,FLAGS);			// Wuerfel 1 - 7
+				    multi_player(0);                // Singelplayer
+				    break;
+				    case 3:	                        // Wuerfel 
+				    sbi(TEMP_OFF,FLAGS);			// Temperaturanzeige AUS
+				    cbi(WUERFEL_7,FLAGS);			// Wuerfel 1 - 6
+				    if(qbi(PLAYER,FLAGS))
+				        {
+					    multi_player(1);            // Player1
+					    cbi(PLAYER,FLAGS);
+				        }
+				    else
+				        {
+					    multi_player(2);            // Player	2
+					    sbi(PLAYER,FLAGS);
+				        }
+				    break;
+				    case 4:	                        // Wuerfel
+				    sbi(TEMP_OFF,FLAGS);			// Temperaturanzeige AUS
+				    sbi(WUERFEL_7,FLAGS);			// Wuerfel 1 - 7
+				    if(qbi(PLAYER,FLAGS))
+				        {
+					    multi_player(1);            // Player1
+					    cbi(PLAYER,FLAGS);
+				        }
+				    else
+				        {
+					    multi_player(2);            // Player2
+					    sbi(PLAYER,FLAGS); //TEST
+				        }
+				    break;
+				    case 5:
+				    // Noch nicht implementiert
+				    break;
+				    case 6:
+				    // Alle LED`s an
+				    sbi(TEMP_OFF,FLAGS);			// Temperaturanzeige AUS
+				    sbi(TEMPISOFF,FLAGS);
+				    for (uint8_t step = 1; step <= 19 ; step++)
+				        {
+					    LED_TASK[step][0]=1;
+				        }
+				    break;
+			    }
                  counter++;
                }
 			  }
@@ -289,10 +351,10 @@ FLAG TEMPISOFF wird gesetzt damit das LED Temperaturband nur einmal ruckgesetzt 
 			  
 /******************************************************************************
 Im Multiplayer Mode
-Wird nach dem Wuerfeln die Anzeige des aktuellen Spielstandes aktualisiert
+Hier wird nach dem Wuerfeln die Anzeige des aktuellen Spielstandes aktualisiert
 Ist der Spielstand kleiner 10 blinkt die erste LED der Anzeige
 ******************************************************************************/	
-         if ( (drehaktiv == 0) & (qbi(TEMPISOFF,FLAGS)) & (mode > 1) )
+         if ( (drehaktiv == 0) & (qbi(TEMPISOFF,FLAGS)) & (mode > 2) )
 			{			
 			if (qbi(PLAYER,FLAGS))
 			    { // PLAYER 2
@@ -1182,7 +1244,6 @@ if(rucksetzcount)
     }
 	
 // Test Zufallsgenerator fuer den Wuerfel	
-
 if ( qbi(WUERFEL_7,FLAGS) )
      {
      if (zufall >= 7)
@@ -1196,10 +1257,7 @@ else
           {
           zufall = 0;
           }	   
-    }
-	
-	
-	
+    }	
 zufall++;
 counter++;
 wzeiger++;
