@@ -29,6 +29,7 @@ volatile uint8_t rucksetzcount;           // clear Sendeanforderung
 volatile uint8_t player1;				  // Spielstand Player 1
 volatile uint8_t player2;				  // Spielstand Player 2 
 volatile uint8_t mode;                    // wuerfel funktion
+
 uint8_t debug;                            // debug Variable	
 uint8_t zufall;                           // Variable fuer Zufallsgenerator
 uint8_t taskcount;                        // Counter fuer Multiplexer
@@ -37,6 +38,13 @@ uint8_t LED_TASK[20][2];                  // Array LED Ansteuerung [0 = AN/AUS o
 uint8_t LED_Timer;                        // Multiplexer
 uint8_t LED_HELLIGKEIT;                   // Helligkeit , PWM
 uint8_t T_Sensorwert[5][2];               // Variable [Sensornummer] und [ID/Temperaturwerte]
+uint8_t lesezeiger;                             // Lesezeiger, notwendig für die Abholroutine (UART BUFFER)
+uint8_t schreibzeiger;                          // Schreibzeiger, notwendig für das richtige schreiben in den UART BUFFER
+int     UARTINDEX;                              // Index für Arrya UART_BUFFER
+uint8_t zeicheninbuffer;                        // díese Variable zeigt an wieviel Zeichen sich noch im UART Buffer befinden
+uint8_t UFLAGS;                                 // Beschreibung siehe UFLAG Definition
+unsigned char puffer[PUFFER_GROESSE];           // BUFFER für UART Eingang
+uint8_t CONTROLLWORD[10];                       // Controllwort zur Steuerung des Controllers
 
 
 int main(void)

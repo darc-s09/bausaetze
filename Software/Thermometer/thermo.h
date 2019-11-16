@@ -51,13 +51,6 @@
 #define SENDEN_INAKTIV      cbi(5,PORTC)        // Deaktivierung der Sendeleitung
 #define PUFFER_GROESSE 250                      // Puffergröße in Byte, für den UART Eingangspuffer
 #define CW_SIZE 5                               // Größe des Controllwords
-uint8_t lesezeiger;                             // Lesezeiger, notwendig für die Abholroutine (UART BUFFER)
-uint8_t schreibzeiger;                          // Schreibzeiger, notwendig für das richtige schreiben in den UART BUFFER
-int     UARTINDEX;                              // Index für Arrya UART_BUFFER
-uint8_t zeicheninbuffer;                        // díese Variable zeigt an wieviel Zeichen sich noch im UART Buffer befinden
-uint8_t UFLAGS;                                 // Beschreibung siehe UFLAG Definition
-unsigned char puffer[PUFFER_GROESSE];           // BUFFER für UART Eingang
-uint8_t CONTROLLWORD[10];                       // Controllwort zur Steuerung des Controllers
 
 //UFLAG Definition
 #define CONTROLLWORD_VOLL   0                   // FLAG für die Signalisierung das Daten im UART Buffer sind
