@@ -69,6 +69,8 @@ LIB_DEP+=
 
 LINKER_SCRIPT_DEP+= 
 
+# All Target
+all: $(OUTPUT_FILE_PATH) $(ADDITIONAL_DEPENDENCIES)
 
 # AVR32/GNU C Compiler
 
@@ -100,8 +102,6 @@ endif
 
 # Add inputs and outputs from these tool invocations to the build variables 
 
-# All Target
-all: $(OUTPUT_FILE_PATH) $(ADDITIONAL_DEPENDENCIES)
 
 $(OUTPUT_FILE_PATH): $(OBJS) $(USER_OBJS) $(OUTPUT_FILE_DEP) $(LIB_DEP) $(LINKER_SCRIPT_DEP)
 	@echo Building target: $@
