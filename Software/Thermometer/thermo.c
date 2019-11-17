@@ -994,36 +994,36 @@ im Singel Conversations Modus
 void TIMER_init(void)
 {
 
-/************************ TIMER 0 8 BIT Zaehler  *****************************/
-    TCCR0B = 0b00000001; // Teiler 1024 3,68MHZ = 259ns*8*256(8BIT) = 0,5ms
-    TCCR0A = 0x00;
-    OCR0A = 0;          // Output Compare Register
-    OCR0B = 0;          // Output Compare Register
-    TCNT0 = 0;          // counter Timer 0
-    sbi(0,TIMSK0);      // Timer0 Overflow Interrupt Enable
+    /*
+     * Timer 0: LED-Multiplexing, im Überlauf-Interrupt
+     */
+#if F_CPU < 10000000
+    TCCR0B = _BV(CS01); // Vorteiler 8, bei 3,68 MHz => 1800 Hz
+#else
+    TCCR0B = _BV(CS01) | _BV(CS00); // Vorteiler 64, bei 12 MHz => 730 Hz
+#endif
+    TIMSK0 = _BV(TOIE0); // Timer0 Overflow Interrupt Enable
 
-
-/************************ Timer 1 16 BIT Zaehler *****************************/
-    //TCCR1B = 0x05;    // Teiler 1024 3,68MHZ = 259ns
-    //TCNT1H Zaehler HIGH Byte (8bit)
-    //TCNT1L Zaehler  LOW Byte (8bit)
-
-
-/************************ TIMER 2 8 BIT Zaehler ******************************/
-
-    //TCCR2B = 0x07;    // Teiler 1024 3,68MHZ = 259ns*1024*256(8BIT) = 67,91ms
-    TCCR2B = 0x06;      // Teiler  256 3,68MHZ = 259ns* 256*256(8BIT) = 16,97ms
-    //TCCR2B = 0x05;    // Teiler  128 3,68MHZ = 259ns* 128*256(8BIT) =  8,49ms
-    //TCCR2B = 0x04;    // Teiler   64 3,68MHZ =  83ns*  64*256(8BIT) =  4,248ms
-    //TIMSK2 = 0x01;
-    sbi(0,TIMSK2);      // Timer0 Overflow Interrupt Enable
+    /*
+     * Timer 2: allgemeine Zeitablaufsteuerung
+     */
+#if F_CPU < 10000000
+    TCCR2B = _BV(CS22) | _BV(CS21); // Teiler  256, bei 3,68 MHz 52 Hz Rate
+#else
+    TCCR2B = _BV(CS22) | _BV(CS21) | _BV(CS20); // Teiler 1024, bei 12 MHz 45 Hz Rate
+#endif
+    TIMSK2 = _BV(TOIE2); // Timer2 Overflow Interrupt Enable
 
 /************************ Analog Digital Wandler Singel **********************/
-    ADMUX = 0b11001000;  //int.	T-Sensor BIT4, Internal Reference 1,1V BIT 6&7
-    // ADC Enable BIT7, ADC Start Conversion BIT 6,ADC Auto Trigger Enable BIT 5, Vorteiler auf 32 fuer den ADC BIT 1-3
-	ADCSRA = 0b10000101; 
-    ADCSRB = 0b00000000; // Timer/Counter1 Overflow startet Wandlung, BIT 1&2
-    // ADCL zuerst lesen, dann ADHL
+    // Interne Referenz 1,1 V; Kanal 8 (interner Temperatursensor)
+    ADMUX = _BV(REFS1) | _BV(REFS0) | _BV(MUX3);
+#if F_CPU < 10000000
+    // ADC enable, Vorteiler 32 => 115 kHz Takt bei 3,68 MHz
+	ADCSRA = _BV(ADEN) | _BV(ADPS2) | _BV(ADPS0);
+#else
+    // ADC enable, Vorteiler 64 => 187 kHz bei 12 MHz
+    ADCSRA = _BV(ADEN) | _BV(ADPS2) | _BV(ADPS1);
+#endif
 }
 
 
@@ -1098,14 +1098,6 @@ void errorcodeu16(int16_t zahl)
     UART_SendByte(temp);                    // Sendet Ziffer
 }
 
-
-void warte_sekunde(void)
-{
-    _delay_ms(250);
-    _delay_ms(250);
-    _delay_ms(250);
-    _delay_ms(250);
-}
 
 /******************************************************************************
 Diese Funktion Liest ein Byte aus dem UART Puffer
