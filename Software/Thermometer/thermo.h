@@ -108,7 +108,6 @@ void UART_SendByte(uint8_t);              // sendet Byte > UART
 void putstring(char *s);                  // sendet String >UART
 void errorcodeu(uint8_t);                 // sendet Fehlercode (Wandlung Hexzahl >> ASCII)
 void errorcodeu16(int16_t);               // sendet den Fehlercode (Wandlung Hexzahl >> ASCII)
-void warte_sekunde(void);                 // delay 1 Sekunde
 void usart_getc_intr(void);               // Funktion Liest Byte aus UART Puffer
 
 
