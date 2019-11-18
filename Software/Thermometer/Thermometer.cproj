@@ -124,6 +124,9 @@
     <Compile Include="thermo.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="uart.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="thermo.h">
       <SubType>compile</SubType>
     </Compile>

@@ -25,7 +25,6 @@ volatile uint8_t drehcounter;             // Zahlt die Anzahl der Umlaeufe bevor
 volatile uint8_t drehaktiv;               // Hier wird die Anzahl der Umlaeufe festgelegt
 volatile uint8_t ztemp;                   // Hier steht die Zufahlszahl vom aktuellen Wuerfelumlauf drin
 volatile uint16_t wzeiger;                // Counter fuer den drehenden Wuerfel 
-volatile uint8_t rucksetzcount;           // clear Sendeanforderung
 volatile uint8_t player1;				  // Spielstand Player 1
 volatile uint8_t player2;				  // Spielstand Player 2 
 volatile uint8_t mode;                    // wuerfel funktion
@@ -37,17 +36,6 @@ uint8_t FLAGS;                            // Flags, Verwendung siehe Flags decla
 uint8_t LED_TASK[20][2];                  // Array LED Ansteuerung [0 = AN/AUS oder Timer
 uint8_t LED_Timer;                        // Multiplexer
 uint8_t LED_HELLIGKEIT;                   // Helligkeit , PWM
-#if UART_DEBUG == 1
-uint8_t T_Sensorwert[5][2];               // Variable [Sensornummer] und [ID/Temperaturwerte]
-uint8_t lesezeiger;                             // Lesezeiger, notwendig für die Abholroutine (UART BUFFER)
-uint8_t schreibzeiger;                          // Schreibzeiger, notwendig für das richtige schreiben in den UART BUFFER
-int     UARTINDEX;                              // Index für Arrya UART_BUFFER
-uint8_t zeicheninbuffer;                        // díese Variable zeigt an wieviel Zeichen sich noch im UART Buffer befinden
-uint8_t UFLAGS;                                 // Beschreibung siehe UFLAG Definition
-unsigned char puffer[PUFFER_GROESSE];           // BUFFER für UART Eingang
-uint8_t CONTROLLWORD[10];                       // Controllwort zur Steuerung des Controllers
-#endif
-
 
 
 int main(void)
@@ -58,9 +46,9 @@ int main(void)
 	drehcounter = 0;
     PORTs_init();                       // Init der Ein und Ausgabeports
     TIMER_init();                       // Timer Init
-    #if UART_DEBUG == 1
+#if UART_DEBUG == 1
 	UART_init();                        // INIT 485
-	#endif
+#endif
     sei();                              // INTERRUPTS GLOBAL AN
 	LED_TASK[1][0]=1;					// LED 1 AN nach INIT
     //DEBUG
@@ -74,169 +62,14 @@ int main(void)
 
     }
     */
-    #if UART_DEBUG == 1
+#if UART_DEBUG == 1
 	putstring("Tempanzeige und Wuerfel Ver 0.4");         // Ausgabe Versionstext Text
-	#endif
+#endif
 	
     while(1)
     {
-		#if UART_DEBUG == 1
-        usart_getc_intr();                      // CHECK und Verarbeitung des UART Buffers
-        if(qbi(CONTROLLWORD_VOLL,UFLAGS))       // Daten im Puffer > Run
-            {
-            cbi(CONTROLLWORD_VOLL,UFLAGS);      // Clear FLAG "RUN"
-            if(CONTROLLWORD[1] == ADR485)       // Check Richtige Adresse
-                {
-                switch(CONTROLLWORD[2])         // Abarbeitung switch
-                    {
-                    case 0:                     // Ausgabe Software Version
-                    if(CONTROLLWORD[4] == ADR485) // CRC CHECK 
-                        {
-                        putstring("Version 0.4");   // Ausgabe Versionstext Text
-                        UART_SendByte(10);               // Ausgabe Return
-                        }                                // DEBUG
-                    break; //END CASE0
-                    case 1:               
-                    if(CONTROLLWORD[4] == ADR485)       // CRC CHECK
-                        {
-                        putstring("Wuerfelmode:");		// Ausgabe Text
-						errorcodeu(CONTROLLWORD[3]);	// Wuerfel Funktion wird festgelegt
-						mode = CONTROLLWORD[3];
-                        UART_SendByte(10);              // Ausgabe Return
-
-                        }
-                    break; //END CASE2
-
-                    case 3: 
-                    if(CONTROLLWORD[4] == ADR485)       // CRC CHECK
-                        {
-                        // Simulation Taster 
-						sbi(TASTER,FLAGS); // DEBUG TASTER 
-                        }
-                    break; //END CASE3
-
-                    case 4:                             
-                    if(CONTROLLWORD[4] == ADR485)      // CRC CHECK
-                        {
-                        ztemp = zufall;                // Zufahlszahl
-                        UART_SendByte(10);             // Ausgabe Return
-                        putstring("wuerfeln: ");      // Ausgabe Versionstext Text
-                        //drehaktiv = CONTROLLWORD[3];
-						drehaktiv = rand()%6+1;
-						errorcodeu(ztemp); //DEBUG
-                        }
-                    break; //END CASE4
-					case 5:
-					if(CONTROLLWORD[4] == ADR485)      // CRC CHECK
-					    {
-						UART_SendByte(10);             // Ausgabe Return
-						putstring("Multiplayer: ");   // Ausgabe Funktion
-						multi_player(CONTROLLWORD[3]);
-					    }
-					break; //END CASE5
-                    }
-
-                }
-
-            }
-
-
-
-/*****************************************************************************
- DEBUG 
- Test Jumperabfrage fuer die Wuerfelfunktion
- Wuerfelmode:
- 0 = Temperaturanzeige
- 1 = Wuerfel Singelmode 1 - 6 
- 2 = Wuerfel Singelmode 1 - 7
- 3 = Multiplayer Mode   1 - 6 
- 4 = Multiplayer Mode   1 - 7 
- 5 = Temperaturanzeige mit DS1820 
- 6 = Test LEDs alle einschalten
-                                                                     
-******************************************************************************/
- if (qbi(TASTER,FLAGS))
-	{
-	switch(mode)
-		{
-		case 0:                         // Temperaturanzeige
-		putstring("TEMPANZEIGE AN:");   // Ausgabe Text
-		UART_SendByte(10);              // Ausgabe Return
-		cbi(TEMP_OFF,FLAGS);			// Temperaturanzeige AN
-		cbi(TEMPISOFF,FLAGS);			// Ruecksetzen TEMPIS OFF
-		for (uint8_t step = 1; step <= 19 ; step++)
-            {
-			LED_TASK[step][0]=0;       // Anzeige loeschen
-            }		
-		break;
-		case 1:	                        // Wuerfelsingelmode 1-6
-		sbi(TEMP_OFF,FLAGS);			// Temperaturanzeige AUS
-		UART_SendByte(10);              // Ausgabe Return
-		putstring("Wuerfel Spezialmode 6"); // Ausgabe Text
-		cbi(WUERFEL_7,FLAGS);			// Wuerfelspezialmode 6
-		UART_SendByte(10);              // Ausgabe Return
-        multi_player(0);                // Singelplayer
-		break; 
-		case 2:	                        // Wuerfelsingelmode 1-7
-		sbi(TEMP_OFF,FLAGS);			// Temperaturanzeige AUS
-		UART_SendByte(10);              // Ausgabe Return
-		putstring("Wuerfel Spezialmode 7"); // Ausgabe Text
-		sbi(WUERFEL_7,FLAGS);			// Wuerfelspezialmode 7
-		UART_SendByte(10);              // Ausgabe Return
-		multi_player(0);                // Singelplayer
-		break;
-		case 3:	                        // Wuerfel Multiplayer 1-6
-		sbi(TEMP_OFF,FLAGS);			// Temperaturanzeige AUS
-		UART_SendByte(10);              // Ausgabe Return
-		putstring("Wuerfel Spezialmode 6"); // Ausgabe Text
-		cbi(WUERFEL_7,FLAGS);			// Wuerfelspezialmode 6
-		UART_SendByte(10);              // Ausgabe Return
-		if(qbi(PLAYER,FLAGS))
-		   {
-		   multi_player(1);                // Multiplayer	1
-		   cbi(PLAYER,FLAGS); // TEST
-		   }
-		else
-		   {
-		   multi_player(2);                // Multiplayer	2
-		   sbi(PLAYER,FLAGS); //TEST
-		   }
-		break;
-		case 4:	                        // Wuerfelmultiplayer 1-7
-		sbi(TEMP_OFF,FLAGS);			// Temperaturanzeige AUS
-		UART_SendByte(10);              // Ausgabe Return
-		putstring("Wuerfel Spezialmode 7"); // Ausgabe Text
-		sbi(WUERFEL_7,FLAGS);			// Wuerfelspezialmode 7
-		UART_SendByte(10);              // Ausgabe Return
-		if(qbi(PLAYER,FLAGS))
-		    {
-			multi_player(1);                // Multiplayer	1
-			cbi(PLAYER,FLAGS); // TEST
-		    }
-		else
-		    {
-			multi_player(2);                // Multiplayer	2
-			sbi(PLAYER,FLAGS); //TEST
-		    }
-		break;
-		case 5:
-		// Noch nicht implementiert 
-		break;
-		case 6:
-		// Alle LED`s an
-		sbi(TEMP_OFF,FLAGS);			// Temperaturanzeige AUS
-		sbi(TEMPISOFF,FLAGS); 
-		for (uint8_t step = 1; step <= 19 ; step++)
-		    {
-			LED_TASK[step][0]=1;
-		    }
-		break;
-		}
-	    
-	counter++;	
-	cbi(TASTER,FLAGS); // DEBUG TASTER
-	}
-
+#if UART_DEBUG == 1
+        uart_action();
 #endif
 /*****************************************************************************
  Abfrage Taster zum starten des Wuerfels und Auswertung der Jumper
@@ -471,18 +304,18 @@ void multi_player(uint8_t playernr)
 			LED_TASK[18][0]=1; // LED 10 AN
 			LED_TASK[19][0]=0; // LED 19 AUS
 			player1 = player1 + ztemp;
-			#if UART_DEBUG == 1
+#if UART_DEBUG == 1
 			errorcodeu(player1); // DEBUG
-			#endif			
+#endif			
 			break;
 			case 2:
 			sbi(PLAYER,FLAGS); // PLAYER 2
 			LED_TASK[18][0]=0; // LED 10 AUS
 			LED_TASK[19][0]=1; // LED 19 AN
 			player2 = player2 + ztemp;
-			#if UART_DEBUG == 1
+#if UART_DEBUG == 1
 			errorcodeu(player2); // DEBUG
-			#endif
+#endif
 			break;
 			}
 		drehaktiv = rand()%6+1;
@@ -970,13 +803,8 @@ PC7 = NC
 Alle Ports auf Eingang, bis auf PORT PC5 AUSGANG fuer DEBUG Ausgabe 
 PULLUP Widerstand vom PORT PC2,PC4 aktive
 */
-#if UART_DEBUG == 1
     DDRC =  0b00100000;
     PORTC = 0b00010100;
-#else
-    DDRC =  0b00100000;
-    PORTC = 0b00010100;
-#endif
 /* Belegung PORTD
 PD0 = RXD (485)
 PD1 = TXD (485)
@@ -1038,161 +866,6 @@ void TIMER_init(void)
 #endif
 }
 
-#if UART_DEBUG == 1
-/*****************************************************************************************
-initialisieren des UART
-Bautrate einstellen 
-Aktivieren der Betriebsart Senden und Empfangen
-Aktivieren des Empfangs Interrupts 
-*****************************************************************************************/
-void UART_init(void)
-{
-    UBRR0H = HIGH(USARTSPEED);
-    UBRR0L = LOW(USARTSPEED);
-    UCSR0B = _BV(TXEN0) | _BV(RXEN0) | _BV(RXCIE0);
-    UCSR0C = (0<<USBS0)|(3<<UCSZ00);
-}
-
-
-
-/******************************************************************************
-Sendet ein Byte ueber die UART
-******************************************************************************/
-void UART_SendByte(uint8_t data)
-{
-    SENDEN_AKTIV;                         // RX > TX Umschaltung 
-    rucksetzcount = 3;                    // Delay zur Rueckschaltung RX
-    _delay_ms(10);
-    while(bit_is_clear(UCSR0A, UDRE0));   // wartet auf UART Ready 
-    UDR0 = data;                            
-}
-
-
-/******************************************************************************
-sendet einen String ueber UART
-******************************************************************************/
-void putstring(char *s)                     
-{
-    while (*s != 0)                        
-    {
-        UART_SendByte(*s++);
-    }
-}
-
-/******************************************************************************
-sendet den Fehlercode (Wandlung Hexzahl >> ASCII)
-******************************************************************************/
-void errorcodeu(uint8_t zahl)
-{
-    uint8_t temp = 0;
-
-    temp = zahl % 10;                       // niederwertigste Ziffer
-    zahl = (zahl - temp) / 10;              // Rest von 10 ergibt die Einer
-    temp = temp | 0x30;                     // Erzeuge ASCII Zeichen
-    if(zahl != 0){  errorcodeu(zahl);   }   
-
-    UART_SendByte(temp);                    // Sendet Ziffer
-}
-
-
-/******************************************************************************
-sendet den Fehlercode (Wandlung Hexzahl >> ASCII) (16BIT)
-******************************************************************************/
-void errorcodeu16(int16_t zahl)
-{
-    uint8_t temp = 0;
-
-    temp = zahl % 10;                       // niederwertigste Ziffer
-    zahl = (zahl - temp) / 10;              // Rest von 10 ergibt die Einer
-    temp = temp | 0x30;                     // Erzeuge ASCII Zeichen
-    if(zahl != 0){  errorcodeu16(zahl); }   
-
-    UART_SendByte(temp);                    // Sendet Ziffer
-}
-
-
-/******************************************************************************
-Diese Funktion Liest ein Byte aus dem UART Puffer
-Berechnet wieviel Zeichen sich noch im Buffer befinden
-Wenn Controllword freigegeben, werden die Zeichen dort eingeschrieben.
-Ruecksetzbedingung in Bearbeitungsroutine:
-Controllword[0]         > loeschen
-UART_PUFFER_VOLL,FLAGS  > loeschen
-
-
-Das Steuerwort muss  CW_SIZE Stellen haben !!
-
-             0 1 2 3 4 5
-             > Steuerzeichen wird nicht verarbeitet !
-               > Adresse
-                 > Kommando
-                   > WERT
-                     > CRC
-
-
-Belegung CONTROLLWORD:
-                        0 - Steuerzeichen (>)
-                        1 - Display Adresse
-                        2 - Segmentadresse
-                        3 - WERT
-                        4 - CRC
-
-
-******************************************************************************/
-void usart_getc_intr(void)
-{
-
-uint8_t schreibzeigernew;
-
-// Berechnung: Anzahl der Zeichen, wieviel sich im UART Buffer befinden
-// Kontrolle ob Uebertrag ausgeloesst wurde
-
-    if(lesezeiger > schreibzeiger)                                          // Pruefung Uebertrag
-        {
-        schreibzeigernew = PUFFER_GROESSE + schreibzeiger;                  // Uebertrag wird dazugerechnet
-        }
-    else
-        {
-        schreibzeigernew = schreibzeiger;                                   // Keine Korrektur notwendig
-        }
-
-
-    zeicheninbuffer = schreibzeigernew - lesezeiger;                        // Berechnung Anzahl der Zeichen(im UART Buffer)
-if ( zeicheninbuffer > ( PUFFER_GROESSE - 20) )
-    {
-    //putstring("[ERR_BUF_OVERFLOW]");                                        // Error fuer Buffer Overflow !!!
-    }
-
-if(zeicheninbuffer && !qbi(CONTROLLWORD_VOLL,UFLAGS))                       // Wenn Zeichen im Buffer und Controllbuffer nicht gesperrt ist erfolgt Abarbeitung
-    {
-    do
-        {
-
-        if(puffer[lesezeiger] == STEUERZEICHEN)                             // hier befindet sich das Steuerzeichen zum ruecksetzen des Zeigers
-            {
-            UARTINDEX = CLEAR;                                              // das Zeichen > setzt den INDEX vom Controllword auf 0 zurueck
-            }
-
-        if( (UARTINDEX >= 0) && (UARTINDEX < CW_SIZE) )                     // nur wenn sich der INDEX zwischen 0 und Buffergroeße befindet
-            {
-            CONTROLLWORD[UARTINDEX] = puffer[lesezeiger];                   // wird das aktuelle Zeichen im Buffer ins Controllword geschrieben
-            UARTINDEX++;                                                    // INDEX wird um eins erhoeht
-            }
-
-        if( (UARTINDEX == CW_SIZE) && (CONTROLLWORD[0] == STEUERZEICHEN) )  // Wenn Controllword gefuellt, wird geprueft ob es sich beim ersten Zeichen um das Steuerzeichen handelt
-            {
-            sbi(CONTROLLWORD_VOLL,UFLAGS);                                  // wenn beide Bedingung erfuellt, wird Controllword fuer Weiterbearbeitung freigegeben und gleichzeitig fuers beschreiben gesperrt
-            CONTROLLWORD[0] = 0;                                            // Controllword "0" loeschen
-            }
-        lesezeiger++;                                                       // Lesezeiger um eins erhoehen
-        zeicheninbuffer--;                                                  // Da keine Neuberechnung in der Schleife fuer die Anzahl der Zeichen im UART Buffer erfolgt wird manuell eins runtergezaehlt
-        if(lesezeiger==PUFFER_GROESSE) lesezeiger=0;                        // wenn Lesepuffer am Ende ruecksetzen
-        }while(zeicheninbuffer && !qbi(CONTROLLWORD_VOLL,UFLAGS));          // wenn keine Zeichen mehr im UART Buffer sind oder das Controllword gesperrt wurde wird Schleife verlassen
-
-    }
-
-}
-#endif
 /******************************************************************************
 INTERRUPT Timer 0 Timerueberlauf
 Einsprung alle XX ms
@@ -1248,15 +921,8 @@ ISR(TIMER2_OVF_vect)
     
 // Funktion zum Ruecksetzen des aktiven Sendekanals der Schnittstelle RS485
 
-#if UART_DEBUG == 1	
-if(rucksetzcount)
-    {
-    if(rucksetzcount == 1)
-        {
-        SENDEN_INAKTIV;
-        }
-    rucksetzcount--;
-    }
+#if UART_DEBUG == 1
+    uart_timer_action();
 #endif
 	
 // Test Zufallsgenerator fuer den Wuerfel	
@@ -1280,20 +946,6 @@ wzeiger++;
 }
 
 
-#if UART_DEBUG == 1
-/******************************************************************************
-INTERRUPT ROUTINE fuer UART, schreibt empfangenes Zeichen in den BUFFER
-Empfangene Zeichen werden in den Puffer geschrieben 
-Ist der Zeiger am Ende des Puffesr wird dieser an den Anfang gesetzt
-******************************************************************************/
-ISR(USART_RX_vect)
-{
-puffer[schreibzeiger]=UDR0;
-schreibzeiger++;
-if(schreibzeiger==PUFFER_GROESSE) schreibzeiger=0;
-}
-
-#endif
 /*
  * Local Variables:
  * c-basic-offset: 4

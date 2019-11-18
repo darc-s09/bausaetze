@@ -14,7 +14,6 @@
 #define LED_ANZAHL  19                 // Anzahl der LEDs
 #define MAX_HELL    17                 // Maximale Helligkeit der LEDs
 #define ADR485      13                 // Adresse für DEBUG !!!
-#define RAND_MAX    20				   // Max Randomzahl
 #define UART_DEBUG   1				   // UART abschalten	
 // Komandos
 #define Ausgabe_TEMP        1          // Temperaturausgabe
@@ -113,6 +112,8 @@ void putstring(char *s);                  // sendet String >UART
 void errorcodeu(uint8_t);                 // sendet Fehlercode (Wandlung Hexzahl >> ASCII)
 void errorcodeu16(int16_t);               // sendet den Fehlercode (Wandlung Hexzahl >> ASCII)
 void usart_getc_intr(void);               // Funktion Liest Byte aus UART Puffer
+void uart_action(void);                   // UART-bezogener Anteil der Hauptschleife
+void uart_timer_action(void);             // UART-bezogener Anteil in Timer-Interrupt
 #endif
 
 // Globale Variable
