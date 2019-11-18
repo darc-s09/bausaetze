@@ -15,7 +15,7 @@
 #define MAX_HELL    17                 // Maximale Helligkeit der LEDs
 #define ADR485      13                 // Adresse für DEBUG !!!
 #define RAND_MAX    20				   // Max Randomzahl
-
+#define UART_DEBUG   1				   // UART abschalten	
 // Komandos
 #define Ausgabe_TEMP        1          // Temperaturausgabe
 
@@ -43,6 +43,7 @@
 #define HIGH(x)   (((x) >> 8) & 0xFF)                               
 #define HILO(HI,LO) ((unsigned int) (HI) << 8 | (unsigned int) (LO))
 
+#if UART_DEBUG == 1
 //RS485
 #define BAUD  9600								// Baudrate 
 #define STEUERZEICHEN   '>'                     // Steuerzeichen zur Definition des Komandobeginns
@@ -54,6 +55,8 @@
 
 //UFLAG Definition
 #define CONTROLLWORD_VOLL   0                   // FLAG für die Signalisierung das Daten im UART Buffer sind
+extern volatile uint8_t rucksetzcount;           // clear Sendeanforderung
+#endif
 
 /* Definition LED Matrix
 PD2 = Anode LED  5,10,15
@@ -103,13 +106,14 @@ void zeilenwahl(uint8_t);                // Uebergabe der Zeigerstellung
 void ledband(uint16_t,uint16_t);         // Ansteuerung LED Band auf Basis AD Wandler
 void PORTs_init(void);                    // PORT INIT
 void TIMER_init(void);                    // Timer INIT
+#if UART_DEBUG == 1
 void UART_init(void);                     // UART INIT
 void UART_SendByte(uint8_t);              // sendet Byte > UART
 void putstring(char *s);                  // sendet String >UART
 void errorcodeu(uint8_t);                 // sendet Fehlercode (Wandlung Hexzahl >> ASCII)
 void errorcodeu16(int16_t);               // sendet den Fehlercode (Wandlung Hexzahl >> ASCII)
 void usart_getc_intr(void);               // Funktion Liest Byte aus UART Puffer
-
+#endif
 
 // Globale Variable
 extern volatile uint8_t counter;                 // Counter fuer Taskmanager
@@ -117,7 +121,6 @@ extern volatile uint8_t drehcounter;             // Zahlt die Anzahl der Umlaeuf
 extern volatile uint8_t drehaktiv;               // Hier wird die Anzahl der Umlaeufe festgelegt
 extern volatile uint8_t ztemp;                   // Hier steht die Zufahlszahl vom aktuellen Wuerfelumlauf drin
 extern volatile uint16_t wzeiger;                // Counter fuer den drehenden Wuerfel 
-extern volatile uint8_t rucksetzcount;           // clear Sendeanforderung
 extern volatile uint8_t player1;				  // Spielstand Player 1
 extern volatile uint8_t player2;				  // Spielstand Player 2 
 extern volatile uint8_t mode;                    // wuerfel funktion

@@ -37,6 +37,7 @@ uint8_t FLAGS;                            // Flags, Verwendung siehe Flags decla
 uint8_t LED_TASK[20][2];                  // Array LED Ansteuerung [0 = AN/AUS oder Timer
 uint8_t LED_Timer;                        // Multiplexer
 uint8_t LED_HELLIGKEIT;                   // Helligkeit , PWM
+#if UART_DEBUG == 1
 uint8_t T_Sensorwert[5][2];               // Variable [Sensornummer] und [ID/Temperaturwerte]
 uint8_t lesezeiger;                             // Lesezeiger, notwendig für die Abholroutine (UART BUFFER)
 uint8_t schreibzeiger;                          // Schreibzeiger, notwendig für das richtige schreiben in den UART BUFFER
@@ -45,6 +46,8 @@ uint8_t zeicheninbuffer;                        // díese Variable zeigt an wievi
 uint8_t UFLAGS;                                 // Beschreibung siehe UFLAG Definition
 unsigned char puffer[PUFFER_GROESSE];           // BUFFER für UART Eingang
 uint8_t CONTROLLWORD[10];                       // Controllwort zur Steuerung des Controllers
+#endif
+
 
 
 int main(void)
@@ -55,7 +58,9 @@ int main(void)
 	drehcounter = 0;
     PORTs_init();                       // Init der Ein und Ausgabeports
     TIMER_init();                       // Timer Init
-    UART_init();                        // INIT 485
+    #if UART_DEBUG == 1
+	UART_init();                        // INIT 485
+	#endif
     sei();                              // INTERRUPTS GLOBAL AN
 	LED_TASK[1][0]=1;					// LED 1 AN nach INIT
     //DEBUG
@@ -69,12 +74,13 @@ int main(void)
 
     }
     */
-    
+    #if UART_DEBUG == 1
 	putstring("Tempanzeige und Wuerfel Ver 0.4");         // Ausgabe Versionstext Text
+	#endif
 	
     while(1)
     {
-
+		#if UART_DEBUG == 1
         usart_getc_intr();                      // CHECK und Verarbeitung des UART Buffers
         if(qbi(CONTROLLWORD_VOLL,UFLAGS))       // Daten im Puffer > Run
             {
@@ -231,7 +237,7 @@ int main(void)
 	cbi(TASTER,FLAGS); // DEBUG TASTER
 	}
 
-
+#endif
 /*****************************************************************************
  Abfrage Taster zum starten des Wuerfels und Auswertung der Jumper
 
@@ -258,7 +264,6 @@ int main(void)
 				    break;
 				    case 2:	                        // Wuerfel
 				    sbi(TEMP_OFF,FLAGS);			// Temperaturanzeige AUS
-				    UART_SendByte(10);              // Ausgabe Return
 				    sbi(WUERFEL_7,FLAGS);			// Wuerfel 1 - 7
 				    multi_player(0);                // Singelplayer
 				    break;
@@ -466,14 +471,18 @@ void multi_player(uint8_t playernr)
 			LED_TASK[18][0]=1; // LED 10 AN
 			LED_TASK[19][0]=0; // LED 19 AUS
 			player1 = player1 + ztemp;
-			errorcodeu(player1); // DEBUG			
+			#if UART_DEBUG == 1
+			errorcodeu(player1); // DEBUG
+			#endif			
 			break;
 			case 2:
 			sbi(PLAYER,FLAGS); // PLAYER 2
 			LED_TASK[18][0]=0; // LED 10 AUS
 			LED_TASK[19][0]=1; // LED 19 AN
 			player2 = player2 + ztemp;
+			#if UART_DEBUG == 1
 			errorcodeu(player2); // DEBUG
+			#endif
 			break;
 			}
 		drehaktiv = rand()%6+1;
@@ -961,10 +970,13 @@ PC7 = NC
 Alle Ports auf Eingang, bis auf PORT PC5 AUSGANG fuer DEBUG Ausgabe 
 PULLUP Widerstand vom PORT PC2,PC4 aktive
 */
+#if UART_DEBUG == 1
     DDRC =  0b00100000;
     PORTC = 0b00010100;
-
-
+#else
+    DDRC =  0b00100000;
+    PORTC = 0b00010100;
+#endif
 /* Belegung PORTD
 PD0 = RXD (485)
 PD1 = TXD (485)
@@ -998,7 +1010,7 @@ void TIMER_init(void)
      * Timer 0: LED-Multiplexing, im Überlauf-Interrupt
      */
 #if F_CPU < 10000000
-    TCCR0B = _BV(CS01); // Vorteiler 8, bei 3,68 MHz => 1800 Hz
+    TCCR0B = _BV(CS00); // Vorteiler 1, bei 3,68 MHz => 69us => 14kHz
 #else
     TCCR0B = _BV(CS01) | _BV(CS00); // Vorteiler 64, bei 12 MHz => 730 Hz
 #endif
@@ -1026,7 +1038,7 @@ void TIMER_init(void)
 #endif
 }
 
-
+#if UART_DEBUG == 1
 /*****************************************************************************************
 initialisieren des UART
 Bautrate einstellen 
@@ -1180,6 +1192,7 @@ if(zeicheninbuffer && !qbi(CONTROLLWORD_VOLL,UFLAGS))                       // W
     }
 
 }
+#endif
 /******************************************************************************
 INTERRUPT Timer 0 Timerueberlauf
 Einsprung alle XX ms
@@ -1234,6 +1247,8 @@ ISR(TIMER2_OVF_vect)
 {
     
 // Funktion zum Ruecksetzen des aktiven Sendekanals der Schnittstelle RS485
+
+#if UART_DEBUG == 1	
 if(rucksetzcount)
     {
     if(rucksetzcount == 1)
@@ -1242,6 +1257,7 @@ if(rucksetzcount)
         }
     rucksetzcount--;
     }
+#endif
 	
 // Test Zufallsgenerator fuer den Wuerfel	
 if ( qbi(WUERFEL_7,FLAGS) )
@@ -1264,7 +1280,7 @@ wzeiger++;
 }
 
 
-
+#if UART_DEBUG == 1
 /******************************************************************************
 INTERRUPT ROUTINE fuer UART, schreibt empfangenes Zeichen in den BUFFER
 Empfangene Zeichen werden in den Puffer geschrieben 
@@ -1272,12 +1288,12 @@ Ist der Zeiger am Ende des Puffesr wird dieser an den Anfang gesetzt
 ******************************************************************************/
 ISR(USART_RX_vect)
 {
-
 puffer[schreibzeiger]=UDR0;
 schreibzeiger++;
 if(schreibzeiger==PUFFER_GROESSE) schreibzeiger=0;
 }
 
+#endif
 /*
  * Local Variables:
  * c-basic-offset: 4
