@@ -37,6 +37,16 @@ uint8_t LED_TASK[20][2];                  // Array LED Ansteuerung [0 = AN/AUS o
 uint8_t LED_Timer;                        // Multiplexer
 uint8_t LED_HELLIGKEIT;                   // Helligkeit , PWM
 
+double temp_ds18b20(void)
+{
+    PORTC |= _BV(OW_POWER_PIN);
+    _delay_ms(10);
+    double tfloat = Read_Temperature();
+    PORTC &= ~_BV(OW_POWER_PIN);
+
+    return tfloat;
+}
+
 
 int main(void)
 {

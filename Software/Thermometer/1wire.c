@@ -16,10 +16,10 @@
 #include <avr/interrupt.h>
 #include <avr/io.h>
 
+#include "thermo.h"
+
 #include <util/crc16.h>
 #include <util/delay.h>
-
-#include "project.h"
 
 #define concat(a, b) a##b
 #define indir(a, b) concat(a, b)
@@ -162,7 +162,7 @@ Read_Temperature(void)
   // strong pullup must be enabled within 10 µs after "Start
   // Conversion" => F_CPU = 8 MHz recommendable
   strong_pullup(true);
-  long_delay(750);
+  _delay_ms(750);
   strong_pullup(false);
 
   ow_reset();

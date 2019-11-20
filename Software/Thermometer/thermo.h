@@ -24,8 +24,8 @@
 #define OW_POWER_PIN    3
 
 /* one-wire port DS18B20 */
-#define OW_PORT         B
-#define OW_PIN          4
+#define OW_PORT         C
+#define OW_PIN          2
 
 
 //FLAGS
@@ -39,8 +39,7 @@
 // Librery declaration
 //#include <avr/eeprom.h>
 #include <inttypes.h>
-
-
+#include <stdbool.h>
 
 //Makros
 
