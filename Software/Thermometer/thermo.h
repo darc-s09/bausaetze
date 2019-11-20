@@ -19,6 +19,14 @@
 // Komandos
 #define Ausgabe_TEMP        1          // Temperaturausgabe
 
+// DS18b20
+/* one-wire IC powerup */
+#define OW_POWER_PIN    3
+
+/* one-wire port DS18B20 */
+#define OW_PORT         B
+#define OW_PIN          4
+
 
 //FLAGS
 #define PULS_PAUSE          0          // DISPLAY INIT notwendig
@@ -106,6 +114,11 @@ void zeilenwahl(uint8_t);                // Uebergabe der Zeigerstellung
 void ledband(uint16_t,uint16_t);         // Ansteuerung LED Band auf Basis AD Wandler
 void PORTs_init(void);                    // PORT INIT
 void TIMER_init(void);                    // Timer INIT
+
+bool ow_reset(void);
+void Print_ROMCode(void);
+double Read_Temperature(void);
+
 #if UART_DEBUG == 1
 void UART_init(void);                     // UART INIT
 void UART_SendByte(uint8_t);              // sendet Byte > UART
