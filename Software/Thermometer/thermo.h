@@ -35,6 +35,8 @@
 #define TEMPISOFF           3          // BIT wird gesetzt damit das LED Temperaturband nur einmal ruckgesetzt wird
 #define PLAYER              4          // 0 = Player 1 / 1 = Player 2 
 #define TASTER              5          // DEBUG Taster Abfrage 
+#define T_FLAG              6          // Abfrage des Tasters wird durchgefuehrt
+#define AD_WANDLER          7          // Start AD Wandler 
 
 // Librery declaration
 //#include <avr/eeprom.h>
@@ -146,3 +148,4 @@ extern uint8_t LED_TASK[20][2];                  // Array LED Ansteuerung [0 = A
 extern uint8_t LED_Timer;                        // Multiplexer
 extern uint8_t LED_HELLIGKEIT;                   // Helligkeit , PWM
 extern uint8_t T_Sensorwert[5][2];               // Variable [Sensornummer] und [ID/Temperaturwerte]
+

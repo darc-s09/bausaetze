@@ -86,7 +86,7 @@ int main(void)
 
                                                                      
 ******************************************************************************/
-         if (counter == 10)
+         if (qbi(T_FLAG,FLAGS))
               {
               if( !qbi(SW_WUERFEL,SW_PORT) )
                 {
@@ -151,7 +151,7 @@ int main(void)
 				        }
 				    break;
 			    }
-                 counter++;
+                 cbi(T_FLAG,FLAGS);
                }
 			  }
 
@@ -857,7 +857,7 @@ void TIMER_init(void)
 #if F_CPU < 10000000
     TCCR2B = _BV(CS22) | _BV(CS21); // Teiler  256, bei 3,68 MHz 52 Hz Rate
 #else
-    TCCR2B = _BV(CS22) | _BV(CS21) | _BV(CS20); // Teiler 1024, bei 12 MHz 45 Hz Rate
+    TCCR2B = _BV(CS22) | _BV(CS21) | _BV(CS20); // Teiler 1024, bei 12 MHz = 21,84ms
 #endif
     TIMSK2 = _BV(TOIE2); // Timer2 Overflow Interrupt Enable
 
@@ -921,6 +921,7 @@ INTERRUPT Timer 2 Timerueberlauf
 Einsprung alle XX ms
 Setzt UART nach Zeit X wieder in den Empfangsmodus 
 Zufallsgenerator fuer den Wuerfel
+Abfrage Taster alle 20ms
 ******************************************************************************/
 
 ISR(TIMER2_OVF_vect)
@@ -946,17 +947,10 @@ else
           {
           zufall = 0;
           }	   
-    }	
+    }
+sbi(T_FLAG,FLAGS);  // Abfrage Taster 		
 zufall++;
 counter++;
 wzeiger++;
 }
 
-
-/*
- * Local Variables:
- * c-basic-offset: 4
- * tab-width: 4
- * indent-tabs-mode: nil
- * End:
- */
