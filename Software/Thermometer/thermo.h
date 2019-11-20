@@ -8,7 +8,8 @@
 
 // Constants definitions
 #define CLEAR       0
-#define F_CPU       3680000UL          // CPU 3.68MHZ
+//#define F_CPU       3680000UL          // CPU 3.68MHZ
+#define F_CPU       12000000UL          // CPU 3.68MHZ
 #define NODE_ID     2                  // NODE ID vom Board
 #define SENS_ID     1                  // Sensor ID Debug
 #define LED_ANZAHL  19                 // Anzahl der LEDs
