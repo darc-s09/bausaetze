@@ -840,7 +840,8 @@ void TIMER_init(void)
 #if F_CPU < 10000000
     TCCR0B = _BV(CS00); // Vorteiler 1, bei 3,68 MHz => 69us => 14kHz
 #else
-    TCCR0B = _BV(CS01) | _BV(CS00); // Vorteiler 64, bei 12 MHz => 730 Hz
+    TCCR0B = _BV(CS00); // Vorteiler 1, bei 3,68 MHz => 69us => 14kHz
+    //TCCR0B = _BV(CS01) | _BV(CS00); // Vorteiler 64, bei 12 MHz => 730 Hz
 #endif
     TIMSK0 = _BV(TOIE0); // Timer0 Overflow Interrupt Enable
 
