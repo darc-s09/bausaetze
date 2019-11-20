@@ -52,6 +52,8 @@ int main(void)
 {
     uint8_t  templ = 0,temph = 0;
     uint16_t temperaturdaten = 0;
+    bool ds18b20_present = ow_reset();
+
     LED_HELLIGKEIT = 0;
 	drehcounter = 0;
     PORTs_init();                       // Init der Ein und Ausgabeports

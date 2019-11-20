@@ -37,6 +37,7 @@ SUBDIRS :=
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
 ../thermo.c \
+../1wire.c \
 ../uart.c
 
 
@@ -48,18 +49,22 @@ ASM_SRCS +=
 
 OBJS +=  \
 thermo.o \
+1wire.o \
 uart.o
 
 OBJS_AS_ARGS +=  \
 thermo.o \
+1wire.o \
 uart.o
 
 C_DEPS +=  \
 thermo.d \
+1wire.d \
 uart.d
 
 C_DEPS_AS_ARGS +=  \
 thermo.d \
+1wire.d \
 uart.d
 
 OUTPUT_FILE_PATH +=Thermometer.elf
