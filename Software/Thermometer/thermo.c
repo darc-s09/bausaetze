@@ -48,10 +48,10 @@ uint8_t LED_HELLIGKEIT;                   // Helligkeit , PWM
 
 double temp_ds18b20(void)
 {
-    PORTC |= _BV(OW_POWER_PIN);
+    ow_power(true);
     _delay_ms(10);
     double tfloat = Read_Temperature();
-    PORTC &= ~_BV(OW_POWER_PIN);
+    ow_power(false);
 
     return tfloat;
 }

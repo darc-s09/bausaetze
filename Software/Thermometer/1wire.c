@@ -62,6 +62,14 @@ get_dq(void)
   return (ow_pin & (1 << OW_PIN)) == 0;
 }
 
+void ow_power(bool on)
+{
+  if (on)
+    ow_port |= (1 << OW_POWER_PIN);
+  else
+    ow_port &= ~(1 << OW_POWER_PIN);
+}
+
 bool
 ow_reset(void)
 {

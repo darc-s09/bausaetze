@@ -119,7 +119,8 @@ void ledband(uint16_t,uint16_t);         // Ansteuerung LED Band auf Basis AD Wa
 void PORTs_init(void);                    // PORT INIT
 void TIMER_init(void);                    // Timer INIT
 
-bool ow_reset(void);
+void ow_power(bool);                      // One-wire sensor power on/off
+bool ow_reset(void);                      // One-wire sensor reset => present?
 void Print_ROMCode(void);
 double Read_Temperature(void);
 
