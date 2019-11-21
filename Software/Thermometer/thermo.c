@@ -3,6 +3,10 @@
 
   Created: 01.11.2019 14:00:00
   Author:  Uwe Liedtke und Joerg Wunsch
+  "THE BEER-WARE LICENSE" (Revision 42):
+  * <joerg@FreeBSD.ORG> wrote this file.  As long as you retain this notice you
+  * can do whatever you want with this stuff. If we meet some day, and you think
+  * this stuff is worth it, you can buy me a beer in return.        Joerg Wunsch
   Projekt: Temperaturanzeige und Wuerfel
   Funktionen: 
   Temperaturanzeige
@@ -28,14 +32,19 @@ volatile uint16_t wzeiger;                // Counter fuer den drehenden Wuerfel
 volatile uint8_t player1;				  // Spielstand Player 1
 volatile uint8_t player2;				  // Spielstand Player 2 
 volatile uint8_t mode;                    // wuerfel funktion
+volatile uint8_t templ;
+volatile uint8_t temph;
+volatile uint16_t temperaturdaten;
 
 uint8_t debug;                            // debug Variable	
 uint8_t zufall;                           // Variable fuer Zufallsgenerator
 uint8_t taskcount;                        // Counter fuer Multiplexer
+uint8_t SW_FLAGS;                         // Flags, Verwendung siehe Flags declaration
 uint8_t FLAGS;                            // Flags, Verwendung siehe Flags declaration
 uint8_t LED_TASK[20][2];                  // Array LED Ansteuerung [0 = AN/AUS oder Timer
 uint8_t LED_Timer;                        // Multiplexer
 uint8_t LED_HELLIGKEIT;                   // Helligkeit , PWM
+
 
 double temp_ds18b20(void)
 {
@@ -50,8 +59,7 @@ double temp_ds18b20(void)
 
 int main(void)
 {
-    uint8_t  templ = 0,temph = 0;
-    uint16_t temperaturdaten = 0;
+   
     bool ds18b20_present = ow_reset();
 
     LED_HELLIGKEIT = 0;
@@ -163,24 +171,17 @@ int main(void)
 
 /*****************************************************************************
  startet den Analogdigitalwandler
- zum Auslesen des int Temp Sensor                                                                    
+ zum Auslesen des int Temp Sensor
+                                                                     
 ******************************************************************************/
-         if (counter == 20)
+         if (qbi(AD_WANDLER,FLAGS))
               {
-              sbi(6,ADCSRA);
-              counter++;
+              sbi(6,ADCSRA); // Wandlung starten
+			  //sbi(ADIE,ADC); // Interrupt ein
+              cbi(AD_WANDLER,FLAGS);
               }
 
-/******************************************************************************
-Auslesen der Temperaturdaten aus den AD Wandler
-******************************************************************************/
-         if (counter == 70 )
-              {
-	          templ = ADCL;
-	          temph = ADCH;
-	          temperaturdaten = HILO(temph,templ);
-              counter++;
-              }
+
 
 /******************************************************************************
 Ausgabe der Temperaturdaten auf das LED Band
@@ -200,10 +201,10 @@ FLAG TEMPISOFF wird gesetzt damit das LED Temperaturband nur einmal ruckgesetzt 
 			}
 		 else
 			{
-		 if (counter == 200)
+		 if (qbi(TEMPANZEIGE,SW_FLAGS))
               {
-	          ledband(temperaturdaten,330);
-	          counter++;
+	          ledband(temperaturdaten,75);
+	          cbi(TEMPANZEIGE,SW_FLAGS);
               }
 			}
 			  
@@ -853,6 +854,16 @@ void TIMER_init(void)
                         // bei 12 MHz => 47kHz
     TIMSK0 = _BV(TOIE0); // Timer0 Overflow Interrupt Enable
 
+   /*
+     * Timer 1: allgemeine Zeitablaufsteuerung
+     */
+#if F_CPU < 10000000
+    TCCR1B = _BV(CS12); // Teiler  256, bei 3,68 MHz = 4,56s
+#else
+    TCCR1B = _BV(CS10) | _BV(CS12); // Teiler 1024, bei 12 MHz = 5,6s
+#endif
+    TIMSK1 = _BV(TOIE2); // Timer2 Overflow Interrupt Enable
+
     /*
      * Timer 2: allgemeine Zeitablaufsteuerung
      */
@@ -868,10 +879,10 @@ void TIMER_init(void)
     ADMUX = _BV(REFS1) | _BV(REFS0) | _BV(MUX3);
 #if F_CPU < 10000000
     // ADC enable, Vorteiler 32 => 115 kHz Takt bei 3,68 MHz
-	ADCSRA = _BV(ADEN) | _BV(ADPS2) | _BV(ADPS0);
+	ADCSRA = _BV(ADEN) | _BV(ADPS2) | _BV(ADPS0) | _BV(ADIE);
 #else
     // ADC enable, Vorteiler 64 => 187 kHz bei 12 MHz
-    ADCSRA = _BV(ADEN) | _BV(ADPS2) | _BV(ADPS1);
+    ADCSRA = _BV(ADEN) | _BV(ADPS2) | _BV(ADPS1) | _BV(ADIE);
 #endif
 }
 
@@ -907,6 +918,19 @@ if (LED_Timer > LED_ANZAHL)
 
 }
 
+
+
+/******************************************************************************
+INTERRUPT Timer 1 Timerueberlauf
+16 BIT Timer 
+Einsprung alle 5s 
+
+*******************************************************************************/
+ISR(TIMER1_OVF_vect)
+{
+sbi(AD_WANDLER,FLAGS); // Start Temperaturmessung interner Wandler
+
+}
 
 /******************************************************************************
 INTERRUPT Timer 0 Vergleich A 
@@ -947,12 +971,27 @@ else
 	{
     if (zufall >= 6)
           {
-          zufall = 0;
+          zufall = 0;	
           }	   
     }
-sbi(T_FLAG,FLAGS);  // Abfrage Taster 		
+sbi(T_FLAG,FLAGS);  // Abfrage Taster 
+	
 zufall++;
-counter++;
 wzeiger++;
 }
 
+/******************************************************************************
+INTERRUPT Analog Digital CONVERTER 
+Auslesen der Temperaturdaten aus den AD Wandler
+Wenn aktuelle Daten vorliegen wird dieser ausgelesen und in 8 BIT Messwet gewandelt
+******************************************************************************/
+ISR(ADC_vect)
+{
+		templ = ADCL;
+		temph = ADCH;
+		temperaturdaten = HILO(temph,templ);
+		temperaturdaten = temperaturdaten >> 2;
+		templ= LOW(temperaturdaten);
+		sbi(TEMPANZEIGE,SW_FLAGS);      // Aufrischen der Temperaturanzeige
+	
+}

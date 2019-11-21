@@ -38,6 +38,9 @@
 #define T_FLAG              6          // Abfrage des Tasters wird durchgefuehrt
 #define AD_WANDLER          7          // Start AD Wandler 
 
+//SW_FAGS
+#define TEMPANZEIGE         0          // TEMPANZEIGE Auffrischen
+
 // Librery declaration
 //#include <avr/eeprom.h>
 #include <inttypes.h>
@@ -125,14 +128,12 @@ void UART_init(void);                     // UART INIT
 void UART_SendByte(uint8_t);              // sendet Byte > UART
 void putstring(char *s);                  // sendet String >UART
 void errorcodeu(uint8_t);                 // sendet Fehlercode (Wandlung Hexzahl >> ASCII)
-void errorcodeu16(int16_t);               // sendet den Fehlercode (Wandlung Hexzahl >> ASCII)
 void usart_getc_intr(void);               // Funktion Liest Byte aus UART Puffer
 void uart_action(void);                   // UART-bezogener Anteil der Hauptschleife
 void uart_timer_action(void);             // UART-bezogener Anteil in Timer-Interrupt
 #endif
 
 // Globale Variable
-extern volatile uint8_t counter;                 // Counter fuer Taskmanager
 extern volatile uint8_t drehcounter;             // Zahlt die Anzahl der Umlaeufe bevor der Wuerfel faellt
 extern volatile uint8_t drehaktiv;               // Hier wird die Anzahl der Umlaeufe festgelegt
 extern volatile uint8_t ztemp;                   // Hier steht die Zufahlszahl vom aktuellen Wuerfelumlauf drin
@@ -148,4 +149,3 @@ extern uint8_t LED_TASK[20][2];                  // Array LED Ansteuerung [0 = A
 extern uint8_t LED_Timer;                        // Multiplexer
 extern uint8_t LED_HELLIGKEIT;                   // Helligkeit , PWM
 extern uint8_t T_Sensorwert[5][2];               // Variable [Sensornummer] und [ID/Temperaturwerte]
-

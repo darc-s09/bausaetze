@@ -180,7 +180,6 @@ void uart_action(void)
           break;
 		}
 
-      counter++;
       cbi(TASTER,FLAGS); // DEBUG TASTER
 	}
 }
