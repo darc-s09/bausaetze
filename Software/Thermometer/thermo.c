@@ -58,6 +58,16 @@ double temp_ds18b20(void)
     return tfloat;
 }
 
+double temp_internal(void)
+{
+    const double digits_per_millivolt = 1024 /* 10 digits */ / 1100.0 /* Vref */;
+    // der Offset sollte justierbar werden
+    const uint16_t offset = 290 /* mV */ / digits_per_millivolt;
+    double t = temperaturdaten;
+
+    return t / (digits_per_millivolt - offset);
+}
+
 
 int main(void)
 {
@@ -219,9 +229,14 @@ FLAG TEMPISOFF wird gesetzt damit das LED Temperaturband nur einmal ruckgesetzt 
              {
                  cbi(TEMPANZEIGE, SW_FLAGS);
                  if (ds18b20_present)
+                 {
                      ledband(temp_1wire, 42); // XXX
+                 }
                  else
-                     ledband(temperaturdaten, 75);
+                 {
+                     double t = temp_internal();
+                     ledband(t, 75);
+                 }
              }
          }
 
