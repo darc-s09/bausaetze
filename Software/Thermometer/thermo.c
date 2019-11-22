@@ -71,7 +71,7 @@ double temp_internal(void)
 
 int main(void)
 {
-    LED_HELLIGKEIT = 0;
+    LED_HELLIGKEIT = 15;
     drehcounter = 0;
     PORTs_init();                       // Init der Ein und Ausgabeports
     TIMER_init();                       // Timer Init
