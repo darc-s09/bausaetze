@@ -65,7 +65,7 @@ double temp_internal(void)
     const uint16_t offset = 290 /* mV */ / digits_per_millivolt;
     double t = temperaturdaten;
 
-    return t / (digits_per_millivolt - offset);
+    return t / digits_per_millivolt - offset;
 }
 
 
@@ -599,7 +599,7 @@ void ledband(double wert, double unten, double oben)
     {
         // nur letzte LED an
         LED_TASK[10][0] = 1;
-        for (uint8_t step = 0; step <= 9; step++)
+        for (uint8_t step = 0; step <= 8; step++)
             LED_TASK[step + 1][0] = 0;
     }
     else
