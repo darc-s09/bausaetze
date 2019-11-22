@@ -71,9 +71,6 @@ double temp_internal(void)
 
 int main(void)
 {
-
-    bool ds18b20_present = ow_reset();
-
     LED_HELLIGKEIT = 0;
     drehcounter = 0;
     PORTs_init();                       // Init der Ein und Ausgabeports
@@ -83,6 +80,9 @@ int main(void)
 #endif
     sei();                              // INTERRUPTS GLOBAL AN
     LED_TASK[1][0]=1;                   // LED 1 AN nach INIT
+
+    bool ds18b20_present = ow_reset();
+
     //DEBUG
     //LED_TASK[1][0]=1; // LED 1 AN
     //LED_TASK[3][0]=1; // LED 3 AN
@@ -95,7 +95,8 @@ int main(void)
     }
     */
 #if UART_DEBUG == 1
-    putstring("Tempanzeige und Wuerfel Ver 0.4");         // Ausgabe Versionstext Text
+    putstring("Tempanzeige und Wuerfel Ver 0.4\r\n");         // Ausgabe Versionstext Text
+    putstring(ds18b20_present? "DS18B20\r\n": "Interner Sensor\r\n");
 #endif
 
     while (1)
@@ -228,15 +229,14 @@ FLAG TEMPISOFF wird gesetzt damit das LED Temperaturband nur einmal ruckgesetzt 
              if (qbi(TEMPANZEIGE,SW_FLAGS))
              {
                  cbi(TEMPANZEIGE, SW_FLAGS);
+
+                 double t;
                  if (ds18b20_present)
-                 {
-                     ledband(temp_1wire, 42); // XXX
-                 }
+                     t = temp_1wire;
                  else
-                 {
-                     double t = temp_internal();
-                     ledband(t, 75);
-                 }
+                     t = temp_internal();
+
+                 ledband(t, 12.0, 30.0);
              }
          }
 
@@ -574,20 +574,21 @@ void drehenr(uint8_t wstep)
 Ansteuerung LED Band auf Basis AD Wandler
 ******************************************************************************/
 
-void ledband(uint16_t tempwert, uint16_t tempset)
+void ledband(double wert, double unten, double oben)
 {
-    if (tempwert < tempset)
+    if (wert < unten)
     {
-        for (uint8_t step = 0; step <= 9 ; step++)  // Fuer Testzwecke werden die Daten als Binaere Zahl auf die LEDs 1 bis 10 geschrieben.
+        // Alle LEDs löschen
+        for (uint8_t step = 0; step <= 9 ; step++)
         {
-            LED_TASK[step + 1][0] = 0;                  // Abschalten aller LEDs der Temperaturanzeige
+            LED_TASK[step + 1][0] = 0;
         }
     }
 
-    for (uint8_t step = 0; step <= 9 ; step++)      // Zur Ansteuerung des LED Temperaturbandes
+    double delta = (oben - unten) / 9.0;
+    for (uint8_t step = 0; step <= 9 ; step++, unten += delta)
     {
-        tempset++;
-        if ((tempwert >= tempset) && (tempwert <= (tempset + 2))) // Hier wird festgelegt in welchen Bereich die LED's zugeschaltet werden.
+        if (wert > unten && wert < unten + delta)
         {
             LED_TASK[step + 1][0] = 1;                  // Zuschalten LED auf den Band
         }
@@ -595,7 +596,6 @@ void ledband(uint16_t tempwert, uint16_t tempset)
         {
             LED_TASK[step + 1][0] = 0;                  // Abschalten der nichtaktiven LED auf den Band
         }
-        tempset++;
     }
 }
 
@@ -873,7 +873,7 @@ PULLUP Widerstaende zur Abfrage der Jumper Stellung werden im Programm gesetzt.
 
 */
     DDRB = 0b00000111;
-    PORTD =0b00000000;
+    PORTB =0b00000000;
 
 /* Belegung PORTC
 PC0 = USB D-
@@ -888,7 +888,7 @@ Alle Ports auf Eingang, bis auf PORT PC5 AUSGANG fuer DEBUG Ausgabe
 PULLUP Widerstand vom PORT PC2,PC4 aktive
 */
     DDRC =  0b00100000;
-    PORTC = 0b00010100;
+    PORTC = 0b00010000;
 /* Belegung PORTD
 PD0 = RXD (485)
 PD1 = TXD (485)

@@ -124,7 +124,7 @@ void wuerfel(uint8_t);                   // Ansteuerung Wuerfel (7 LED`s)
 void wuerfellos(uint8_t);                // Startet Wuerfel aktivitaet 
 void drehenr(uint8_t);                   // Ansteuerung Wuerfelfeld (7 LED`s)
 void zeilenwahl(uint8_t);                // Uebergabe der Zeigerstellung 
-void ledband(uint16_t,uint16_t);         // Ansteuerung LED Band auf Basis AD Wandler
+void ledband(double, double, double);    // Ansteuerung LED Band
 void PORTs_init(void);                    // PORT INIT
 void TIMER_init(void);                    // Timer INIT
 
