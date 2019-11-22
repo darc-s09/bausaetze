@@ -362,37 +362,49 @@ void multi_player(uint8_t playernr)
 Abfrage der Jumper
 0. Kein Jumper Rueckgabewert 0
 1. Test Jumper zwischen GND und MOSI Ruckgabewert 1
-2. Test Jumper zwischen GND und MOSI 
+2. Test Jumper zwischen SCK und MOSI
+3. Test Jumper zwischen SCK und MISO
 ***************************************************************************************/
 
 uint8_t jumper(void)
 {
-	uint8_t zahl = 0;
-	sbi(JMP_MOSI,JMP_PORT); // PULL UP An 
-	asm volatile("nop"::);
-	if (!qbi(JMP_MOSI,JMP_PIN))
-	   {
-		zahl = 1; // Jumper zwischen MOSI/GND
-       }
-	 else
-	   {
-		cbi(JMP_MOSI,JMP_PORT); // PULL UP AUS
-		sbi(JMP_SCK,JMP_PORT); // PULL UP An
-		sbi(JMP_MOSI,JMP_DDR);  //
-		asm volatile("nop"::);
-		if (!qbi(JMP_SCK,JMP_PIN))
-		    {
-		    zahl = 2;	// Jumper zwischen SCK und GND
-		    }
-			else
-			{
-			zahl = 0;
-			}
-		cbi(JMP_SCK,JMP_PORT);  // PULL UP An
-		cbi(JMP_MOSI,JMP_DDR);  //				   
-	   }
-	   
-    return zahl; 
+    // Test Jumper 4-6 (MOSI - GND)
+    sbi(JMP_MOSI, JMP_PORT); // PULL UP An
+    _delay_us(1);
+    if (!qbi(JMP_MOSI, JMP_PIN))
+    {
+        cbi(JMP_MOSI, JMP_PORT);
+        return 1;
+    }
+
+    // Test Jumper 3-4 (SCK - MOSI)
+    sbi(JMP_SCK, JMP_DDR); // SCK ist Ausgang
+    cbi(JMP_SCK, JMP_PORT); // aktiv low
+    _delay_us(1);
+    // MOSI hat immer noch Pullups
+    if (!qbi(JMP_MOSI, JMP_PIN))
+    {
+        cbi(JMP_MOSI, JMP_PORT);
+        cbi(JMP_SCK, JMP_DDR);
+        return 2;
+    }
+
+    // Test Jumper 3-1 (SCK - MISO)
+    cbi(JMP_MOSI, JMP_PORT); // MOSI floatet
+    sbi(JMP_MISO, JMP_PORT); // Pullup an MISO
+    _delay_us(1);
+    if (!qbi(JMP_MISO, JMP_PIN))
+    {
+        cbi(JMP_MISO, JMP_PORT);
+        cbi(JMP_SCK, JMP_DDR);
+        return 3;
+    }
+
+    // kein Jumper gesteckt
+    cbi(JMP_MISO, JMP_PORT);
+    cbi(JMP_SCK, JMP_DDR);
+
+    return 0;
 }
 
 
@@ -578,23 +590,27 @@ void ledband(double wert, double unten, double oben)
 {
     if (wert < unten)
     {
-        // Alle LEDs löschen
-        for (uint8_t step = 0; step <= 9 ; step++)
-        {
+        // nur erste LED an
+        LED_TASK[1][0] = 1;
+        for (uint8_t step = 1; step <= 9 ; step++)
             LED_TASK[step + 1][0] = 0;
-        }
     }
-
-    double delta = (oben - unten) / 9.0;
-    for (uint8_t step = 0; step <= 9 ; step++, unten += delta)
+    else if (wert > oben)
     {
-        if (wert > unten && wert < unten + delta)
+        // nur letzte LED an
+        LED_TASK[10][0] = 1;
+        for (uint8_t step = 0; step <= 9; step++)
+            LED_TASK[step + 1][0] = 0;
+    }
+    else
+    {
+        double delta = (oben - unten) / 9.0;
+        for (uint8_t step = 0; step <= 9 ; step++, unten += delta)
         {
-            LED_TASK[step + 1][0] = 1;                  // Zuschalten LED auf den Band
-        }
-        else
-        {
-            LED_TASK[step + 1][0] = 0;                  // Abschalten der nichtaktiven LED auf den Band
+            if (wert > unten && wert < unten + delta)
+                LED_TASK[step + 1][0] = 1;                  // Zuschalten LED auf den Band
+            else
+                LED_TASK[step + 1][0] = 0;                  // Abschalten der nichtaktiven LED auf den Band
         }
     }
 }
