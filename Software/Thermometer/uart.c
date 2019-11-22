@@ -167,6 +167,8 @@ void uart_action(void)
 
         case 5:
           // Noch nicht implementiert
+		   putstring("Jumper:"); // Ausgabe Text  
+		  errorcodeu(jumper());
           break;
 
         case 6:

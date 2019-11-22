@@ -103,13 +103,22 @@ PB2 = Kathode LED  1, 2, 3, 4, 5
 #define SPALTE5_ON              sbi(2,PORTD)  //!< LED 5,10,15
 #define SPALTE5_OFF             cbi(2,PORTD)  //!< LED 5,10,15
 
+#define JMP_PORT                PORTB         // Jumper PORT PULLUP
+#define JMP_DDR                 DDRB          // Datenrichtungsregister
+#define JMP_PIN                 PINB          // PIN B 
 #define SW_PORT                 PINC          // PORT Wuerfelstart
 #define SW_WUERFEL              4			  // TASTER Wuerfel 
+#define JMP_MOSI				3			  // Jumper Wuerfelmodus 6
+#define JMP_MISO				4             // ??
+#define JMP_SCK                 5             // 
+
+
 //#define LED1_ON       ZEILE1_ON & SPALTE1_ON
 //#define LED1_OFF  ZEILE1_OFF & SPALTE1_OFF
 
 
 void multi_player(uint8_t);              // Multi player Mode
+uint8_t jumper(void);                    // uebergibt eine Zahl entsprechend der Jumper Stellung
 void led_multiplex(uint8_t);             // Steuerung des LED Multiplexers
 void wuerfel(uint8_t);                   // Ansteuerung Wuerfel (7 LED`s)
 void wuerfellos(uint8_t);                // Startet Wuerfel aktivitaet 

@@ -1,5 +1,5 @@
 /*
-  "THE BEER-WARE LICENSE" (Revision 42):
+  "THE BEER-WARE LICENSE" :
   Uwe Liedtke and Joerg Wunsch wrote this file.  As long as you retain this notice you
   can do whatever you want with this stuff. If we meet some day, and you think
   this stuff is worth it, you can buy us a beer in return.
@@ -356,6 +356,43 @@ void multi_player(uint8_t playernr)
         break;
     }
     drehaktiv = rand() % 6 + 1;
+}
+
+/***************************************************************************************
+Abfrage der Jumper
+0. Kein Jumper Rueckgabewert 0
+1. Test Jumper zwischen GND und MOSI Ruckgabewert 1
+2. Test Jumper zwischen GND und MOSI 
+***************************************************************************************/
+
+uint8_t jumper(void)
+{
+	uint8_t zahl = 0;
+	sbi(JMP_MOSI,JMP_PORT); // PULL UP An 
+	asm volatile("nop"::);
+	if (!qbi(JMP_MOSI,JMP_PIN))
+	   {
+		zahl = 1; // Jumper zwischen MOSI/GND
+       }
+	 else
+	   {
+		cbi(JMP_MOSI,JMP_PORT); // PULL UP AUS
+		sbi(JMP_SCK,JMP_PORT); // PULL UP An
+		sbi(JMP_MOSI,JMP_DDR);  //
+		asm volatile("nop"::);
+		if (!qbi(JMP_SCK,JMP_PIN))
+		    {
+		    zahl = 2;	// Jumper zwischen SCK und GND
+		    }
+			else
+			{
+			zahl = 0;
+			}
+		cbi(JMP_SCK,JMP_PORT);  // PULL UP An
+		cbi(JMP_MOSI,JMP_DDR);  //				   
+	   }
+	   
+    return zahl; 
 }
 
 
