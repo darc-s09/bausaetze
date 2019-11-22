@@ -36,6 +36,7 @@ volatile uint8_t player1;                 // Spielstand Player 1
 volatile uint8_t player2;                 // Spielstand Player 2
 volatile uint8_t mode;                    // wuerfel funktion
 volatile uint8_t temperaturdaten;
+double temp_1wire;
 
 uint8_t debug;                            // debug Variable
 uint8_t zufall;                           // Variable fuer Zufallsgenerator
@@ -181,9 +182,17 @@ int main(void)
 ******************************************************************************/
          if (qbi(AD_WANDLER, FLAGS))
          {
-             sbi(6, ADCSRA); // Wandlung starten
-             //sbi(ADIE,ADC); // Interrupt ein
              cbi(AD_WANDLER, FLAGS);
+             if (ds18b20_present)
+             {
+                 temp_1wire = temp_ds18b20();
+                 sbi(TEMPANZEIGE, SW_FLAGS);
+             }
+             else
+             {
+                 sbi(6, ADCSRA); // Wandlung starten
+                 //sbi(ADIE,ADC); // Interrupt ein
+             }
          }
 
 
@@ -208,8 +217,11 @@ FLAG TEMPISOFF wird gesetzt damit das LED Temperaturband nur einmal ruckgesetzt 
          {
              if (qbi(TEMPANZEIGE,SW_FLAGS))
              {
-                 ledband(temperaturdaten, 75);
                  cbi(TEMPANZEIGE, SW_FLAGS);
+                 if (ds18b20_present)
+                     ledband(temp_1wire, 42); // XXX
+                 else
+                     ledband(temperaturdaten, 75);
              }
          }
 
