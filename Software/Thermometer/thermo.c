@@ -35,7 +35,7 @@ volatile uint16_t wzeiger;                // Counter fuer den drehenden Wuerfel
 volatile uint8_t player1;                 // Spielstand Player 1
 volatile uint8_t player2;                 // Spielstand Player 2
 volatile uint8_t mode;                    // wuerfel funktion
-volatile uint8_t temperaturdaten;
+volatile uint16_t temperaturdaten;
 double temp_1wire;
 
 uint8_t debug;                            // debug Variable
@@ -895,8 +895,7 @@ void TIMER_init(void)
 
 /************************ Analog Digital Wandler Singel **********************/
     // Interne Referenz 1,1 V; Kanal 8 (interner Temperatursensor)
-    // ADLAR = "Left Adjust Result", dh 8-Bit-ADC-Wert steht vollständig in ADCH
-    ADMUX = _BV(REFS1) | _BV(REFS0) | _BV(MUX3) | _BV(ADLAR);
+    ADMUX = _BV(REFS1) | _BV(REFS0) | _BV(MUX3);
 #if F_CPU < 10000000
     // ADC enable, Vorteiler 32 => 115 kHz Takt bei 3,68 MHz
     ADCSRA = _BV(ADEN) | _BV(ADPS2) | _BV(ADPS0) | _BV(ADIE);
@@ -1004,13 +1003,12 @@ Wenn aktuelle Daten vorliegen wird dieser ausgelesen und in 8 BIT Messwet gewand
 ******************************************************************************/
 ISR(ADC_vect)
 {
-    temperaturdaten = ADCH;
+    temperaturdaten = ADC;
     sbi(TEMPANZEIGE, SW_FLAGS);      // Aufrischen der Temperaturanzeige
 }
 
 /*
  * Local Variables:
- * c-style: python
  * c-basic-offset: 4
  * tab-width: 4
  * indent-tabs-mode: nil
