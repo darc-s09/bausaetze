@@ -37,6 +37,21 @@ static volatile bool update_led;
 // current LED status
 static bool led_is_on;
 
+// running flicker mode
+static bool flicker;
+
+// "random" table for flicker timing intervals
+static const __flash uint8_t intervals[9] =
+{
+  23, 14, 45, 12, 59, 8, 33, 17, 51
+};
+
+static const __flash uint8_t intensity[7] =
+{
+  5, 150, 39, 121, 103, 17, 87
+};
+
+
 static inline uint16_t ticks_to_ms(uint16_t t)
 {
   return (256ul * 8 * 1000) * t / F_CPU;
@@ -121,7 +136,7 @@ static void measure(void)
 // a new light measurement, otherwise go to sleep again immediately.
 ISR(WDT_vect)
 {
-  if (!led_is_on)
+  if (!flicker && !led_is_on)
     {
       static uint16_t seconds;
       static uint16_t previous;
@@ -159,6 +174,9 @@ ISR(TIM0_OVF_vect)
 // Take total time, and decide what to do.
 ISR(ANA_COMP_vect)
 {
+  if (flicker)
+    return;
+
   // discharge 100 nF C
   DDRB |= _BV(1);
   // turn off analog comparator
@@ -182,8 +200,34 @@ main(void)
 
     sei();
 
+    if ((PINB & _BV(3)) == 0)
+    {
+      // flicker light ("Kerze")
+      flicker = true;
+      led_is_on = true;
+      start_timer0();
+    }
+
+    uint8_t intens_idx = 0, interval_idx = 0;
+    uint16_t last_update = 0;
+
     for (;;)
     {
+      if (flicker)
+      {
+        uint16_t delta = ticks - last_update;
+        if (delta > intervals[interval_idx])
+        {
+          // new update
+          last_update = ticks;
+          OCR0A = intensity[intens_idx];
+          if (++interval_idx > sizeof(intervals) / sizeof(intervals[0]))
+            interval_idx = 0;
+          if (++intens_idx > sizeof(intensity) / sizeof(intensity[0]))
+            intens_idx = 0;
+        }
+      }
+
       if (update_led)
         {
           update_led = false;
