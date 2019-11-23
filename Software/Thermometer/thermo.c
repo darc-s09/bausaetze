@@ -50,10 +50,8 @@ uint8_t LED_HELLIGKEIT;                   // Helligkeit , PWM
 
 double temp_ds18b20(void)
 {
-    ow_power(true);
     _delay_ms(10);
     double tfloat = Read_Temperature();
-    ow_power(false);
 
     return tfloat;
 }
@@ -74,6 +72,7 @@ int main(void)
     LED_HELLIGKEIT = 15;
     drehcounter = 0;
     PORTs_init();                       // Init der Ein und Ausgabeports
+    ow_power(true);
     TIMER_init();                       // Timer Init
 #if UART_DEBUG == 1
     UART_init();                        // INIT 485
@@ -81,10 +80,8 @@ int main(void)
     sei();                              // INTERRUPTS GLOBAL AN
     LED_TASK[1][0]=1;                   // LED 1 AN nach INIT
 
-    ow_power(true);
     _delay_ms(10);
     bool ds18b20_present = ow_reset();
-    ow_power(false);
 
     //DEBUG
     //LED_TASK[1][0]=1; // LED 1 AN
@@ -202,6 +199,11 @@ int main(void)
              {
                  temp_1wire = temp_ds18b20();
                  sbi(TEMPANZEIGE, SW_FLAGS);
+#if UART_DEBUG
+                 char b[20];
+                 sprintf(b, "temp 1wire %.2f\r\n", temp_1wire);
+                 putstring(b);
+#endif
              }
              else
              {
