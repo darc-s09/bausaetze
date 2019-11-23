@@ -81,7 +81,10 @@ int main(void)
     sei();                              // INTERRUPTS GLOBAL AN
     LED_TASK[1][0]=1;                   // LED 1 AN nach INIT
 
+    ow_power(true);
+    _delay_ms(10);
     bool ds18b20_present = ow_reset();
+    ow_power(false);
 
     //DEBUG
     //LED_TASK[1][0]=1; // LED 1 AN
