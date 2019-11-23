@@ -41,14 +41,14 @@ static bool led_is_on;
 static bool flicker;
 
 // "random" table for flicker timing intervals
-static const __flash uint8_t intervals[9] =
+static const __flash uint8_t intervals[23] =
 {
-  23, 14, 45, 12, 59, 8, 33, 17, 51
+  23, 76, 14, 45, 12, 123, 59, 148, 8, 33, 17, 51, 48, 157, 30, 8, 21, 205, 60, 98, 74, 248, 82
 };
 
-static const __flash uint8_t intensity[7] =
+static const __flash uint8_t intensity[17] =
 {
-  5, 150, 39, 121, 103, 17, 87
+  5, 150, 39, 121, 103, 17, 87, 36, 134, 74, 65, 52, 143, 25, 49, 114, 136
 };
 
 
