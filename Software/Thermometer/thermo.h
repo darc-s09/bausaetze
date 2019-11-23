@@ -15,7 +15,7 @@
 #define LED_ANZAHL  19                 // Anzahl der LEDs
 #define MAX_HELL    17                 // Maximale Helligkeit der LEDs
 #define ADR485      13                 // Adresse für DEBUG !!!
-#define UART_DEBUG   1                 // UART abschalten
+#define UART_DEBUG   0                 // UART abschalten
 // Komandos
 #define Ausgabe_TEMP        1          // Temperaturausgabe
 
@@ -40,6 +40,7 @@
 
 //SW_FAGS
 #define TEMPANZEIGE         0          // TEMPANZEIGE Auffrischen
+#define SW_SPERRE           1          // Sperrt kurzzeitig den Taster
 
 // Librery declaration
 //#include <avr/eeprom.h>

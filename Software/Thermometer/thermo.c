@@ -112,8 +112,8 @@ int main(void)
 ******************************************************************************/
         if (qbi(T_FLAG, FLAGS))
         {
-            if (!qbi(SW_WUERFEL, SW_PORT))
-            {
+            if (!qbi(SW_WUERFEL, SW_PORT) && (!qbi(SW_SPERRE,SW_FLAGS)))
+            {   
                 switch (mode)
                 {
                 case 0:                         // Temperatur Anzeige
@@ -138,7 +138,8 @@ int main(void)
                     break;
 
                 case 3:                         // Wuerfel
-                    sbi(TEMP_OFF, FLAGS);       // Temperaturanzeige AUS
+                    sbi(SW_SPERRE,SW_FLAGS);   // Sperre Taster
+					sbi(TEMP_OFF, FLAGS);       // Temperaturanzeige AUS
                     cbi(WUERFEL_7, FLAGS);      // Wuerfel 1 - 6
                     if (qbi(PLAYER, FLAGS))
                     {
@@ -341,7 +342,9 @@ void multi_player(uint8_t playernr)
         LED_TASK[19][0] = 0; // LED 19 AUS
         player1 = player1 + ztemp;
 #if UART_DEBUG == 1
+        UART_SendByte('A');
         errorcodeu(player1); // DEBUG
+		UART_SendByte(':');
 #endif
         break;
 
@@ -351,7 +354,9 @@ void multi_player(uint8_t playernr)
         LED_TASK[19][0] = 1; // LED 19 AN
         player2 = player2 + ztemp;
 #if UART_DEBUG == 1
+        UART_SendByte('B');
         errorcodeu(player2); // DEBUG
+		UART_SendByte(':');
 #endif
         break;
     }
@@ -362,8 +367,8 @@ void multi_player(uint8_t playernr)
 Abfrage der Jumper
 0. Kein Jumper Rueckgabewert 0
 1. Test Jumper zwischen GND und MOSI Ruckgabewert 1
-2. Test Jumper zwischen SCK und MOSI
-3. Test Jumper zwischen SCK und MISO
+2. Test Jumper zwischen SCK und MOSI Rückgabewert 2
+3. Test Jumper zwischen SCK und MISO Rückgabewert 3
 ***************************************************************************************/
 
 uint8_t jumper(void)
@@ -1014,6 +1019,8 @@ Einsprung alle 5s
 ISR(TIMER1_OVF_vect)
 {
     sbi(AD_WANDLER, FLAGS); // Start Temperaturmessung interner Wandler
+	mode = jumper();
+	cbi(SW_SPERRE,SW_FLAGS);   // Freigabe Taster
 }
 
 /******************************************************************************
@@ -1062,6 +1069,7 @@ ISR(TIMER2_OVF_vect)
 
     zufall++;
     wzeiger++;
+	counter++;
 }
 
 /******************************************************************************
