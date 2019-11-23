@@ -84,8 +84,7 @@ ow_reset(void)
   sei();
   _delay_ms(0.24);
 
-  return false;
-//  return presence;
+  return presence;
 }
 
 static uint8_t
