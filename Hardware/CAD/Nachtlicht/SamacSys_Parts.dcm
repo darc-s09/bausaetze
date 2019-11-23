@@ -1,0 +1,21 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP NE555DR
+D Single Precision Timer
+K
+F http://www.ti.com/lit/ds/symlink/ne555.pdf
+$ENDCMP
+#
+$CMP 594
+D 9V Battery Snaps & Contacts FEMALE PC 9V SNAP
+K
+F https://componentsearchengine.com/Datasheets/1/594.pdf
+$ENDCMP
+#
+$CMP 593
+D 9V Battery Snaps & Contacts MALE PC 9V SNAP
+K
+F https://componentsearchengine.com/Datasheets/1/593.pdf
+$ENDCMP
+#
+#End Doc Library

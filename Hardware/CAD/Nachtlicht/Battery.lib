@@ -1,0 +1,17 @@
+EESchema-LIBRARY Version 2.4
+#encoding utf-8
+#
+# 2xAA
+#
+DEF 2xAA B 0 40 Y Y 1 F N
+F0 "B" 150 0 50 H V C CNN
+F1 "2xAA" -200 0 50 H V C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+DRAW
+X + + 0 200 200 R 50 50 1 1 w
+X - - 0 -200 200 R 50 50 1 1 w
+ENDDRAW
+ENDDEF
+#
+#End Library
