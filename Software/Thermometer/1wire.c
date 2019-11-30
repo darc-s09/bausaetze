@@ -74,6 +74,7 @@ bool
 ow_reset(void)
 {
   bool presence;
+  uint8_t saved_sreg = SREG;
 
   cli();
   clear_dq();
@@ -81,7 +82,7 @@ ow_reset(void)
   set_dq();
   _delay_ms(0.07);
   presence = get_dq();
-  sei();
+  SREG = saved_sreg;
   _delay_ms(0.24);
 
   return presence;
@@ -91,6 +92,7 @@ static uint8_t
 ow_read_bit(void)
 {
   bool res;
+  uint8_t saved_sreg = SREG;
 
   cli();
   clear_dq();
@@ -98,7 +100,7 @@ ow_read_bit(void)
   _delay_us(15);
 
   res = get_dq();
-  sei();
+  SREG = saved_sreg;
   _delay_us(60);
 
   return res? 0: 1;
@@ -107,13 +109,17 @@ ow_read_bit(void)
 static void
 ow_write_bit(bool bit)
 {
+  uint8_t saved_sreg = SREG;
+
   cli();
   clear_dq();
+  _delay_us(1);
   if (bit)
     set_dq();
   _delay_ms(0.1);
   set_dq();
-  sei();
+  _delay_us(1);
+  SREG = saved_sreg;
 }
 
 static uint8_t
@@ -165,11 +171,13 @@ Read_Temperature(void)
   ow_reset();
 
   ow_write_byte(0xCC); // Skip ROM
+  cli();
   ow_write_byte(0x44); // Start Conversion
 
   // strong pullup must be enabled within 10 µs after "Start
   // Conversion" => F_CPU = 8 MHz recommendable
   strong_pullup(true);
+  sei();
   _delay_ms(750);
   strong_pullup(false);
 
