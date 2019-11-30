@@ -37,8 +37,8 @@ clear_dq(void)
 static inline void
 set_dq(void)
 {
-  ow_port &= ~(1 << OW_PIN);
   ow_ddr  &= ~(1 << OW_PIN);
+  ow_port |= (1 << OW_PIN);
 }
 
 static inline void
