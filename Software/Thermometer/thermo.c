@@ -50,7 +50,6 @@ uint8_t LED_HELLIGKEIT;                   // Helligkeit , PWM
 
 double temp_ds18b20(void)
 {
-    _delay_ms(10);
     double tfloat = Read_Temperature();
 
     return tfloat;
