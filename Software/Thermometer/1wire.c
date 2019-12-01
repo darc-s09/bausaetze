@@ -64,6 +64,7 @@ get_dq(void)
 
 void ow_power(bool on)
 {
+  ow_ddr |= (1 << OW_POWER_PIN);
   if (on)
     ow_port |= (1 << OW_POWER_PIN);
   else
