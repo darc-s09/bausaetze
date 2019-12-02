@@ -1,13 +1,14 @@
 EESchema Schematic File Version 4
+LIBS:Tiny13-Nachtlicht-cache
 EELAYER 26 0
 EELAYER END
 $Descr A4 11693 8268
 encoding utf-8
 Sheet 1 1
-Title ""
-Date ""
-Rev ""
-Comp ""
+Title "Nachtlicht"
+Date "2019-11-22"
+Rev "1.0"
+Comp "DARC OV \"Pentacon Dresden\""
 Comment1 ""
 Comment2 ""
 Comment3 ""
@@ -40,7 +41,7 @@ L Device:C C2
 U 1 1 5DBCC1DF
 P 6200 3600
 F 0 "C2" H 6315 3646 50  0000 L CNN
-F 1 "100 nF" H 6315 3555 50  0000 L CNN
+F 1 "100 nF" V 6350 3250 50  0000 L CNN
 F 2 "Capacitors_SMD:C_0805_HandSoldering" H 6238 3450 50  0001 C CNN
 F 3 "~" H 6200 3600 50  0001 C CNN
 	1    6200 3600
@@ -50,8 +51,8 @@ $Comp
 L Device:D_Photo D1
 U 1 1 5DBCC2B5
 P 6600 3650
-F 0 "D1" V 6504 3808 50  0000 L CNN
-F 1 "PD333-3C/H0/L2" V 6595 3808 50  0000 L CNN
+F 0 "D1" V 6350 3700 50  0000 L CNN
+F 1 "PD333-3C/H0/L2" H 6400 3900 50  0000 L CNN
 F 2 "LEDs:LED-5MM" H 6550 3650 50  0001 C CNN
 F 3 "~" H 6550 3650 50  0001 C CNN
 	1    6600 3650
@@ -147,7 +148,7 @@ L Device:R R1
 U 1 1 5DBD8D80
 P 7000 3300
 F 0 "R1" V 6793 3300 50  0000 C CNN
-F 1 "100 Ω" V 6884 3300 50  0000 C CNN
+F 1 "27 Ω" V 6884 3300 50  0000 C CNN
 F 2 "Resistors_SMD:R_0805_HandSoldering" V 6930 3300 50  0001 C CNN
 F 3 "~" H 7000 3300 50  0001 C CNN
 	1    7000 3300
@@ -288,4 +289,6 @@ Wire Wire Line
 	6100 2700 6200 2700
 Text Notes 6500 2900 0    50   ~ 0
 Jumper
+Text Notes 5400 5700 0    50   ~ 0
+(Steckverbinder nicht bestückt.)
 $EndSCHEMATC
