@@ -138,6 +138,7 @@ bool ow_reset(void);                      // One-wire sensor reset => present?
 double Read_Temperature(double);          // Read temperature; argument is divisor:
                                           // 2.0 for DS1820, 16.0 for DS18B20
 bool Get_ROMCode(uint8_t *);              // Read ROM Code into buffer provided
+void Configure_DS18B20(void);             // Configure DS18B20 for 9-bit operation
 
 #if UART_DEBUG == 1
 void UART_init(void);                     // UART INIT

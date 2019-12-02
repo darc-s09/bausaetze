@@ -179,7 +179,7 @@ Read_Temperature(double divisor)
   // Conversion" => F_CPU = 8 MHz recommendable
   strong_pullup(true);
   sei();
-  _delay_ms(750);
+  _delay_ms(100);
   strong_pullup(false);
 
   ow_reset();
@@ -229,4 +229,32 @@ Get_ROMCode(uint8_t *dat)
     putstring("CRC OK\r\n");
 #endif
   return n == 0;
+}
+
+void
+Configure_DS18B20(void)
+{
+  uint8_t get[9];
+  uint8_t k;
+
+  ow_reset();
+
+  ow_write_byte(0xCC); // Skip ROM
+  ow_write_byte(0xBE); // Read Scratch Pad
+
+  for (k = 0; k < 9; k++) {
+    get[k] = ow_read_byte();
+  }
+  k = ow_checkcrc(get, 9);
+  if (k != 0)
+    return;
+
+  get[4] = 0x1F; // configuration register, R1 = R0 = 0, 9-bit operation
+
+  ow_write_byte(0x4E); // Write Scratch Pad
+  for (k = 2; k < 5; k++) {
+    ow_write_byte(get[k]);
+  }
+
+  ow_reset();
 }

@@ -98,11 +98,11 @@ int main(void)
     if (ds18b20_present)
     {
         bool ok = Get_ROMCode(romcode);
-        if (!ok)
+        if (ok)
         {
             if (romcode[0] == DS18B20)
             {
-                // Configure_DS18B20();
+                Configure_DS18B20();
             }
             else if (romcode[0] == DS1820)
             {
@@ -120,7 +120,9 @@ int main(void)
     }
 #if UART_DEBUG == 1
     putstring("Tempanzeige und Wuerfel Ver 0.4\r\n");         // Ausgabe Versionstext Text
-    putstring(ds18b20_present? "DS18B20\r\n": "Interner Sensor\r\n");
+    putstring(ds18b20_present?
+              (romcode[0] == DS18B20? "DS18B20\r\n": "DS1820\r\n"):
+              "Interner Sensor\r\n");
 #endif
 
     while (1)
