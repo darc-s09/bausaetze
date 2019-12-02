@@ -201,20 +201,31 @@ Read_Temperature(void)
   return ((double)i / 16.0);
 }
 
-#ifdef dontneedthis
 void
-Print_ROMCode(void)
+Get_ROMCode(uint8_t *dat)
 {
   uint8_t n;
-  uint8_t dat[8];
 
   ow_reset();
 
   ow_write_byte(0x33);
 
+#if UART_DEBUG
+  putstring("ROM Code: ");
+#endif
   for (n = 0; n < 8; n++) {
     dat[n] = ow_read_byte();
+#if UART_DEBUG
+    char b[10];
+    sprintf(b, "0x%02x ", dat[n]);
+    putstring(b);
+#endif
   }
   n = ow_checkcrc(dat, 8);
-}
+#if UART_DEBUG
+  if (n)
+    putstring("CRC fail\r\n");
+  else
+    putstring("CRC OK\r\n");
 #endif
+}

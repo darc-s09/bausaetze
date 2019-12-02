@@ -133,6 +133,7 @@ void ow_power(bool);                      // One-wire sensor power on/off
 bool ow_reset(void);                      // One-wire sensor reset => present?
 void Print_ROMCode(void);
 double Read_Temperature(void);
+void Get_ROMCode(uint8_t *);
 
 #if UART_DEBUG == 1
 void UART_init(void);                     // UART INIT

@@ -96,6 +96,11 @@ int main(void)
 #if UART_DEBUG == 1
     putstring("Tempanzeige und Wuerfel Ver 0.4\r\n");         // Ausgabe Versionstext Text
     putstring(ds18b20_present? "DS18B20\r\n": "Interner Sensor\r\n");
+    if (ds18b20_present)
+    {
+        uint8_t romcode[8];
+        Get_ROMCode(romcode);
+    }
 #endif
 
     while (1)
