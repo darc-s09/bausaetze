@@ -47,10 +47,12 @@ uint8_t LED_TASK[20][2];                  // Array LED Ansteuerung [0 = AN/AUS o
 uint8_t LED_Timer;                        // Multiplexer
 uint8_t LED_HELLIGKEIT;                   // Helligkeit , PWM
 
+uint8_t romcode[8];                       // ROM code of 1wire device
+
 
 double temp_ds18b20(void)
 {
-    double tfloat = Read_Temperature();
+    double tfloat = Read_Temperature(romcode[0] == DS18B20? 16.0: 2.0);
 
     return tfloat;
 }
@@ -93,14 +95,32 @@ int main(void)
 
     }
     */
+    if (ds18b20_present)
+    {
+        bool ok = Get_ROMCode(romcode);
+        if (!ok)
+        {
+            if (romcode[0] == DS18B20)
+            {
+                // Configure_DS18B20();
+            }
+            else if (romcode[0] == DS1820)
+            {
+                // OK
+            }
+            else // unknown 1wire device
+            {
+                ds18b20_present = false;
+            }
+        }
+        else
+        {
+            ds18b20_present = false;
+        }
+    }
 #if UART_DEBUG == 1
     putstring("Tempanzeige und Wuerfel Ver 0.4\r\n");         // Ausgabe Versionstext Text
     putstring(ds18b20_present? "DS18B20\r\n": "Interner Sensor\r\n");
-    if (ds18b20_present)
-    {
-        uint8_t romcode[8];
-        Get_ROMCode(romcode);
-    }
 #endif
 
     while (1)

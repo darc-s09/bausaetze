@@ -27,6 +27,10 @@
 #define OW_PORT         C
 #define OW_PIN          2
 
+// Family codes DS18xxx
+#define DS18B20             0x28
+#define DS1820              0x10
+
 
 //FLAGS
 #define PULS_PAUSE          0          // DISPLAY INIT notwendig
@@ -131,9 +135,9 @@ void TIMER_init(void);                    // Timer INIT
 
 void ow_power(bool);                      // One-wire sensor power on/off
 bool ow_reset(void);                      // One-wire sensor reset => present?
-void Print_ROMCode(void);
-double Read_Temperature(void);
-void Get_ROMCode(uint8_t *);
+double Read_Temperature(double);          // Read temperature; argument is divisor:
+                                          // 2.0 for DS1820, 16.0 for DS18B20
+bool Get_ROMCode(uint8_t *);              // Read ROM Code into buffer provided
 
 #if UART_DEBUG == 1
 void UART_init(void);                     // UART INIT

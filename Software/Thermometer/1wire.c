@@ -163,7 +163,7 @@ ow_checkcrc(uint8_t *data, uint8_t nbytes)
 }
 
 double
-Read_Temperature(void)
+Read_Temperature(double divisor)
 {
   uint8_t get[9];
   unsigned temp_lsb,temp_msb;
@@ -198,10 +198,10 @@ Read_Temperature(void)
   temp_lsb = get[0]; // Temp data plus lsb
   int i = (temp_msb << 8) | temp_lsb;
 
-  return ((double)i / 16.0);
+  return ((double)i / divisor);
 }
 
-void
+bool
 Get_ROMCode(uint8_t *dat)
 {
   uint8_t n;
@@ -228,4 +228,5 @@ Get_ROMCode(uint8_t *dat)
   else
     putstring("CRC OK\r\n");
 #endif
+  return n == 0;
 }
