@@ -6,6 +6,11 @@
  */
 
 
+#ifndef UART_DEBUG                     // Kann auf Kommandozeile mit -DUART_DEBUG
+                                       // überschrieben werden
+#   define UART_DEBUG   0              // UART abschalten
+#endif
+
 // Constants definitions
 #define CLEAR       0
 //#define F_CPU       3680000UL          // CPU 3.68MHZ
@@ -15,7 +20,6 @@
 #define LED_ANZAHL  19                 // Anzahl der LEDs
 #define MAX_HELL    17                 // Maximale Helligkeit der LEDs
 #define ADR485      13                 // Adresse für DEBUG !!!
-#define UART_DEBUG   0                 // UART abschalten
 // Komandos
 #define Ausgabe_TEMP        1          // Temperaturausgabe
 
