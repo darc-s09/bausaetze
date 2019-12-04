@@ -80,6 +80,7 @@ int main(void)
 #endif
     sei();                              // INTERRUPTS GLOBAL AN
     LED_TASK[1][0]=1;                   // LED 1 AN nach INIT
+    ADC_init();
 
     _delay_ms(10);
     bool ds18b20_present = ow_reset();
@@ -997,6 +998,10 @@ void TIMER_init(void)
 #endif
     TIMSK2 = _BV(TOIE2); // Timer2 Overflow Interrupt Enable
 
+}
+
+void ADC_init(void)
+{
 /************************ Analog Digital Wandler Singel **********************/
     // Interne Referenz 1,1 V; Kanal 8 (interner Temperatursensor)
     ADMUX = _BV(REFS1) | _BV(REFS0) | _BV(MUX3);
