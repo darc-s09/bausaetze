@@ -49,6 +49,7 @@
 //SW_FAGS
 #define TEMPANZEIGE         0          // TEMPANZEIGE Auffrischen
 #define SW_SPERRE           1          // Sperrt kurzzeitig den Taster
+#define KALIBRIERUNG        2          // Kalibriermodus interner Temp-Sensor
 
 // Librery declaration
 //#include <avr/eeprom.h>

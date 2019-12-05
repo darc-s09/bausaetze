@@ -49,6 +49,8 @@ uint8_t LED_HELLIGKEIT;                   // Helligkeit , PWM
 
 uint8_t romcode[8];                       // ROM code of 1wire device
 
+uint16_t temp_offset = 290;               // Temperatur-Offset in mV
+
 
 double temp_ds18b20(void)
 {
@@ -61,11 +63,44 @@ double temp_internal(void)
 {
     const double digits_per_millivolt = 1024 /* 10 digits */ / 1100.0 /* Vref */;
     // der Offset sollte justierbar werden
-    const uint16_t offset = 290 /* mV */ / digits_per_millivolt;
+    uint16_t offset = temp_offset /* mV */ / digits_per_millivolt;
     double t = temperaturdaten;
 
     return t / digits_per_millivolt - offset;
 }
+
+// Abfrage Potenziometer an JP2
+uint8_t ADC_read_ADC2(void)
+{
+    uint8_t save_sreg = SREG;
+    cli();
+
+    uint8_t save_adcsra = ADCSRA;
+    uint8_t save_admux = ADMUX;
+    ADCSRA = 0;
+    ADCSRA = _BV(ADIF);  // Löschen eventuell anhängiger Interrupt
+    SREG = save_sreg;
+
+    ow_power(true);
+    ADMUX = _BV(REFS0) | // AVcc als Referenz
+        _BV(ADLAR) |     // left adjust result => nur 8 bit in ADCH wichtig
+        2;               // Kanal AD
+    // Übernahme Takt-Bits aus altem ADCSRA, ADC einschalten
+    ADCSRA = _BV(ADEN) | (save_adcsra & (_BV(ADPS2) | _BV(ADPS1) | _BV(ADPS0)));
+    // ...und Konvertierung starten
+    ADCSRA |= _BV(ADSC);
+    _delay_ms(2);
+    uint8_t res = ADCH;
+
+    ADCSRA = 0;
+    ow_power(false);
+
+    ADMUX = save_admux;
+    ADCSRA = save_adcsra;
+
+    return res;
+}
+
 
 
 int main(void)
@@ -82,8 +117,23 @@ int main(void)
     LED_TASK[1][0]=1;                   // LED 1 AN nach INIT
     ADC_init();
 
-    _delay_ms(10);
-    bool ds18b20_present = ow_reset();
+    bool ds18b20_present = false;
+
+    // Abfrage, ob ein Potenziometer an ADC2 (JP2) steckt. Poti muss
+    // Mittelstellung sein, damit das funktioniert. Befindet es sich
+    // zu weit Richtung GND, wird der Bootloader aktiviert.  Befindet
+    // es sich nahe am Vcc-seitigen Anschlag, ist es nicht von einem
+    // unbeschalteten JP2 (Pullup nach PC3) unterscheidbar.
+    uint8_t adc2 = ADC_read_ADC2();
+    if (adc2 < 240)
+    {
+        sbi(AD_WANDLER, FLAGS);
+        sbi(KALIBRIERUNG, SW_FLAGS);
+    }
+    else
+    {
+        ds18b20_present = ow_reset();
+    }
 
     //DEBUG
     //LED_TASK[1][0]=1; // LED 1 AN
@@ -124,6 +174,8 @@ int main(void)
     putstring(ds18b20_present?
               (romcode[0] == DS18B20? "DS18B20\r\n": "DS1820\r\n"):
               "Interner Sensor\r\n");
+    if (qbi(KALIBRIERUNG, SW_FLAGS))
+        putstring("Kalibriermodus aktiv\r\n");
 #endif
 
     while (1)
@@ -263,6 +315,12 @@ FLAG TEMPISOFF wird gesetzt damit das LED Temperaturband nur einmal ruckgesetzt 
              {
                  cbi(TEMPANZEIGE, SW_FLAGS);
 
+                 if (qbi(KALIBRIERUNG, SW_FLAGS))
+                 {
+                     adc2 = ADC_read_ADC2();
+                     temp_offset = 280 + 30u * adc2 / 255;
+                 }
+
                  double t;
                  if (ds18b20_present)
                      t = temp_1wire;
@@ -270,6 +328,9 @@ FLAG TEMPISOFF wird gesetzt damit das LED Temperaturband nur einmal ruckgesetzt 
                      t = temp_internal();
 
                  ledband(t, 12.0, 30.0);
+
+                 if (qbi(KALIBRIERUNG, SW_FLAGS))
+                     sbi(AD_WANDLER, FLAGS); // Start Temperaturmessung interner Wandler
              }
          }
 
@@ -1054,8 +1115,11 @@ Einsprung alle 5s
 *******************************************************************************/
 ISR(TIMER1_OVF_vect)
 {
-    sbi(AD_WANDLER, FLAGS); // Start Temperaturmessung interner Wandler
-	mode = jumper();
+    if (!qbi(KALIBRIERUNG, SW_FLAGS))
+    {
+        sbi(AD_WANDLER, FLAGS); // Start Temperaturmessung interner Wandler
+        mode = jumper();
+    }
 	cbi(SW_SPERRE,SW_FLAGS);   // Freigabe Taster
 }
 
