@@ -116,6 +116,7 @@ these macros are defined, the boot loader usees them.
 #include <util/delay.h>
 
 #define JUMPER_BIT  2   /* jumper is connected to this bit in port C, active low */
+#define POWER_BIT   3   /* power for jumper pullup */
 
 #ifndef MCUCSR          /* compatibility between ATMega8 and ATMega88 */
 #   define MCUCSR   MCUSR
@@ -123,7 +124,8 @@ these macros are defined, the boot loader usees them.
 
 static inline void  bootLoaderInit(void)
 {
-    PORTC |= (1 << JUMPER_BIT);     /* activate pull-up */
+    PORTC = (1 << JUMPER_BIT) | (1 << POWER_BIT);     /* activate pull-up */
+    DDRC = (1 << POWER_BIT);
     _delay_us(10);  /* wait for levels to stabilize */
     if(!(MCUCSR & ((1 << EXTRF) | (1 << PORF))))    /* If this was not an external reset, ignore */
         leaveBootloader();
@@ -133,6 +135,7 @@ static inline void  bootLoaderInit(void)
 static inline void  bootLoaderExit(void)
 {
     PORTC = 0;                      /* undo bootLoaderInit() changes */
+    DDRC = 0;
     DDRD = 0;
     PORTD = 0;
 }
