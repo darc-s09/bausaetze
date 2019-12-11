@@ -136,7 +136,7 @@ void drehenr(uint8_t);                   // Ansteuerung Wuerfelfeld (7 LED`s)
 void zeilenwahl(uint8_t);                // Uebergabe der Zeigerstellung
 void ledband(double, double, double);    // Ansteuerung LED Band
 void PORTs_init(void);                    // PORT INIT
-void TIMER_init(void);                    // Timer INIT
+void TIMER_init(bool);                    // Timer INIT
 void ADC_init(bool);
 
 void ow_power(bool);                      // One-wire sensor power on/off

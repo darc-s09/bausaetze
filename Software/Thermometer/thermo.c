@@ -95,7 +95,6 @@ int main(void)
     drehcounter = 0;
     PORTs_init();                       // Init der Ein und Ausgabeports
     ow_power(true);
-    TIMER_init();                       // Timer Init
 #if UART_DEBUG == 1
     UART_init();                        // INIT 485
 #endif
@@ -114,12 +113,12 @@ int main(void)
     {
         sbi(AD_WANDLER, FLAGS);
         sbi(KALIBRIERUNG, SW_FLAGS);
-        TCCR1B = _BV(CS10) | _BV(CS11); // Teiler 64, bei 12 MHz = 0,35 s
     }
     else
     {
         ds18b20_present = ow_reset();
     }
+    TIMER_init(qbi(KALIBRIERUNG, SW_FLAGS));
 
     //DEBUG
     //LED_TASK[1][0]=1; // LED 1 AN
@@ -1023,8 +1022,10 @@ TIMER1 > nicht genutzt
 TIMER2 > Zufallsgenerator und Rucksetzen des TX Betriebes UART
 AD-Wandler > Auslesen des internen Temperatursensor
 im Singel Conversations Modus
+
+fastmode wird für die Kalibrierung des internen ADC-Sensors genutzt
 ******************************************************************************/
-void TIMER_init(void)
+void TIMER_init(bool fastmode)
 {
 
     /*
@@ -1037,11 +1038,22 @@ void TIMER_init(void)
    /*
      * Timer 1: allgemeine Zeitablaufsteuerung
      */
+    if (fastmode)
+    {
 #if F_CPU < 10000000
-    TCCR1B = _BV(CS12); // Teiler  256, bei 3,68 MHz = 4,56s
+        TCCR1B = _BV(CS11); // Teiler 8, bei 3,68 MHz = 0,14s
 #else
-    TCCR1B = _BV(CS10) | _BV(CS12); // Teiler 1024, bei 12 MHz = 5,6s
+        TCCR1B = _BV(CS10) | _BV(CS11); // Teiler 256, bei 12 MHz = 0,35s
 #endif
+    }
+    else
+    {
+#if F_CPU < 10000000
+        TCCR1B = _BV(CS12); // Teiler  256, bei 3,68 MHz = 4,56s
+#else
+        TCCR1B = _BV(CS10) | _BV(CS12); // Teiler 1024, bei 12 MHz = 5,6s
+#endif
+    }
     TIMSK1 = _BV(TOIE2); // Timer2 Overflow Interrupt Enable
 
     /*
