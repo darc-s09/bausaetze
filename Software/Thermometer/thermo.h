@@ -137,7 +137,7 @@ void zeilenwahl(uint8_t);                // Uebergabe der Zeigerstellung
 void ledband(double, double, double);    // Ansteuerung LED Band
 void PORTs_init(void);                    // PORT INIT
 void TIMER_init(void);                    // Timer INIT
-void ADC_init(void);
+void ADC_init(bool);
 
 void ow_power(bool);                      // One-wire sensor power on/off
 bool ow_reset(void);                      // One-wire sensor reset => present?

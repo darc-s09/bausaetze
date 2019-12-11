@@ -72,22 +72,9 @@ double temp_internal(void)
 // Abfrage Potenziometer an JP2
 uint8_t ADC_read_ADC2(void)
 {
-    uint8_t save_sreg = SREG;
-    cli();
-
-    uint8_t save_adcsra = ADCSRA;
-    uint8_t save_admux = ADMUX;
-    ADCSRA = 0;
-    ADCSRA = _BV(ADIF);  // Löschen eventuell anhängiger Interrupt
-    SREG = save_sreg;
+    ADC_init(false);
 
     ow_power(true);
-    ADMUX = _BV(REFS0) | // AVcc als Referenz
-        _BV(ADLAR) |     // left adjust result => nur 8 bit in ADCH wichtig
-        2;               // Kanal AD
-    // Übernahme Takt-Bits aus altem ADCSRA, ADC einschalten
-    ADCSRA = _BV(ADEN) | (save_adcsra & (_BV(ADPS2) | _BV(ADPS1) | _BV(ADPS0)));
-    // ...und Konvertierung starten
     ADCSRA |= _BV(ADSC);
     _delay_ms(2);
     uint8_t res = ADCH;
@@ -95,8 +82,7 @@ uint8_t ADC_read_ADC2(void)
     ADCSRA = 0;
     ow_power(false);
 
-    ADMUX = save_admux;
-    ADCSRA = save_adcsra;
+    ADC_init(true);
 
     return res;
 }
@@ -115,7 +101,6 @@ int main(void)
 #endif
     sei();                              // INTERRUPTS GLOBAL AN
     LED_TASK[1][0]=1;                   // LED 1 AN nach INIT
-    ADC_init();
 
     bool ds18b20_present = false;
 
@@ -129,6 +114,7 @@ int main(void)
     {
         sbi(AD_WANDLER, FLAGS);
         sbi(KALIBRIERUNG, SW_FLAGS);
+        TCCR1B = _BV(CS10) | _BV(CS11); // Teiler 64, bei 12 MHz = 0,35 s
     }
     else
     {
@@ -319,6 +305,12 @@ FLAG TEMPISOFF wird gesetzt damit das LED Temperaturband nur einmal ruckgesetzt 
                  {
                      adc2 = ADC_read_ADC2();
                      temp_offset = 280 + 30u * adc2 / 255;
+#if UART_DEBUG
+                     char b[30];
+                     sprintf(b, "ADC2 = %d, offset = %d\r\n",
+                             adc2, temp_offset);
+                     putstring(b);
+#endif
                  }
 
                  double t;
@@ -327,10 +319,13 @@ FLAG TEMPISOFF wird gesetzt damit das LED Temperaturband nur einmal ruckgesetzt 
                  else
                      t = temp_internal();
 
+#if UART_DEBUG
+                     char b[30];
+                     sprintf(b, "temp_adc = %d, t = %.2f\r\n",
+                             temperaturdaten, t);
+                     putstring(b);
+#endif
                  ledband(t, 12.0, 30.0);
-
-                 if (qbi(KALIBRIERUNG, SW_FLAGS))
-                     sbi(AD_WANDLER, FLAGS); // Start Temperaturmessung interner Wandler
              }
          }
 
@@ -1061,18 +1056,34 @@ void TIMER_init(void)
 
 }
 
-void ADC_init(void)
+void ADC_init(bool tempmessung)
 {
-/************************ Analog Digital Wandler Singel **********************/
-    // Interne Referenz 1,1 V; Kanal 8 (interner Temperatursensor)
-    ADMUX = _BV(REFS1) | _BV(REFS0) | _BV(MUX3);
+    ADCSRA = _BV(ADIF); // Ausschalten, Interrupt ggf. löschen
+
+    if (tempmessung)
+    {
+        // Interne Referenz 1,1 V; Kanal 8 (interner Temperatursensor)
+        ADMUX = _BV(REFS1) | _BV(REFS0) | _BV(MUX3);
 #if F_CPU < 10000000
-    // ADC enable, Vorteiler 32 => 115 kHz Takt bei 3,68 MHz
-    ADCSRA = _BV(ADEN) | _BV(ADPS2) | _BV(ADPS0) | _BV(ADIE);
+        // ADC enable, Vorteiler 32 => 115 kHz Takt bei 3,68 MHz
+        ADCSRA = _BV(ADEN) | _BV(ADPS2) | _BV(ADPS0) | _BV(ADIE);
 #else
-    // ADC enable, Vorteiler 64 => 187 kHz bei 12 MHz
-    ADCSRA = _BV(ADEN) | _BV(ADPS2) | _BV(ADPS1) | _BV(ADIE);
+        // ADC enable, Vorteiler 64 => 187 kHz bei 12 MHz
+        ADCSRA = _BV(ADEN) | _BV(ADPS2) | _BV(ADPS1) | _BV(ADIE);
 #endif
+    }
+    else // setup für Poti-Abfrage
+    {
+        // AVcc Referenz; Kanal ADC2, left-adjust result (nur 8 Bit in ADCH)
+        ADMUX = _BV(REFS0) | _BV(ADLAR) | 2;
+#if F_CPU < 10000000
+        // ADC enable, Vorteiler 32 => 115 kHz Takt bei 3,68 MHz
+        ADCSRA = _BV(ADEN) | _BV(ADPS2) | _BV(ADPS0);
+#else
+        // ADC enable, Vorteiler 64 => 187 kHz bei 12 MHz
+        ADCSRA = _BV(ADEN) | _BV(ADPS2) | _BV(ADPS1);
+#endif
+    }
 }
 
 /******************************************************************************
@@ -1115,11 +1126,9 @@ Einsprung alle 5s
 *******************************************************************************/
 ISR(TIMER1_OVF_vect)
 {
-    if (!qbi(KALIBRIERUNG, SW_FLAGS))
-    {
-        sbi(AD_WANDLER, FLAGS); // Start Temperaturmessung interner Wandler
-        mode = jumper();
-    }
+    sbi(AD_WANDLER, FLAGS); // Start Temperaturmessung interner Wandler
+    mode = jumper();
+
 	cbi(SW_SPERRE,SW_FLAGS);   // Freigabe Taster
 }
 
