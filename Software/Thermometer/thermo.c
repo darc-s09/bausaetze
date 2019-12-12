@@ -23,6 +23,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <avr/eeprom.h>
 #include <avr/io.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
@@ -101,6 +102,11 @@ int main(void)
     sei();                              // INTERRUPTS GLOBAL AN
     LED_TASK[1][0]=1;                   // LED 1 AN nach INIT
 
+    uint16_t tmp = eeprom_read_word(EE_TEMP_KALIB);
+    if (tmp != 0xFFFF && // gelöschter EEPROM
+        tmp > 200 && tmp < 350) // Plausibilität
+        temp_offset = tmp;
+
     bool ds18b20_present = false;
 
     // Abfrage, ob ein Potenziometer an ADC2 (JP2) steckt. Poti muss
@@ -113,6 +119,7 @@ int main(void)
     {
         sbi(AD_WANDLER, FLAGS);
         sbi(KALIBRIERUNG, SW_FLAGS);
+
     }
     else
     {
@@ -177,76 +184,89 @@ int main(void)
         if (qbi(T_FLAG, FLAGS))
         {
             if (!qbi(SW_WUERFEL, SW_PORT) && (!qbi(SW_SPERRE,SW_FLAGS)))
-            {   
-                switch (mode)
-                {
-                case 0:                         // Temperatur Anzeige
-                    cbi(TEMP_OFF, FLAGS);       // Temperaturanzeige AN
-                    cbi(TEMPISOFF, FLAGS);      // Ruecksetzen TEMPIS OFF
-                    for (uint8_t step = 1; step <= 19 ; step++)
-                    {
-                        LED_TASK[step][0] = 0;  // LEDs aus
-                    }
-                    break;
-
-                case 1:                         // Wuerfel
-                    sbi(TEMP_OFF, FLAGS);       // Temperaturanzeige AUS
-                    cbi(WUERFEL_7, FLAGS);      // Wuerfel 1 - 6
-                    multi_player(0);            // Singelplayer
-                    break;
-
-                case 2:                         // Wuerfel
-                    sbi(TEMP_OFF, FLAGS);       // Temperaturanzeige AUS
-                    sbi(WUERFEL_7, FLAGS);      // Wuerfel 1 - 7
-                    multi_player(0);            // Singelplayer
-                    break;
-
-                case 3:                         // Wuerfel
-                    sbi(SW_SPERRE,SW_FLAGS);   // Sperre Taster
-					sbi(TEMP_OFF, FLAGS);       // Temperaturanzeige AUS
-                    cbi(WUERFEL_7, FLAGS);      // Wuerfel 1 - 6
-                    if (qbi(PLAYER, FLAGS))
-                    {
-                        multi_player(1);        // Player1
-                        cbi(PLAYER, FLAGS);
-                    }
-                    else
-                    {
-                        multi_player(2);        // Player 2
-                        sbi(PLAYER, FLAGS);
-                    }
-                    break;
-
-                case 4:                         // Wuerfel
-                    sbi(TEMP_OFF, FLAGS);       // Temperaturanzeige AUS
-                    sbi(WUERFEL_7, FLAGS);      // Wuerfel 1 - 7
-                    if (qbi(PLAYER, FLAGS))
-                    {
-                        multi_player(1);        // Player1
-                        cbi(PLAYER, FLAGS);
-                    }
-                    else
-                    {
-                        multi_player(2);         // Player2
-                        sbi(PLAYER, FLAGS);
-                    }
-                    break;
-
-                case 5:
-                    // Noch nicht implementiert
-                    break;
-
-                case 6:
-                    // Alle LEDs an
-                    sbi(TEMP_OFF, FLAGS);        // Temperaturanzeige AUS
-                    sbi(TEMPISOFF, FLAGS);
-                    for (uint8_t step = 1; step <= 19 ; step++)
-                    {
-                        LED_TASK[step][0] = 1;
-                    }
-                    break;
-                }
+            {
                 cbi(T_FLAG, FLAGS);
+                if (qbi(KALIBRIERUNG, SW_FLAGS))
+                {
+                    // Taste beendet Kalibriermodus
+                    cbi(KALIBRIERUNG, SW_FLAGS);
+                    eeprom_write_word(EE_TEMP_KALIB, temp_offset);
+                    TIMER_init(false); // Timer in normalen Modus zurück
+#if UART_DEBUG
+                    putstring("Kalibrierung beendet\r\n");
+#endif
+                }
+                else
+                {
+                    switch (mode)
+                    {
+                        case 0:                         // Temperatur Anzeige
+                            cbi(TEMP_OFF, FLAGS);       // Temperaturanzeige AN
+                            cbi(TEMPISOFF, FLAGS);      // Ruecksetzen TEMPIS OFF
+                            for (uint8_t step = 1; step <= 19 ; step++)
+                            {
+                                LED_TASK[step][0] = 0;  // LEDs aus
+                            }
+                            break;
+
+                        case 1:                         // Wuerfel
+                            sbi(TEMP_OFF, FLAGS);       // Temperaturanzeige AUS
+                            cbi(WUERFEL_7, FLAGS);      // Wuerfel 1 - 6
+                            multi_player(0);            // Singelplayer
+                            break;
+
+                        case 2:                         // Wuerfel
+                            sbi(TEMP_OFF, FLAGS);       // Temperaturanzeige AUS
+                            sbi(WUERFEL_7, FLAGS);      // Wuerfel 1 - 7
+                            multi_player(0);            // Singelplayer
+                            break;
+
+                        case 3:                         // Wuerfel
+                            sbi(SW_SPERRE,SW_FLAGS);   // Sperre Taster
+                            sbi(TEMP_OFF, FLAGS);       // Temperaturanzeige AUS
+                            cbi(WUERFEL_7, FLAGS);      // Wuerfel 1 - 6
+                            if (qbi(PLAYER, FLAGS))
+                            {
+                                multi_player(1);        // Player1
+                                cbi(PLAYER, FLAGS);
+                            }
+                            else
+                            {
+                                multi_player(2);        // Player 2
+                                sbi(PLAYER, FLAGS);
+                            }
+                            break;
+
+                        case 4:                         // Wuerfel
+                            sbi(TEMP_OFF, FLAGS);       // Temperaturanzeige AUS
+                            sbi(WUERFEL_7, FLAGS);      // Wuerfel 1 - 7
+                            if (qbi(PLAYER, FLAGS))
+                            {
+                                multi_player(1);        // Player1
+                                cbi(PLAYER, FLAGS);
+                            }
+                            else
+                            {
+                                multi_player(2);         // Player2
+                                sbi(PLAYER, FLAGS);
+                            }
+                            break;
+
+                        case 5:
+                            // Noch nicht implementiert
+                            break;
+
+                        case 6:
+                            // Alle LEDs an
+                            sbi(TEMP_OFF, FLAGS);        // Temperaturanzeige AUS
+                            sbi(TEMPISOFF, FLAGS);
+                            for (uint8_t step = 1; step <= 19 ; step++)
+                            {
+                                LED_TASK[step][0] = 1;
+                            }
+                            break;
+                    }
+                }
             }
         }
 

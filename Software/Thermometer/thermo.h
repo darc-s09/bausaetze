@@ -122,6 +122,9 @@ PB2 = Kathode LED  1, 2, 3, 4, 5
 #define JMP_MISO                4             // ??
 #define JMP_SCK                 5             //
 
+// EEPROM layout
+                                       // Byte 0: frei lassen (kann leicht zerstört werden)
+#define EE_TEMP_KALIB ((uint16_t *)1)  // Byte 1/2: Kalibrierwert Offset Temperatursensor
 
 //#define LED1_ON       ZEILE1_ON & SPALTE1_ON
 //#define LED1_OFF  ZEILE1_OFF & SPALTE1_OFF
