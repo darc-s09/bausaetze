@@ -75,13 +75,11 @@ uint8_t ADC_read_ADC2(void)
 {
     ADC_init(false);
 
-    ow_power(true);
     ADCSRA |= _BV(ADSC);
     _delay_ms(2);
     uint8_t res = ADCH;
 
     ADCSRA = 0;
-    ow_power(false);
 
     ADC_init(true);
 
