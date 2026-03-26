@@ -1,0 +1,3 @@
+[submodule "Software/Tic-Tac-Toe/uracoli"]
+	path = Software/Tic-Tac-Toe/uracoli
+	url = https://gitlab.com/uracoli-project/uracoli.git
