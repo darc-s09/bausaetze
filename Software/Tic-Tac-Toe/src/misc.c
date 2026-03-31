@@ -187,19 +187,19 @@ void xxo_deep_sleep(void)
 {
     set_sleep_mode(SLEEP_MODE_PWR_DOWN);
 
-    PORTB &= ~(COL_LEDS | ROW_IO_MASK);
-    DDRB = COL_LEDS | ROW_IO_MASK;
+    PORTB &= ~(PADS_B | ROW_IO_MASK);
+    DDRB = PADS_B | ROW_IO_MASK;
     PORTG = 0;
-    DDRG = 0x3f;                /* kapazitive Touch-Pads */
-    PORTD &= ~COL_PADS;
-    DDRD = COL_PADS;
+    DDRG = PADS_G;                /* kapazitive Touch-Pads */
+    PORTD &= ~COL_LEDS;
+    DDRD = COL_LEDS;
 
     // ungenutzte Portpins
     DDRE = 0xff;
     PORTE = 0;
     DDRF = 0xff;
     PORTF = 0;
-    PORTD |= 0x0f;              /* Nutzer-Pins: I²C + UART 1 */
+    PORTD |= 0x1f;              /* Nutzer-Pins: I²C + UART 1 */
     PORTB |= 0xc0;
 
     cli();

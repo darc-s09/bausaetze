@@ -15,13 +15,15 @@
 #define KEY_PRESSED (1)
 
 /* === globals ============================================================= */
-static uint8_t SamplesPortD[NSAMPLES], SamplesPortG[NSAMPLES];
+static uint8_t SamplesPortB[NSAMPLES], SamplesPortG[NSAMPLES];
 static uint8_t PadState[9] = { KEY_RELEASED };
 
 /* === functions =========================================================== */
 
 /*
- * Sample port D's input pins for their attached capacitance.
+ * Sample port B's input pins for their attached capacitance.
+ *
+ * Only bit 0..2 are used for input pads.
  *
  * First, the port is set to output, at low level, to discharge the
  * capacitor attached to the pin.  Then, the port is turned into an
@@ -32,40 +34,42 @@ static uint8_t PadState[9] = { KEY_RELEASED };
  * steps) sample the input data into registers, from where they can be
  * stored into their final destination later on (by the compiler).
  */
-static void sample_port_d(void)
+static void sample_port_b(void)
 {
-    PORTD = 0;
-    DDRD = 0xe0;
+    uint8_t portb = PORTB;
+
+    portb &= ~0x07;
+    PORTB = portb;
+    portb |= 0x07;
+    DDRB |= 0x07;
     __asm ("nop");
-    DDRD = 0;
-    PORTD = 0xe0;
-    __asm ("in %[s0], %[pind]" "\n\t"
-           "in %[s1], %[pind]" "\n\t"
-           "in %[s2], %[pind]" "\n\t"
-           "in %[s3], %[pind]" "\n\t"
-           "in %[s4], %[pind]" "\n\t"
-           "in %[s5], %[pind]" "\n\t"
-           "in %[s6], %[pind]" "\n\t"
-           "in %[s7], %[pind]"
+    DDRB &= ~0x07;
+    PORTB = portb;
+    __asm ("in %[s0], %[pinb]" "\n\t"
+           "in %[s1], %[pinb]" "\n\t"
+           "in %[s2], %[pinb]" "\n\t"
+           "in %[s3], %[pinb]" "\n\t"
+           "in %[s4], %[pinb]" "\n\t"
+           "in %[s5], %[pinb]" "\n\t"
+           "in %[s6], %[pinb]" "\n\t"
+           "in %[s7], %[pinb]"
            :
            /* output operands */
-           [s0] "=r" (SamplesPortD[0]),
-           [s1] "=r" (SamplesPortD[1]),
-           [s2] "=r" (SamplesPortD[2]),
-           [s3] "=r" (SamplesPortD[3]),
-           [s4] "=r" (SamplesPortD[4]),
-           [s5] "=r" (SamplesPortD[5]),
-           [s6] "=r" (SamplesPortD[6]),
-           [s7] "=r" (SamplesPortD[7])
+           [s0] "=r" (SamplesPortB[0]),
+           [s1] "=r" (SamplesPortB[1]),
+           [s2] "=r" (SamplesPortB[2]),
+           [s3] "=r" (SamplesPortB[3]),
+           [s4] "=r" (SamplesPortB[4]),
+           [s5] "=r" (SamplesPortB[5]),
+           [s6] "=r" (SamplesPortB[6]),
+           [s7] "=r" (SamplesPortB[7])
            :
            /* input operands */
-           [pind] "I" (_SFR_IO_ADDR(PIND)));
+           [pinb] "I" (_SFR_IO_ADDR(PINB)));
 }
 
 /*
- * Same as for port D above, but only portpin G0 is used as an input,
- * all other pins are not used for that purpose (but are sampled
- * anyway, as sampling always applies to a full port).
+ * Same as for port B above, but port G has only 6 bit.
  */
 static void sample_port_g(void)
 {
@@ -102,7 +106,7 @@ uint8_t update_pads(uint8_t dummy)
     uint8_t scans[9], i, ret;
 
     ret = KEY_NONE;
-    sample_port_d();
+    sample_port_b();
     sample_port_g();
 
     for (i=0; i<9; i++)
@@ -110,7 +114,7 @@ uint8_t update_pads(uint8_t dummy)
         switch(i)
         {
             case 0:
-                scans[0] = (SamplesPortD[NSAMPLE] & _BV(PD7)) ;
+                scans[0] = (SamplesPortB[NSAMPLE] & _BV(PB2)) ;
                 break;
             case 1:
                 scans[1] = (SamplesPortG[NSAMPLE] & _BV(PG5)) ;
@@ -119,7 +123,7 @@ uint8_t update_pads(uint8_t dummy)
                 scans[2] = (SamplesPortG[NSAMPLE] & _BV(PG2)) ;
                 break;
             case 3:
-                scans[3] = (SamplesPortD[NSAMPLE] & _BV(PD6)) ;
+                scans[3] = (SamplesPortB[NSAMPLE] & _BV(PB1)) ;
                 break;
             case 4:
                 scans[4] = (SamplesPortG[NSAMPLE] & _BV(PG4)) ;
@@ -128,7 +132,7 @@ uint8_t update_pads(uint8_t dummy)
                 scans[5] = (SamplesPortG[NSAMPLE] & _BV(PG1)) ;
                 break;
             case 6:
-                scans[6] = (SamplesPortD[NSAMPLE] & _BV(PD5)) ;
+                scans[6] = (SamplesPortB[NSAMPLE] & _BV(PB0)) ;
                 break;
             case 7:
                 scans[7] = (SamplesPortG[NSAMPLE] & _BV(PG3)) ;

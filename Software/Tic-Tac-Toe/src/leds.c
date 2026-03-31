@@ -208,27 +208,35 @@ void display_leds(uint8_t row)
 
     uint8_t i, rowval, portb, *pled;
 
+    // Note that 3 capacitive pads are also located at port B.
+    // However, as update_pads() runs before display_leds(),
+    // we do not need to take care for those bits here, and
+    // can easily pull them low.
     rowval = pat_row[display_state + row];
     portb = rowval;
     pled = &LedState[3*row];
 
+    // LED columns are port D5..7
+    uint8_t portd = 0;
     for(i = 0; i < 3; i++)
     {
         if (display_state == DISPLAY_RED)
         {
-            portb |= (*pled == RED) ? 0 : _BV(i);
+            portd |= (*pled == RED) ? 0 : _BV(i + 5);
         }
 
         else
         {
-            portb |= (*pled == GREEN) ? _BV(i) : 0;
+            portd |= (*pled == GREEN) ? _BV(i + 5) : 0;
         }
         pled ++;
     }
 
     DDRB = 0;
     PORTB = portb;
-    DDRB = (DDRB & ~ROW_IO_MASK) | _BV(row+3) | 7;
+    PORTD = portd;
+    DDRB = (DDRB & ~ROW_IO_MASK) | _BV(row+3);
+
 
     if (row == 2)
     {
