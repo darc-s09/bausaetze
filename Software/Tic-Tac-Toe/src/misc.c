@@ -33,6 +33,8 @@ void xxo_io_init(void)
      * Pin driver strength port B (LED port) = 8 mA
      */
     DPDS0 = _BV(PBDRV1) | _BV(PBDRV0);
+
+    DDRD = COL_LEDS;
 }
 /* === Timer Funktionen ==================================================== */
 void xxo_set_timeout(uint16_t tmo)

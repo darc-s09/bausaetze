@@ -235,7 +235,7 @@ void display_leds(uint8_t row)
     DDRB = 0;
     PORTB = portb;
     PORTD = portd;
-    DDRB = (DDRB & ~ROW_IO_MASK) | _BV(row+3);
+    DDRB = _BV(row+3);
 
 
     if (row == 2)
